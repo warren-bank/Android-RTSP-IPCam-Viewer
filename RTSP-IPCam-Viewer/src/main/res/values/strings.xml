@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">RTSP IP-Cam Viewer</string>
+
+    <string name="action_add_video">Add Video</string>
+    <string name="action_open_list">Open List</string>
+    <string name="action_open_grid">Open Grid</string>
+    <string name="action_read_file">Read File</string>
+    <string name="action_exit">Exit</string>
+
+    <string name="action_read_file_import">Import Videos</string>
+    <string name="action_read_file_open_list">@string/action_open_list</string>
+    <string name="action_read_file_open_grid">@string/action_open_grid</string>
+
+    <string name="label_video_title">Title</string>
+    <string name="label_video_url_low_res">Low-Res URL</string>
+    <string name="label_video_url_high_res">High-Res URL</string>
+    <string name="label_video_is_enabled">Is Enabled?</string>
+
+    <string name="dialog_title_add_video">Add Video</string>
+    <string name="dialog_title_edit_video">Edit Video</string>
+</resources>
