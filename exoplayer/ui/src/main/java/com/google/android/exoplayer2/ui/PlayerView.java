@@ -1032,7 +1032,8 @@ public class PlayerView extends FrameLayout {
     if (ev.getActionMasked() != MotionEvent.ACTION_DOWN) {
       return false;
     }
-    return performClick();
+    performClick();
+    return true;  // always register "ACTION_DOWN" to receive subsequent "ACTION_UP" w/ intermediate "ACTION_MOVE"
   }
 
   @Override
