@@ -49,6 +49,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:'             + '1.1.3'                               // ( 63 KB) https://mvnrepository.com/artifact/com.android.support.constraint/constraint-layout?repo=google
 
     implementation 'com.google.code.gson:gson:'                              + '2.8.5'                               // (235 KB) https://mvnrepository.com/artifact/com.google.code.gson/gson
+
+    implementation 'com.sprylab.android.texturevideoview:texturevideoview:'  + '1.2.1'                               // ( 17 KB) https://mvnrepository.com/artifact/com.sprylab.android.texturevideoview/texturevideoview
+                                                                                                                     //          https://github.com/sprylab/texturevideoview
 }
 
 apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'

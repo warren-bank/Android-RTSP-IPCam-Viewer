@@ -4,15 +4,14 @@ import com.github.warren_bank.rtsp_ipcam_viewer.common.data.VideoType;
 import com.github.warren_bank.rtsp_ipcam_viewer.fullscreen_view.activities.VideoActivity;
 
 import androidx.recyclerview.widget.RecyclerView;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
-import android.widget.VideoView;
+
+import com.sprylab.android.widget.TextureVideoView;
 
 public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-    private MediaPlayer.OnPreparedListener listener;
-    private VideoView view;
+    private TextureVideoView view;
     private boolean isPaused;
 
     private VideoType data;
@@ -20,28 +19,23 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     public RecyclerViewHolder(View view) {
         super(view);
 
-        this.listener = new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(final MediaPlayer mp) {
-                RecyclerViewHolder.this.play();
-            }
-        };
-        this.view = (VideoView) view;
+        this.view = (TextureVideoView) view;
         this.isPaused = false;
 
         this.view.setOnClickListener(this);
         this.view.setOnLongClickListener(this);
-        this.view.setOnPreparedListener(this.listener);
     }
 
     public void bind(VideoType data) {
         this.data = data;
 
-        release();
+        stop();
 
         view.setVideoURI(
             Uri.parse(data.URL_low_res)
         );
+
+        play();
     }
 
     public void play() {
