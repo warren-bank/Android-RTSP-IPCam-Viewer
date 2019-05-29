@@ -15,9 +15,13 @@ import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.rtsp.RtspDefaultClient;
+import com.google.android.exoplayer2.source.rtsp.RtspMediaSource;
+import com.google.android.exoplayer2.source.rtsp.core.Client;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 
 public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
@@ -51,7 +55,17 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         stop();
 
         Uri uri = Uri.parse(data.URL_low_res);
-        MediaSource source = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+        MediaSource source;
+
+        if (Util.isRtspUri(uri)) {
+            source = new RtspMediaSource.Factory(RtspDefaultClient.factory()
+                .setFlags(Client.FLAG_ENABLE_RTCP_SUPPORT)
+                .setNatMethod(Client.RTSP_NAT_DUMMY))
+                .createMediaSource(uri);
+        } else {
+            source = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+        }
+
         exoPlayer.prepare(source);
 
         play();

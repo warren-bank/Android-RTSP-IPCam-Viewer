@@ -1,1 +1,13 @@
 include ':RTSP-IPCam-Viewer'
+
+include ':exoplayer-core'
+include ':exoplayer-ui'
+include ':exoplayer-rtp'
+include ':exoplayer-rtsp'
+include ':exoplayer-sdp'
+
+project(':exoplayer-core').projectDir = new File(rootDir, 'exoplayer/core')
+project(':exoplayer-ui'  ).projectDir = new File(rootDir, 'exoplayer/ui')
+project(':exoplayer-rtp' ).projectDir = new File(rootDir, 'exoplayer/rtp')
+project(':exoplayer-rtsp').projectDir = new File(rootDir, 'exoplayer/rtsp')
+project(':exoplayer-sdp' ).projectDir = new File(rootDir, 'exoplayer/sdp')
