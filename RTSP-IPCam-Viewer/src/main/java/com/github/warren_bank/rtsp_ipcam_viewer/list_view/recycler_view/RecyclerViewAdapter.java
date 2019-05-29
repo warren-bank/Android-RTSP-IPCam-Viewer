@@ -37,10 +37,6 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         params.height = video_height;
         view.setLayoutParams(params);
 
-        params = parent.getLayoutParams();
-        params.height = video_height;
-        parent.setLayoutParams(params);
-
         return new RecyclerViewHolder(view);
     }
 
@@ -51,6 +47,11 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         VideoType video = videos.get(position);
 
         holder.bind(video);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow (RecyclerViewHolder holder) {
+        holder.stop();
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.source.rtsp.RtspDefaultClient;
 import com.google.android.exoplayer2.source.rtsp.RtspMediaSource;
 import com.google.android.exoplayer2.source.rtsp.core.Client;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -46,6 +47,8 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
 
         this.view.setOnClickListener(this);
         this.view.setOnLongClickListener(this);
+        this.view.setUseController(false);
+        this.view.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
         this.view.setPlayer(this.exoPlayer);
     }
 
