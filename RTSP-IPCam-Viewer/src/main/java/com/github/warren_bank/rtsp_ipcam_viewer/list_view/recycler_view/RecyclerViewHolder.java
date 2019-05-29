@@ -13,6 +13,7 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
 
     private MediaPlayer.OnPreparedListener listener;
     private VideoView view;
+    private boolean isPaused;
 
     private VideoType data;
 
@@ -22,11 +23,11 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         this.listener = new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(final MediaPlayer mp) {
-                RecyclerViewHolder.this.view.start();
+                RecyclerViewHolder.this.play();
             }
         };
-
         this.view = (VideoView) view;
+        this.isPaused = false;
 
         this.view.setOnClickListener(this);
         this.view.setOnLongClickListener(this);
@@ -36,9 +37,51 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     public void bind(VideoType data) {
         this.data = data;
 
+        release();
+
         view.setVideoURI(
             Uri.parse(data.URL_low_res)
         );
+    }
+
+    public void play() {
+        try {
+            if (isPaused)
+                view.resume();
+            else
+                view.start();
+        }
+        catch (Exception e){}
+
+        isPaused = false;
+    }
+
+    public void pause() {
+        try {
+            view.pause();
+        }
+        catch (Exception e){}
+
+        isPaused = true;
+    }
+
+    public void stop() {
+        try {
+            view.stopPlayback();
+        }
+        catch (Exception e){}
+
+        isPaused = false;
+    }
+
+    public void release() {
+        try {
+            stop();
+            view.suspend();
+        }
+        catch (Exception e){}
+
+        isPaused = false;
     }
 
     @Override
@@ -52,9 +95,9 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     @Override
     public boolean onLongClick(View v) {
         if (view.isPlaying())
-            view.pause();
+            pause();
         else
-            view.resume();
+            play();
 
         return true;
     }
