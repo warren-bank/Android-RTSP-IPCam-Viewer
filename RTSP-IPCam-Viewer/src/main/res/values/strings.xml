@@ -18,4 +18,6 @@
 
     <string name="dialog_title_add_video">Add Video</string>
     <string name="dialog_title_edit_video">Edit Video</string>
+
+    <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36</string>
 </resources>
