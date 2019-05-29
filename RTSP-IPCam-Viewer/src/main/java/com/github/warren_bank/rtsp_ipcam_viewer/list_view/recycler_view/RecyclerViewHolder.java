@@ -4,12 +4,14 @@ import com.github.warren_bank.rtsp_ipcam_viewer.common.data.VideoType;
 import com.github.warren_bank.rtsp_ipcam_viewer.fullscreen_view.activities.VideoActivity;
 
 import androidx.recyclerview.widget.RecyclerView;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
 import android.widget.VideoView;
 
 public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
+    private MediaPlayer.OnPreparedListener listener;
     private VideoView view;
 
     private VideoType data;
@@ -17,10 +19,18 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     public RecyclerViewHolder(View view) {
         super(view);
 
+        this.listener = new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(final MediaPlayer mp) {
+                RecyclerViewHolder.this.view.start();
+            }
+        };
+
         this.view = (VideoView) view;
 
-        view.setOnClickListener(this);
-        view.setOnLongClickListener(this);
+        this.view.setOnClickListener(this);
+        this.view.setOnLongClickListener(this);
+        this.view.setOnPreparedListener(this.listener);
     }
 
     public void bind(VideoType data) {
