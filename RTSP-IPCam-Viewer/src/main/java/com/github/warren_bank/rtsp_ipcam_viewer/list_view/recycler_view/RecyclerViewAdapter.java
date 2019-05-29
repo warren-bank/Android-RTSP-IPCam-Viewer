@@ -50,7 +50,7 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
-    public void onViewDetachedFromWindow (RecyclerViewHolder holder) {
+    public void onViewDetachedFromWindow(RecyclerViewHolder holder) {
         holder.stop();
     }
 
