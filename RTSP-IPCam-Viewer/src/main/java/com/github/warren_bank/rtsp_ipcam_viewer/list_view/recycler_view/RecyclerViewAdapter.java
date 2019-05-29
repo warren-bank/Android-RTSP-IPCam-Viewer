@@ -15,6 +15,8 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public Context context;
     public ArrayList<VideoType> videos;
 
+    private static final float video_aspect_ratio = (float) (16 / 9);  // common ratios: (16:9), (5:4)
+
     public RecyclerViewAdapter(Context context, ArrayList<VideoType> videos) {
         super();
 
@@ -25,6 +27,20 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_recycler_view_holder, parent, false);
+
+        int video_width  = (int) parent.getWidth();
+        int video_height = (int) (video_width / video_aspect_ratio);
+        ViewGroup.LayoutParams params;
+
+        params = view.getLayoutParams();
+        params.width  = video_width;
+        params.height = video_height;
+        view.setLayoutParams(params);
+
+        params = parent.getLayoutParams();
+        params.height = video_height;
+        parent.setLayoutParams(params);
+
         return new RecyclerViewHolder(view);
     }
 
