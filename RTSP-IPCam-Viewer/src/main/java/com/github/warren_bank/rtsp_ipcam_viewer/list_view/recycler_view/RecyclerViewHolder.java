@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -26,9 +27,10 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener {
+public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, View.OnLongClickListener {
 
     private PlayerView view;
+    private TextView title;
     private SimpleExoPlayer exoPlayer;
     private DefaultHttpDataSourceFactory dataSourceFactory;
 
@@ -37,7 +39,8 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     public RecyclerViewHolder(View view) {
         super(view);
 
-        this.view = (PlayerView) view;
+        this.view  = (PlayerView) view;
+        this.title = (TextView) view.findViewById(R.id.exo_title);
 
         Context context = view.getContext();
         DefaultTrackSelector trackSelector = new DefaultTrackSelector();
@@ -48,6 +51,7 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         this.dataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);
 
         this.view.setOnTouchListener(this);
+        this.view.setOnLongClickListener(this);
         this.view.setUseController(false);
         this.view.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         this.view.setPlayer(this.exoPlayer);
@@ -57,6 +61,7 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
 
     public void bind(VideoType data) {
         this.data = data;
+        this.title.setText(data.title);
 
         stop();
 
@@ -109,64 +114,23 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
             long click_duration = event.getEventTime() - event.getDownTime();  // milliseconds
-            int max_duration, max_distance;
 
-            max_duration = ViewConfiguration.getLongPressTimeout();
+            int max_duration = ViewConfiguration.getLongPressTimeout();
             if (click_duration <= max_duration) {
                 doOnClick();
                 return true;
             }
-
-            max_duration = max_duration * 10;
-            max_distance = ViewConfiguration.getTouchSlop();
-            if (
-                (click_duration <= max_duration)
-             && (getDistance(event, max_distance) <= max_distance)
-            ) {
-                doOnLongClick();
-                return true;
-            }
         }
-
         return false;
     }
 
-    private static float getDistance(MotionEvent ev, int max) {
-        float distanceSum = 0;
-        final int historySize = ev.getHistorySize();
-
-        if (historySize == 0) return 0f;
-
-        float startX = ev.getHistoricalX(0, 0);
-        float startY = ev.getHistoricalY(0, 0);
-
-        for (int h = 1; h < historySize; h++) {
-            // historical point
-            float hx = ev.getHistoricalX(0, h);
-            float hy = ev.getHistoricalY(0, h);
-
-            // distance between startX,startY and historical point
-            float dx = (hx - startX);
-            float dy = (hy - startY);
-            distanceSum += Math.sqrt(dx * dx + dy * dy);
-
-            // short-circuit test
-            if ((max > 0) && (distanceSum > max))
-                return distanceSum;
-
-            // make historical point the start point for next loop iteration
-            startX = hx;
-            startY = hy;
-        }
-
-        // add distance from last historical point to event's point
-        float dx = (ev.getX(0) - startX);
-        float dy = (ev.getY(0) - startY);
-        distanceSum += Math.sqrt(dx * dx + dy * dy);
-
-        return distanceSum;
+    @Override
+    public boolean onLongClick(View v) {
+        doOnLongClick();
+        return true;
     }
 
+    // open selected video in fullscreen view
     private void doOnClick() {
         VideoActivity.open(
             view.getContext(),
@@ -174,6 +138,7 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         );
     }
 
+    // toggle play/pause of selected video
     private void doOnLongClick() {
         try {
             exoPlayer.setPlayWhenReady(

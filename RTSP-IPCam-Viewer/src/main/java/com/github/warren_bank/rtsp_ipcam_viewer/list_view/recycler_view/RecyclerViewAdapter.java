@@ -26,8 +26,6 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_recycler_view_holder, parent, false);
 
-        view.setMinimumHeight(150);
-
         return new RecyclerViewHolder(view);
     }
 
