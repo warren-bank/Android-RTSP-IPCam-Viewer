@@ -7,9 +7,9 @@ import com.github.warren_bank.rtsp_ipcam_viewer.fullscreen_view.activities.Video
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.net.Uri;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -27,12 +27,13 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, View.OnLongClickListener {
+public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     private PlayerView view;
     private TextView title;
     private SimpleExoPlayer exoPlayer;
     private DefaultHttpDataSourceFactory dataSourceFactory;
+    private GestureDetector gestureDetector;
 
     private VideoType data;
 
@@ -50,8 +51,9 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         String userAgent = context.getResources().getString(R.string.user_agent);
         this.dataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);
 
+        this.gestureDetector = new GestureDetector(this);
+
         this.view.setOnTouchListener(this);
-        this.view.setOnLongClickListener(this);
         this.view.setUseController(false);
         this.view.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         this.view.setPlayer(this.exoPlayer);
@@ -110,26 +112,6 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         catch (Exception e){}
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            long click_duration = event.getEventTime() - event.getDownTime();  // milliseconds
-
-            int max_duration = ViewConfiguration.getLongPressTimeout();
-            if (click_duration <= max_duration) {
-                doOnClick();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        doOnLongClick();
-        return true;
-    }
-
     // open selected video in fullscreen view
     private void doOnClick() {
         VideoActivity.open(
@@ -148,4 +130,34 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         catch (Exception e){}
     }
 
+    // interface: View.OnTouchListener
+
+    public boolean onTouch(View v, MotionEvent e) {
+        return this.gestureDetector.onTouchEvent(e);
+    }
+
+    // interface: GestureDetector.OnGestureListener
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        doOnClick();
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        doOnLongClick();
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {return false;}
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {return false;}
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {return false;}
+
+    @Override
+    public void onShowPress(MotionEvent e) {}
 }
