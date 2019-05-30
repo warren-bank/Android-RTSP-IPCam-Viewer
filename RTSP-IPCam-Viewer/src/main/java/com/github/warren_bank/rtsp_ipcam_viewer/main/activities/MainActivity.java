@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 ListActivity.open(MainActivity.this, null);
                 return true;
             case R.id.action_open_grid:
-                GridActivity.open(MainActivity.this, null);
+                GridActivity.open(MainActivity.this, null, 2);
                 return true;
             case R.id.action_read_file:
                 return true;
