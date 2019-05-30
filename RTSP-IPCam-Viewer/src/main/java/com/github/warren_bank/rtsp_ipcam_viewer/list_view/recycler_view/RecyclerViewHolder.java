@@ -51,6 +51,8 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         this.view.setUseController(false);
         this.view.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         this.view.setPlayer(this.exoPlayer);
+
+        this.exoPlayer.setVolume(0f);  // mute all videos in list view
     }
 
     public void bind(VideoType data) {
