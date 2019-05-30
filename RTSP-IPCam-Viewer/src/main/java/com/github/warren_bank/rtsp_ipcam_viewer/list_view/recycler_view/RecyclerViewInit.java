@@ -14,7 +14,7 @@ public final class RecyclerViewInit {
 
     public static RecyclerViewAdapter adapter(Context context, RecyclerView recyclerView, ArrayList<VideoType> videos) {
         LinearLayoutManager layoutmgr = new LinearLayoutManager(context);
-        RecyclerViewAdapter adapter   = new RecyclerViewAdapter(context, recyclerView, videos);
+        RecyclerViewAdapter adapter   = new RecyclerViewAdapter(context, videos);
         RecyclerViewCallback callback = new RecyclerViewCallback(adapter);
         ItemTouchHelper helper        = new ItemTouchHelper(callback);
 

@@ -13,22 +13,22 @@ import java.util.ArrayList;
 
 public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     public Context context;
-    public RecyclerView recyclerView;
     public ArrayList<VideoType> videos;
 
-    public RecyclerViewAdapter(Context context, RecyclerView recyclerView, ArrayList<VideoType> videos) {
+    public RecyclerViewAdapter(Context context, ArrayList<VideoType> videos) {
         super();
 
-        this.context      = context;
-        this.recyclerView = recyclerView;
-        this.videos       = videos;
+        this.context = context;
+        this.videos  = videos;
     }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_recycler_view_holder, parent, false);
 
-        return new RecyclerViewHolder(view, recyclerView);
+        view.setMinimumHeight(150);
+
+        return new RecyclerViewHolder(view);
     }
 
     @Override
