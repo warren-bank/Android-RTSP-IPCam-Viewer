@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.videos              = SharedPrefs.getVideos(this, /* allow_mock_data= */ true);
         this.recyclerView        = (RecyclerView) findViewById(R.id.recycler_view);
-        this.recyclerViewAdapter = RecyclerViewInit.adapter(this, this.videos, this.recyclerView);
+        this.recyclerViewAdapter = RecyclerViewInit.adapter(this, this.recyclerView, this.videos);
     }
 
     @Override
