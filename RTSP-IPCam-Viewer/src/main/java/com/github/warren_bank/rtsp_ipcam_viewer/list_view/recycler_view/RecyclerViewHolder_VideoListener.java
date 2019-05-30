@@ -14,18 +14,26 @@ public class RecyclerViewHolder_VideoListener implements VideoListener {
     private PlayerView view;
     private RecyclerView recyclerView;
 
+    private float video_aspect_ratio;
+    private int video_width;
+
     public RecyclerViewHolder_VideoListener(PlayerView view, RecyclerView recyclerView) {
         this.view         = view;
         this.recyclerView = recyclerView;
     }
 
     public void bind() {
-        resize(default_video_aspect_ratio);
+        reset();
+        resize();
     }
 
-    private void resize(float video_aspect_ratio) {
-        int video_width  = (int) Resources.getSystem().getDisplayMetrics().widthPixels;
-        int video_height = (int) (video_width / video_aspect_ratio);
+    private void reset() {
+        this.video_aspect_ratio = default_video_aspect_ratio;
+        this.video_width        = (int) Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    private void resize() {
+        int video_height = (int) (this.video_width / this.video_aspect_ratio);
 
         resize(video_height);
     }
@@ -52,14 +60,18 @@ public class RecyclerViewHolder_VideoListener implements VideoListener {
     public void onRenderedFirstFrame() {}
 
     @Override
-    public void onSurfaceSizeChanged(int width, int height) {
-        resize(height);
-    }
+    public void onSurfaceSizeChanged(int width, int height) {}
 
     @Override
     public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-     // resize(pixelWidthHeightRatio);
-        resize(height);
+        reset();
+
+        this.video_aspect_ratio = pixelWidthHeightRatio;
+        if (width < this.video_width) {
+            this.video_width = width;
+        }
+
+        resize();
     }
 
 }
