@@ -31,10 +31,11 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     private PlayerView view;
     private SimpleExoPlayer exoPlayer;
     private DefaultHttpDataSourceFactory dataSourceFactory;
+    private RecyclerViewHolder_VideoListener listener;
 
     private VideoType data;
 
-    public RecyclerViewHolder(View view) {
+    public RecyclerViewHolder(View view, RecyclerView recyclerView) {
         super(view);
 
         this.view = (PlayerView) view;
@@ -47,14 +48,19 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         String userAgent = context.getResources().getString(R.string.user_agent);
         this.dataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);
 
+        this.listener = new RecyclerViewHolder_VideoListener(this.view, recyclerView);
+
+        this.exoPlayer.addVideoListener(this.listener);
+
         this.view.setOnTouchListener(this);
         this.view.setUseController(false);
-        this.view.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+        this.view.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         this.view.setPlayer(this.exoPlayer);
     }
 
     public void bind(VideoType data) {
         this.data = data;
+        this.listener.bind();
 
         stop();
 

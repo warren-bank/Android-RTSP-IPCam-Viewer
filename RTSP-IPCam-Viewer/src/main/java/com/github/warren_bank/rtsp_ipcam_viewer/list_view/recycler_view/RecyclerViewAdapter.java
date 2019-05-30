@@ -13,31 +13,22 @@ import java.util.ArrayList;
 
 public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     public Context context;
+    public RecyclerView recyclerView;
     public ArrayList<VideoType> videos;
 
-    private static final float video_aspect_ratio = (float) (16 / 9);  // common ratios: (16:9), (5:4)
-
-    public RecyclerViewAdapter(Context context, ArrayList<VideoType> videos) {
+    public RecyclerViewAdapter(Context context, RecyclerView recyclerView, ArrayList<VideoType> videos) {
         super();
 
-        this.context = context;
-        this.videos = videos;
+        this.context      = context;
+        this.recyclerView = recyclerView;
+        this.videos       = videos;
     }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_recycler_view_holder, parent, false);
 
-        int video_width  = (int) parent.getWidth();
-        int video_height = (int) (video_width / video_aspect_ratio);
-        ViewGroup.LayoutParams params;
-
-        params = view.getLayoutParams();
-        params.width  = video_width;
-        params.height = video_height;
-        view.setLayoutParams(params);
-
-        return new RecyclerViewHolder(view);
+        return new RecyclerViewHolder(view, recyclerView);
     }
 
     @Override

@@ -12,9 +12,9 @@ import java.util.ArrayList;
 
 public final class RecyclerViewInit {
 
-    public static RecyclerViewAdapter adapter(Context context, ArrayList<VideoType> videos, RecyclerView recyclerView) {
+    public static RecyclerViewAdapter adapter(Context context, RecyclerView recyclerView, ArrayList<VideoType> videos) {
         LinearLayoutManager layoutmgr = new LinearLayoutManager(context);
-        RecyclerViewAdapter adapter   = new RecyclerViewAdapter(context, videos);
+        RecyclerViewAdapter adapter   = new RecyclerViewAdapter(context, recyclerView, videos);
         RecyclerViewCallback callback = new RecyclerViewCallback(adapter);
         ItemTouchHelper helper        = new ItemTouchHelper(callback);
 

@@ -48,7 +48,7 @@ public final class ListActivity extends AppCompatActivity {
             : VideoType.filterByEnabled(SharedPrefs.getVideos(this))
         ;
         this.recyclerView        = (RecyclerView) findViewById(R.id.recycler_view);
-        this.recyclerViewAdapter = RecyclerViewInit.adapter(this, this.videos, this.recyclerView);
+        this.recyclerViewAdapter = RecyclerViewInit.adapter(this, this.recyclerView, this.videos);
     }
 
     @Override
