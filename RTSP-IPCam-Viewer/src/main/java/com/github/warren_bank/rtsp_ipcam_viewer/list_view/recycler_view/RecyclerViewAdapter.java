@@ -2,6 +2,7 @@ package com.github.warren_bank.rtsp_ipcam_viewer.list_view.recycler_view;
 
 import com.github.warren_bank.rtsp_ipcam_viewer.R;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.data.VideoType;
+import com.github.warren_bank.rtsp_ipcam_viewer.common.helpers.Utils;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
@@ -20,6 +21,8 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
         this.context = context;
         this.videos  = videos;
+
+        setHasStableIds(true);
     }
 
     @Override
@@ -46,6 +49,15 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public int getItemCount() {
         return (videos == null) ? 0 : videos.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        VideoType video = videos.get(position);
+        String url      = video.URL_low_res;
+        long uniqueID   = Utils.getUniqueLongFromString(url);
+
+        return uniqueID;
     }
 
 }
