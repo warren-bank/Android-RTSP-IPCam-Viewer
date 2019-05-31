@@ -53,6 +53,8 @@ public final class GridColumnsDialog {
                             10
                         );
 
+                        SharedPrefs.setGridColumns(context, result);
+
                         listener.onResult(result);
                     }
                     catch(Exception e) {}
