@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-public class Utils {
+public final class Utils {
 
     public static void hideKeyboard(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);

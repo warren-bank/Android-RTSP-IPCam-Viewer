@@ -50,6 +50,9 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:'                              + '2.8.5'                               // (235 KB) https://mvnrepository.com/artifact/com.google.code.gson/gson
 
+    implementation 'com.nbsp:library:'                                       + '1.8'                                 // (134 KB) https://mvnrepository.com/artifact/com.nbsp/library
+                                                                                                                     //          https://github.com/nbsp-team/MaterialFilePicker
+
     implementation project(':exoplayer-core')
     implementation project(':exoplayer-ui')
     implementation project(':exoplayer-rtp')
