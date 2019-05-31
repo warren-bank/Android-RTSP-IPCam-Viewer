@@ -4,6 +4,7 @@ import com.github.warren_bank.rtsp_ipcam_viewer.R;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.data.SharedPrefs;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.data.VideoType;
 import com.github.warren_bank.rtsp_ipcam_viewer.main.dialogs.add_video.VideoDialog;
+import com.github.warren_bank.rtsp_ipcam_viewer.main.dialogs.grid_view_columns.GridColumnsDialog;
 import com.github.warren_bank.rtsp_ipcam_viewer.main.recycler_view.RecyclerViewInit;
 import com.github.warren_bank.rtsp_ipcam_viewer.main.recycler_view.RecyclerViewAdapter;
 
@@ -88,8 +89,22 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_open_list:
                 ListActivity.open(MainActivity.this, null);
                 return true;
-            case R.id.action_open_grid:
+            case R.id.action_open_grid_2col:
                 GridActivity.open(MainActivity.this, null, 2);
+                return true;
+            case R.id.action_open_grid_Ncol:
+                GridColumnsDialog.show(
+                    MainActivity.this,
+                    recyclerView,
+                    new GridColumnsDialog.ResultListener() {
+                        @Override
+                        public void onResult(int columns) {
+                            if (columns > 1) {
+                                GridActivity.open(MainActivity.this, null, columns);
+                            }
+                        }
+                    }
+                );
                 return true;
             case R.id.action_read_file:
                 return true;

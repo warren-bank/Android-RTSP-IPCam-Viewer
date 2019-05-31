@@ -11,12 +11,43 @@ public final class SharedPrefs {
 
     public static final String PREFS_FILENAME = "PREFS_FILE";
     public static final String PREF_VIDEOS    = "VIDEOS";
+    public static final String PREF_GRID_COLS = "GRID_COLS";
+
+    private static SharedPreferences getPrefs(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE);
+        return sharedPreferences;
+    }
+
+    private static SharedPreferences.Editor getPrefsEditor(Context context) {
+        SharedPreferences sharedPreferences   = getPrefs(context);
+        SharedPreferences.Editor prefs_editor = sharedPreferences.edit();
+        return prefs_editor;
+    }
+
+    private static void putString(Context context, String key, String value) {
+        SharedPreferences.Editor prefs_editor = getPrefsEditor(context);
+        prefs_editor.putString(key, value);
+        prefs_editor.apply();
+    }
+
+    private static void putInt(Context context, String key, int value) {
+        SharedPreferences.Editor prefs_editor = getPrefsEditor(context);
+        prefs_editor.putInt(key, value);
+        prefs_editor.apply();
+    }
+
+    private static String getString(Context context, String key, String defValue) {
+        SharedPreferences sharedPreferences = getPrefs(context);
+        return sharedPreferences.getString(key, defValue);
+    }
+
+    private static int getInt(Context context, String key, int defValue) {
+        SharedPreferences sharedPreferences = getPrefs(context);
+        return sharedPreferences.getInt(key, defValue);
+    }
 
     public static void setVideos(Context context, String jsonVideos) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefs_editor = sharedPreferences.edit();
-        prefs_editor.putString(PREF_VIDEOS, jsonVideos);
-        prefs_editor.apply();
+        putString(context, PREF_VIDEOS, jsonVideos);
     }
 
     public static ArrayList<VideoType> getVideos(Context context) {
@@ -24,8 +55,7 @@ public final class SharedPrefs {
     }
 
     public static ArrayList<VideoType> getVideos(Context context, boolean allow_mock_data) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE);
-        String jsonVideos = sharedPreferences.getString(PREF_VIDEOS, null);
+        String jsonVideos = getString(context, PREF_VIDEOS, null);
 
         if ((jsonVideos == null) && allow_mock_data) {
             jsonVideos = MockData.getJsonVideos();
@@ -38,6 +68,14 @@ public final class SharedPrefs {
           : VideoType.fromJson(jsonVideos)
         ;
         return videos;
+    }
+
+    public static void setGridColumns(Context context, int columns) {
+        putInt(context, PREF_GRID_COLS, columns);
+    }
+
+    public static int getGridColumns(Context context, int defValue) {
+        return getInt(context, PREF_GRID_COLS, defValue);
     }
 
 }

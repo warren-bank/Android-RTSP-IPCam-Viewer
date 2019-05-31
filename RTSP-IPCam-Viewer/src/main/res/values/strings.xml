@@ -1,23 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Open Grid">
+]>
+
 <resources>
     <string name="app_name">RTSP IP-Cam Viewer</string>
 
+    <!-- == actionbar ================================================ -->
     <string name="action_add_video">Add Video</string>
     <string name="action_open_list">Open List</string>
-    <string name="action_open_grid">Open Grid</string>
+    <!-- ============================================================= -->
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <!-- ============================================================= -->
     <string name="action_read_file">Read File</string>
-    <string name="action_exit">Exit</string>
-
     <string name="action_read_file_import">Import Videos</string>
     <string name="action_read_file_open_list">@string/action_open_list</string>
-    <string name="action_read_file_open_grid">@string/action_open_grid</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <!-- ============================================================= -->
+    <string name="action_exit">Exit</string>
+    <!-- ============================================================= -->
 
+    <!-- == dialogs ================================================== -->
+    <string name="dialog_title_add_video">Add Video</string>
+    <string name="dialog_title_edit_video">Edit Video</string>
+    <!-- ============================================================= -->
+    <string name="dialog_title_custom_grid">Custom Grid</string>
+    <!-- ============================================================= -->
+
+    <!-- == form fields ============================================== -->
     <string name="label_video_title">Title</string>
     <string name="label_video_url_low_res">Low-Res URL</string>
     <string name="label_video_url_high_res">High-Res URL</string>
     <string name="label_video_is_enabled">Is Enabled?</string>
+    <!-- ============================================================= -->
+    <string name="label_custom_grid_columns">Columns</string>
+    <!-- ============================================================= -->
 
-    <string name="dialog_title_add_video">Add Video</string>
-    <string name="dialog_title_edit_video">Edit Video</string>
-
+    <!-- == misc ===================================================== -->
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36</string>
+    <!-- ============================================================= -->
 </resources>
