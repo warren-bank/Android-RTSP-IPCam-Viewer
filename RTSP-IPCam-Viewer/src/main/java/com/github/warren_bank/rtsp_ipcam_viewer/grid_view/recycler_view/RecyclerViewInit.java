@@ -2,6 +2,7 @@ package com.github.warren_bank.rtsp_ipcam_viewer.grid_view.recycler_view;
 
 import com.github.warren_bank.rtsp_ipcam_viewer.R;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.data.VideoType;
+import com.github.warren_bank.rtsp_ipcam_viewer.common.helpers.Utils;
 import com.github.warren_bank.rtsp_ipcam_viewer.list_view.recycler_view.RecyclerViewAdapter;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -14,7 +15,7 @@ public final class RecyclerViewInit {
 
     public static RecyclerViewAdapter adapter(Context context, RecyclerView recyclerView, ArrayList<VideoType> videos, int columns) {
         GridLayoutManager   layoutmgr = new GridLayoutManager(context, columns);
-        RecyclerViewAdapter adapter   = new RecyclerViewAdapter(context, videos);
+        RecyclerViewAdapter adapter   = new RecyclerViewAdapter(context, videos, Utils.getHeightForColumns(columns));
 
         recyclerView.setLayoutManager(layoutmgr);
         recyclerView.setHasFixedSize(true);

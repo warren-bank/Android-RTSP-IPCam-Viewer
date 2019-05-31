@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="grid_cell_spacing">2dp</dimen>
+    <dimen name="grid_cell_spacing">1dp</dimen>
 </resources>

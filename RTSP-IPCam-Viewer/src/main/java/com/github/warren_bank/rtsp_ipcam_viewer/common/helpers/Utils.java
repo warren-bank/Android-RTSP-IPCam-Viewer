@@ -2,6 +2,7 @@ package com.github.warren_bank.rtsp_ipcam_viewer.common.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.inputmethod.InputMethodManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,32 @@ public class Utils {
         uniqueID = UUID.nameUUIDFromBytes(input).getMostSignificantBits();
 
         return uniqueID;
+    }
+
+    public static enum AspectRatio {
+        W16H9, W3H2, W4H3, W5H4
+    }
+
+    public static int getHeightForAspectRatio(int width, AspectRatio ratio) {
+        switch (ratio) {
+            case W16H9:
+                return (int) (width / 1.77);  // 16/9 = 1.77
+            case W3H2:
+                return (int) (width / 1.50);  //  3/2 = 1.50
+            case W4H3:
+                return (int) (width / 1.33);  //  4/3 = 1.33
+            case W5H4:
+                return (int) (width / 1.25);  //  5/4 = 1.25
+            default:
+                return 0;
+        }
+    }
+
+    public static int getHeightForColumns(int columns) {
+        int screen_width  = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int width_per_col = (int) (screen_width / columns);
+
+        return getHeightForAspectRatio(width_per_col, AspectRatio.W16H9);
     }
 
 }

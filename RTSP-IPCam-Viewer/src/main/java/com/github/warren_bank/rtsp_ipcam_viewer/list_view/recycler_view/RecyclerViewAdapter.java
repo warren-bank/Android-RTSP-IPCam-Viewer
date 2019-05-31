@@ -15,12 +15,14 @@ import java.util.ArrayList;
 public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     public Context context;
     public ArrayList<VideoType> videos;
+    private int minHeight;
 
-    public RecyclerViewAdapter(Context context, ArrayList<VideoType> videos) {
+    public RecyclerViewAdapter(Context context, ArrayList<VideoType> videos, int minHeight) {
         super();
 
-        this.context = context;
-        this.videos  = videos;
+        this.context   = context;
+        this.videos    = videos;
+        this.minHeight = minHeight;
 
         setHasStableIds(true);
     }
@@ -28,6 +30,10 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_recycler_view_holder, parent, false);
+
+        if (minHeight > 0) {
+            view.setMinimumHeight(minHeight);
+        }
 
         return new RecyclerViewHolder(view);
     }
