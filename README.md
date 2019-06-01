@@ -56,18 +56,33 @@ Android app to watch RTSP video streams; this format is typical of inexpensive I
     * (TBD) ability to zoom/pan
     * (TBD) ability to record to external SD card
 
+#### Notes
+
+* minimum supported version of Android:
+  * Android 4.1 Jelly Bean (API 16)
+* when videos are displayed in list/grid views:
+  * audio is mute
+  * click to open video in full-screen view
+  * long click to toggle pause/play
+* when a video is displayed in full-screen view:
+  * audio is not mute
+  * controls are visible
+
 #### Screenshots
 
+<!-- portrait -->
 ![MainActivity](./.etc/screenshots/01-main.png)
 ![MainActivity](./.etc/screenshots/02-main-menu.png)
 ![MainActivity](./.etc/screenshots/03-main-menu.png)
 ![MainActivity](./.etc/screenshots/04-main-menu-edit.png)
+![FilePicker](./.etc/screenshots/10-import.png)
 ![ListActivity](./.etc/screenshots/05-list.png)
 ![GridActivity](./.etc/screenshots/06-grid-2col.png)
+<br>
+<!-- landscape -->
 ![GridActivity](./.etc/screenshots/07-grid-3col.png)
 ![GridActivity](./.etc/screenshots/08-grid-4col.png)
 ![VideoActivity](./.etc/screenshots/09-fullscreen.png)
-![FilePicker](./.etc/screenshots/10-import.png)
 
 #### Credits
 
