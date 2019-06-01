@@ -38,10 +38,27 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     private VideoType data;
 
     public RecyclerViewHolder(View view) {
+        this(view, 0);
+    }
+
+    public RecyclerViewHolder(View view, int defaultHeight) {
         super(view);
 
         this.view  = (PlayerView) view;
         this.title = (TextView) view.findViewById(R.id.exo_title);
+
+        if (defaultHeight > 0) {
+            this.view.setMinimumHeight(defaultHeight);
+            this.title.setMaxHeight(defaultHeight);
+
+            if (this.title.getTextSize() > defaultHeight) {
+                this.title.setTextSize(
+                    (defaultHeight > 10)
+                      ? (float) (defaultHeight - 2)
+                      : 0f
+                );
+            }
+        }
 
         Context context = view.getContext();
         DefaultTrackSelector trackSelector = new DefaultTrackSelector();

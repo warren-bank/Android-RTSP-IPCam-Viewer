@@ -31,11 +31,7 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_recycler_view_holder, parent, false);
 
-        if (minHeight > 0) {
-            view.setMinimumHeight(minHeight);
-        }
-
-        return new RecyclerViewHolder(view);
+        return new RecyclerViewHolder(view, minHeight);
     }
 
     @Override
