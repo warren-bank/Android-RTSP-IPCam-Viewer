@@ -8,6 +8,10 @@ Android app to watch RTSP video streams; this format is typical of inexpensive I
   * is great
   * is the defacto standard for this kind of app
   * is inexpensive ($4 MSRP, occasionally $1 on sale)
+  * cons:
+    * none
+      * this a personal quirk..
+        * I prefer to not add Google account(s) to most of my Android devices
 * [IP Cam Viewer](https://hit-mob.com/ip-cam-viewer-android/) by [Robert Chou](mailto:robert.chou@gmail.com)
   * has pretty good reviews
   * is the go-to _free_ option for this kind of app
@@ -20,6 +24,12 @@ Android app to watch RTSP video streams; this format is typical of inexpensive I
     * full functionality w/o ads
       * [_Pro_](https://play.google.com/store/apps/details?id=com.rcreations.WebCamViewerPaid)
         * $4 MSRP
+  * cons:
+    * size of APK is over 25MB
+    * requires __a lot__ of permissions
+    * most buttons/features are crippled
+      * open a prompt to purchase pro license
+    * basic functionality is (imho) not very impressive
 * there are no (good) open-source options
 
 #### Goals
@@ -37,35 +47,35 @@ Android app to watch RTSP video streams; this format is typical of inexpensive I
       * is enabled?
   * data import methods:
     * manual entry via dialog
-    * import via text file (JSON format)
+    * import via text file ([JSON format](https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/master/.etc/sample_file_import_data/video_streams.json))
 * display of enabled video streams:
-  * vertical list view of low-res video streams
-  * (TBD) vertical grid view of low-res video streams
+  * list view of low-res video streams
+  * grid view of low-res video streams
     * number of columns is configurable
   * full-screen view of a single high-res video stream
     * (TBD) ability to zoom/pan
     * (TBD) ability to record to external SD card
 
-#### Notes
+#### Screenshots
 
-* for simplicity/performance, each video stream is played in a native [`VideoView`](https://developer.android.com/reference/android/widget/VideoView)
-  * consequences:
-    * supports a limited set of [media formats](https://developer.android.com/guide/appendix/media-formats.html)
-    * cannot zoom/pan
-* may decide to display the full-screen view in a [`TextureView`](https://developer.android.com/reference/android/view/TextureView.html)
-  * considerations:
-    * performance would suffer on lower-end hardware
-    * would gain the ability to zoom/pan
-* vertical grid-view is a double-edge sword
-  * considerations:
-    * the bitrate of each low-res video stream isn't reduced by displaying the video in a smaller area of the screen
-    * this display option would only make sense if the resolution of each low-res video stream was so low that:
-      * at full scale, the width of each video is significantly less than the full width of the screen
-    * on a small screen (ex: phone):
-      * poor resolution
-      * difficult to see
-    * on a large screen (ex: tablet, TV):
-      * this display option would certainly be of benefit
+![MainActivity](./.etc/screenshots/01-main.png)
+![MainActivity](./.etc/screenshots/02-main-menu.png)
+![MainActivity](./.etc/screenshots/03-main-menu.png)
+![MainActivity](./.etc/screenshots/04-main-menu-edit.png)
+![ListActivity](./.etc/screenshots/05-list.png)
+![GridActivity](./.etc/screenshots/06-grid-2col.png)
+![GridActivity](./.etc/screenshots/07-grid-3col.png)
+![GridActivity](./.etc/screenshots/08-grid-4col.png)
+![VideoActivity](./.etc/screenshots/09-fullscreen.png)
+![FilePicker](./.etc/screenshots/10-import.png)
+
+#### Credits
+
+* ExoPlayer [pull request 3854](https://github.com/google/ExoPlayer/pull/3854) by github users [tresvecesseis](https://github.com/tresvecesseis) and [Pablo Ortiz](https://github.com/portizb)
+  * adds [support for playing RTSP streams](https://github.com/google/ExoPlayer/issues/55)
+  * the code in this project is based on [commit 865ced0](https://github.com/tresvecesseis/ExoPlayer/tree/865ced05b6a1c817d0f2a5f0381b185c4c29bf82)
+* [MaterialFilePicker](https://github.com/nbsp-team/MaterialFilePicker)
+  * great little library to browse the file system and select a file
 
 #### Legal
 
