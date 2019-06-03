@@ -60,6 +60,8 @@ public final class FilePicker {
         new MaterialFilePicker()
             .withActivity(activity)
             .withRequestCode(requestCode)
+            .withRootPath("/")
+            .withPath("/storage")
             .withHiddenFiles(showHiddenFiles)
             .withFilter(mFileFilter)
             .withFilterDirectories(filterDirectories)

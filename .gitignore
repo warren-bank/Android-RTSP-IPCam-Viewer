@@ -22,3 +22,7 @@ out
 # Other
 .DS_Store
 local.properties
+
+# Exclusions
+!libs/
+!RTSP-IPCam-Viewer/libs/

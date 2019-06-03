@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+apply from: '../../../constants.gradle'
+
+android {
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility project.ext.javaVersion
+        targetCompatibility project.ext.javaVersion
+    }
+
+    defaultConfig {
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+        consumerProguardFiles 'proguard-rules.txt'
+    }
+}
+
+dependencies {
+    implementation project(':exoplayer-core')
+
+    implementation      'androidx.legacy:legacy-support-v4:'  + project.ext.jetpackVersion
+    implementation      'androidx.media:media:'               + project.ext.jetpackVersion
+    implementation      'androidx.annotation:annotation:'     + project.ext.jetpackVersion
+    annotationProcessor 'androidx.annotation:annotation:'     + project.ext.jetpackVersion
+
+    compileOnly         'org.checkerframework:checker-qual:'  + project.ext.checkerframeworkVersion    // https://mvnrepository.com/artifact/org.checkerframework/checker-qual
+}

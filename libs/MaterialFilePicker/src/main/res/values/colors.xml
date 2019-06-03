@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">?colorPrimary</color>
+    <color name="colorPrimaryDark">?colorPrimaryDark</color>
+    <color name="colorAccent">?colorAccent</color>
+
+    <color name="empty_directory_hint">#c7c7c7</color>
+
+    <color name="compatibility_pressed_color">#1a000000</color>
+    <color name="compatibility_focus_color">#48000000</color>
+    <color name="transparent">#00000000</color>
+</resources>
