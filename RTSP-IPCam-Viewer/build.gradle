@@ -52,11 +52,17 @@ dependencies {
 
     implementation project(':MaterialFilePicker')                                                                    //          https://github.com/nbsp-team/MaterialFilePicker
 
-    implementation project(':exoplayer-core')
-    implementation project(':exoplayer-ui')
-    implementation project(':exoplayer-rtp')
-    implementation project(':exoplayer-rtsp')
-    implementation project(':exoplayer-sdp')
+//    implementation project(':exoplayer-core')
+//    implementation project(':exoplayer-ui')
+//    implementation project(':exoplayer-rtp')
+//    implementation project(':exoplayer-rtsp')
+//    implementation project(':exoplayer-sdp')
+
+    implementation project(path: ':library-core')
+    implementation project(path: ':library-ui')
+    implementation project(path: ':extension-sdp')
+    implementation project(path: ':extension-rtp')
+    implementation project(path: ':extension-rtsp')
 }
 
 apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'
