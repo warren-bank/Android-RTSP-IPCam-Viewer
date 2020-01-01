@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+    }
+}
+dependencies {
+    implementation "androidx.annotation:annotation:1.1.0"
+    annotationProcessor "androidx.annotation:annotation:1.1.0"
+//    api project(path: ':library-core')
+    api project(path: ':modify_library_core')
+//    api project(path: ':extension-sdp')
+    api project(path: ':modify_extensions_sdp')
+//    api project(path: ':extension-rtp')
+    api project(path: ':modify_extensions_rtp')
+}

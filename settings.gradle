@@ -46,3 +46,19 @@ include ':testutils'
 project(":testutils").projectDir = file("./ExoPlayer/testutils")
 
 
+//Modify version base on Google release v2 & warren-bank sdp/rtp/rtsp
+
+include ':modify_library_core'
+project(":modify_library_core").projectDir = new File(rootDir, 'modify/library/core')
+
+include ':modify_library_ui'
+project(":modify_library_ui").projectDir = new File(rootDir, 'modify/library/ui')
+
+include ':modify_extensions_sdp'
+project(":modify_extensions_sdp").projectDir = new File(rootDir, 'modify/extensions/sdp')
+
+include ':modify_extensions_rtp'
+project(":modify_extensions_rtp").projectDir = new File(rootDir, 'modify/extensions/rtp')
+
+include ':modify_extensions_rtsp'
+project(":modify_extensions_rtsp").projectDir = new File(rootDir, 'modify/extensions/rtsp')
