@@ -1,5 +1,11 @@
 rootProject.name='RTSP-IPCam-Viewer'
 
+include ':RTSP-IPCam-Viewer'
+
+include ':MaterialFilePicker'
+project(':MaterialFilePicker').projectDir = new File(rootDir, 'libs/MaterialFilePicker')
+
+//warren-bank version  base ??
 include ':exoplayer-core'
 project(':exoplayer-core'    ).projectDir = new File(rootDir, 'libs/exoplayer/core')
 include ':exoplayer-ui'
@@ -10,12 +16,11 @@ include ':exoplayer-rtsp'
 project(':exoplayer-rtsp'    ).projectDir = new File(rootDir, 'libs/exoplayer/rtsp')
 include ':exoplayer-sdp'
 project(':exoplayer-sdp'     ).projectDir = new File(rootDir, 'libs/exoplayer/sdp')
-include ':MaterialFilePicker'
-project(':MaterialFilePicker').projectDir = new File(rootDir, 'libs/MaterialFilePicker')
 
 
-include ':RTSP-IPCam-Viewer'
 
+
+//Google release v2  version
 //include ':exoplayer'
 //project(':exoplayer').projectDir = new File(rootDir, 'ExoPlayer/library/all')
 
