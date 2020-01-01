@@ -16,7 +16,28 @@ project(':MaterialFilePicker').projectDir = new File(rootDir, 'libs/MaterialFile
 
 include ':RTSP-IPCam-Viewer'
 
+//include ':exoplayer'
+//project(':exoplayer').projectDir = new File(rootDir, 'ExoPlayer/library/all')
 
+include ':library-core'
+project(":library-core").projectDir = file("./ExoPlayer/library/core")
 
+include ':library-dash'
+project(":library-dash").projectDir = file("./ExoPlayer/library/dash")
+
+include ':library-hls'
+project(":library-hls").projectDir = file("./ExoPlayer/library/hls")
+
+include ':library-smoothstreaming'
+project(":library-smoothstreaming").projectDir = file("./ExoPlayer/library/smoothstreaming")
+
+include ':library-ui'
+project(":library-ui").projectDir = file("./ExoPlayer/library/ui")
+
+include ':extension-rtmp'
+project(":extension-rtmp").projectDir = file("./ExoPlayer/extensions/rtmp")
+
+include ':testutils'
+project(":testutils").projectDir = file("./ExoPlayer/testutils")
 
 
