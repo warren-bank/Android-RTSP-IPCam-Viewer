@@ -61,14 +61,12 @@ dependencies {
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation project(path: ':library-core')
-    implementation project(path: ':library-ui')
-    implementation project(path: ':extension-sdp')
-    implementation project(path: ':extension-rtp')
-    implementation project(path: ':extension-rtsp')
+//    implementation project(path: ':library-core')
+//    implementation project(path: ':library-ui')
+//    implementation project(path: ':extension-sdp')
+//    implementation project(path: ':extension-rtp')
+//    implementation project(path: ':extension-rtsp')
 }
 
 apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'
-repositories {
-    mavenCentral()
-}
+
