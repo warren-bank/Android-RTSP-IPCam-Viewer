@@ -69,6 +69,7 @@ public abstract class Client implements Dispatcher.EventListener {
         Factory<T> setFlags(@Flags int flags);
         Factory<T> setMode(@Mode int mode);
         Factory<T> setNatMethod(@NatMethod int natMethod);
+        Factory<T> setPlayer(ExoPlayer player);
         T create(Builder builder);
     }
 
