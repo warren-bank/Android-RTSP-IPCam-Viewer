@@ -4,6 +4,7 @@ import com.github.warren_bank.rtsp_ipcam_viewer.R;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.data.VideoType;
 import com.github.warren_bank.rtsp_ipcam_viewer.fullscreen_view.activities.VideoActivity;
 
+import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.net.Uri;
@@ -27,13 +28,13 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
+public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
     private PlayerView view;
     private TextView title;
     private SimpleExoPlayer exoPlayer;
     private DefaultHttpDataSourceFactory dataSourceFactory;
-    private GestureDetector gestureDetector;
+    private GestureDetectorCompat gestureDetector;
 
     private VideoType data;
 
@@ -68,7 +69,9 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         String userAgent = context.getResources().getString(R.string.user_agent);
         this.dataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);
 
-        this.gestureDetector = new GestureDetector(this);
+        this.gestureDetector = new GestureDetectorCompat(context, this);
+        this.gestureDetector.setIsLongpressEnabled(true);
+        this.gestureDetector.setOnDoubleTapListener(this);
 
         this.view.setOnTouchListener(this);
         this.view.setUseController(false);
@@ -168,7 +171,7 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     }
 
     @Override
-    public boolean onDown(MotionEvent e) {return false;}
+    public boolean onDown(MotionEvent e) {return true;}
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {return false;}
@@ -178,4 +181,21 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public void onShowPress(MotionEvent e) {}
+
+    // interface: GestureDetector.OnDoubleTapListener
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+        doOnClick();
+        return true;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+        doOnClick();
+        return true;
+    }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent e) {return false;}
 }
