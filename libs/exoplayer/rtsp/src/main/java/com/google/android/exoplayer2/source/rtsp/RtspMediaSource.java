@@ -126,10 +126,8 @@ public final class RtspMediaSource extends BaseMediaSource implements Client.Eve
         transportProtocol = TCP;
     }
 
-    @Override
     public boolean isTcp() { return transportProtocol == TCP; }
 
-    @Override
     public boolean isLive() {
         return isLive;
     }
@@ -193,8 +191,14 @@ public final class RtspMediaSource extends BaseMediaSource implements Client.Eve
 
     @Override
     public void onMediaDescriptionInfoRefreshed(long durationUs) {
-        refreshSourceInfo(new SinglePeriodTimeline(durationUs,
-                durationUs != C.TIME_UNSET, false));
+        refreshSourceInfo(new SinglePeriodTimeline(
+          durationUs,
+          durationUs != C.TIME_UNSET,
+          /* isDynamic= */ false,
+          /* isLive=    */ true,
+          /* manifest=  */ null,
+          /* tag=       */ null
+        ));
     }
 
     @Override

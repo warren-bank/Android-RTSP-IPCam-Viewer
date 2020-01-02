@@ -100,12 +100,26 @@ changes to 'core' that require changes to 'rtsp':
 * rtsp\src\main\java\com\google\android\exoplayer2\source\rtsp\RtspMediaPeriod.java
   - implement interface:
       MediaPeriod.isLoading()
-
-* rtsp\src\main\java\com\google\android\exoplayer2\source\rtsp\RtspMediaPeriod.java
-* rtsp\src\main\java\com\google\android\exoplayer2\source\rtsp\RtspMediaSource.java
   - methods removed from interface:
       public void pause()
       public void resume()
+
+* rtsp\src\main\java\com\google\android\exoplayer2\source\rtsp\RtspMediaSource.java
+  - methods removed from interface:
+      public boolean isTcp()
+      public boolean isLive()
+  - constructor call:
+        refreshSourceInfo(new SinglePeriodTimeline(durationUs,
+                durationUs != C.TIME_UNSET, false));
+    to:
+        refreshSourceInfo(new SinglePeriodTimeline(
+          durationUs,
+          durationUs != C.TIME_UNSET,
+          /* isDynamic= */ false,
+          /* isLive=    */ true,
+          /* manifest=  */ null,
+          /* tag=       */ null
+        ));
 
 --------------------------------------------------------------------------------
 
