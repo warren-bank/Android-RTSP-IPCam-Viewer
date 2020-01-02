@@ -22085,23 +22085,6 @@ index 7f607ce..0ee52db 100644
     * @return a byte array containing all of the inputStream's bytes.
     * @throws IOException if an error occurs reading from the stream.
     */
-@@ -239,16 +238,6 @@ public final class Util {
-   }
- 
-   /**
--   * Returns true if the URI is a rtsp stream.
--   *
--   * @param uri The uri to test.
--   */
--  public static boolean isRtspUri(Uri uri) {
--    String scheme = uri.getScheme();
--    return "rtsp".equals(scheme);
--  }
--
--  /**
-    * Tests two objects for {@link Object#equals(Object)} equality, handling the case where one or
-    * both may be null.
-    *
 @@ -347,7 +336,20 @@ public final class Util {
    }
  

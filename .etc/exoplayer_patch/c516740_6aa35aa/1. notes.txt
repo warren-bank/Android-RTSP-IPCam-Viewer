@@ -39,6 +39,9 @@ git format-patch 'dev-v2-rtsp' --stdout > core.patch
   do NOT delete TCP
   do NOT delete UDP
 
+.../com/google/android/exoplayer2/util/Util.java
+  do NOT delete isRtspUri
+
 .../exoplayer2/util/CodecSpecificDataUtil.java
   3-way merge
   do NOT delete methods
