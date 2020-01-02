@@ -19,7 +19,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.extractor.ExtractorOutput;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.TimestampAdjuster;
-import com.google.android.exoplayer2.util.TrackIdGenerator;
 import com.google.android.exoplayer2.util.Util;
 
 /**
@@ -115,7 +114,7 @@ public final class SectionReader implements TsPayloadReader {
         if (bytesRead == totalSectionLength) {
           if (sectionSyntaxIndicator) {
             // This section has common syntax as defined in ISO/IEC 13818-1, section 2.4.4.11.
-            if (Util.crc(sectionData.data, 0, totalSectionLength, 0xFFFFFFFF) != 0) {
+            if (Util.crc32(sectionData.data, 0, totalSectionLength, 0xFFFFFFFF) != 0) {
               // The CRC is invalid so discard the section.
               waitingForPayloadStart = true;
               return;

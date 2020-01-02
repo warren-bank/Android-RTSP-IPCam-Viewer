@@ -68,7 +68,8 @@ public final class SilenceMediaSource extends BaseMediaSource {
   @Override
   protected void prepareSourceInternal(@Nullable TransferListener mediaTransferListener) {
     refreshSourceInfo(
-        new SinglePeriodTimeline(durationUs, /* isSeekable= */ true, /* isDynamic= */ false));
+        new SinglePeriodTimeline(
+            durationUs, /* isSeekable= */ true, /* isDynamic= */ false, /* isLive= */ false));
   }
 
   @Override
@@ -143,14 +144,6 @@ public final class SilenceMediaSource extends BaseMediaSource {
     }
 
     @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
     public long seekToUs(long positionUs) {
       positionUs = constrainSeekPosition(positionUs);
       for (int i = 0; i < sampleStreams.size(); i++) {
@@ -176,6 +169,11 @@ public final class SilenceMediaSource extends BaseMediaSource {
 
     @Override
     public boolean continueLoading(long positionUs) {
+      return false;
+    }
+
+    @Override
+    public boolean isLoading() {
       return false;
     }
 

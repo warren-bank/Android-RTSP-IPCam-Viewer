@@ -32,8 +32,9 @@ public class Cue {
   /** The empty cue. */
   public static final Cue EMPTY = new Cue("");
 
-  /** An unset position or width. */
-  public static final float DIMEN_UNSET = Float.MIN_VALUE;
+  /** An unset position, width or size. */
+  // Note: We deliberately don't use Float.MIN_VALUE because it's positive & very close to zero.
+  public static final float DIMEN_UNSET = -Float.MAX_VALUE;
 
   /**
    * The type of anchor, which may be unset. One of {@link #TYPE_UNSET}, {@link #ANCHOR_TYPE_START},
@@ -332,7 +333,7 @@ public class Cue {
    */
   public Cue(
       CharSequence text,
-      Alignment textAlignment,
+      @Nullable Alignment textAlignment,
       float line,
       @LineType int lineType,
       @AnchorType int lineAnchor,

@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.metadata.icy.IcyHeaders;
 import com.google.android.exoplayer2.upstream.DataSpec.HttpMethod;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Log;
@@ -50,8 +49,8 @@ import java.util.zip.GZIPInputStream;
  *
  * <p>By default this implementation will not follow cross-protocol redirects (i.e. redirects from
  * HTTP to HTTPS or vice versa). Cross-protocol redirects can be enabled by using the {@link
- * #DefaultHttpDataSource(String, Predicate, int, int, boolean, RequestProperties)} constructor and
- * passing {@code true} as the second last argument.
+ * #DefaultHttpDataSource(String, int, int, boolean, RequestProperties)} constructor and passing
+ * {@code true} for the {@code allowCrossProtocolRedirects} argument.
  *
  * <p>Note: HTTP request headers will be set using all parameters passed via (in order of decreasing
  * priority) the {@code dataSpec}, {@link #setRequestProperty} and the default parameters used to
@@ -172,6 +171,7 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
    * @deprecated Use {@link #DefaultHttpDataSource(String, int, int)} and {@link
    *     #setContentTypePredicate(Predicate)}.
    */
+  @SuppressWarnings("deprecation")
   @Deprecated
   public DefaultHttpDataSource(
       String userAgent,
@@ -432,7 +432,6 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     long position = dataSpec.position;
     long length = dataSpec.length;
     boolean allowGzip = dataSpec.isFlagSet(DataSpec.FLAG_ALLOW_GZIP);
-    boolean allowIcyMetadata = dataSpec.isFlagSet(DataSpec.FLAG_ALLOW_ICY_METADATA);
 
     if (!allowCrossProtocolRedirects) {
       // HttpURLConnection disallows cross-protocol redirects, but otherwise performs redirection
@@ -444,7 +443,6 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
           position,
           length,
           allowGzip,
-          allowIcyMetadata,
           /* followRedirects= */ true,
           dataSpec.httpRequestHeaders);
     }
@@ -460,7 +458,6 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
               position,
               length,
               allowGzip,
-              allowIcyMetadata,
               /* followRedirects= */ false,
               dataSpec.httpRequestHeaders);
       int responseCode = connection.getResponseCode();
@@ -502,7 +499,6 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
    * @param position The byte offset of the requested data.
    * @param length The length of the requested data, or {@link C#LENGTH_UNSET}.
    * @param allowGzip Whether to allow the use of gzip.
-   * @param allowIcyMetadata Whether to allow ICY metadata.
    * @param followRedirects Whether to follow redirects.
    * @param requestParameters parameters (HTTP headers) to include in request.
    */
@@ -513,7 +509,6 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
       long position,
       long length,
       boolean allowGzip,
-      boolean allowIcyMetadata,
       boolean followRedirects,
       Map<String, String> requestParameters)
       throws IOException {
@@ -541,14 +536,10 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     }
     connection.setRequestProperty("User-Agent", userAgent);
     connection.setRequestProperty("Accept-Encoding", allowGzip ? "gzip" : "identity");
-    if (allowIcyMetadata) {
-      connection.setRequestProperty(
-          IcyHeaders.REQUEST_HEADER_ENABLE_METADATA_NAME,
-          IcyHeaders.REQUEST_HEADER_ENABLE_METADATA_VALUE);
-    }
     connection.setInstanceFollowRedirects(followRedirects);
     connection.setDoOutput(httpBody != null);
     connection.setRequestMethod(DataSpec.getStringForHttpMethod(httpMethod));
+    
     if (httpBody != null) {
       connection.setFixedLengthStreamingMode(httpBody.length);
       connection.connect();

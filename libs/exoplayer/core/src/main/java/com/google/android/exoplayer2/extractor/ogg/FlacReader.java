@@ -68,27 +68,28 @@ import java.util.List;
   }
 
   @Override
-  protected boolean readHeaders(ParsableByteArray packet, long position, SetupData setupData)
-      throws IOException, InterruptedException {
+  protected boolean readHeaders(ParsableByteArray packet, long position, SetupData setupData) {
     byte[] data = packet.data;
     if (streamMetadata == null) {
       streamMetadata = new FlacStreamMetadata(data, 17);
+      int maxInputSize =
+          streamMetadata.maxFrameSize == 0 ? Format.NO_VALUE : streamMetadata.maxFrameSize;
       byte[] metadata = Arrays.copyOfRange(data, 9, packet.limit());
       metadata[4] = (byte) 0x80; // Set the last metadata block flag, ignore the other blocks
       List<byte[]> initializationData = Collections.singletonList(metadata);
       setupData.format =
           Format.createAudioSampleFormat(
-              null,
+              /* id= */ null,
               MimeTypes.AUDIO_FLAC,
-              null,
-              Format.NO_VALUE,
+              /* codecs= */ null,
               streamMetadata.bitRate(),
+              maxInputSize,
               streamMetadata.channels,
               streamMetadata.sampleRate,
               initializationData,
-              null,
-              0,
-              null);
+              /* drmInitData= */ null,
+              /* selectionFlags= */ 0,
+              /* language= */ null);
     } else if ((data[0] & 0x7F) == SEEKTABLE_PACKET_TYPE) {
       flacOggSeeker = new FlacOggSeeker();
       flacOggSeeker.parseSeekTable(packet);

@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.Player.PlaybackSuppressionReason;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.Timeline.Period;
 import com.google.android.exoplayer2.Timeline.Window;
@@ -132,8 +133,11 @@ public class AnalyticsCollector
     }
   }
 
-  /** Resets the analytics collector for a new playlist. */
-  public final void resetForNewPlaylist() {
+  /**
+   * Resets the analytics collector for a new media source. Should be called before the player is
+   * prepared with a new media source.
+   */
+  public final void resetForNewMediaSource() {
     // Copying the list is needed because onMediaPeriodReleased will modify the list.
     List<MediaPeriodInfo> mediaPeriodInfos =
         new ArrayList<>(mediaPeriodQueueTracker.mediaPeriodInfoQueue);
@@ -441,6 +445,23 @@ public class AnalyticsCollector
     EventTime eventTime = generatePlayingMediaPeriodEventTime();
     for (AnalyticsListener listener : listeners) {
       listener.onPlayerStateChanged(eventTime, playWhenReady, playbackState);
+    }
+  }
+
+  @Override
+  public void onPlaybackSuppressionReasonChanged(
+      @PlaybackSuppressionReason int playbackSuppressionReason) {
+    EventTime eventTime = generatePlayingMediaPeriodEventTime();
+    for (AnalyticsListener listener : listeners) {
+      listener.onPlaybackSuppressionReasonChanged(eventTime, playbackSuppressionReason);
+    }
+  }
+
+  @Override
+  public void onIsPlayingChanged(boolean isPlaying) {
+    EventTime eventTime = generatePlayingMediaPeriodEventTime();
+    for (AnalyticsListener listener : listeners) {
+      listener.onIsPlayingChanged(eventTime, isPlaying);
     }
   }
 
@@ -805,7 +826,7 @@ public class AnalyticsCollector
     public boolean onMediaPeriodReleased(MediaPeriodId mediaPeriodId) {
       MediaPeriodInfo mediaPeriodInfo = mediaPeriodIdToInfo.remove(mediaPeriodId);
       if (mediaPeriodInfo == null) {
-        // The media period has already been removed from the queue in resetForNewPlaylist().
+        // The media period has already been removed from the queue in resetForNewMediaSource().
         return false;
       }
       mediaPeriodInfoQueue.remove(mediaPeriodInfo);

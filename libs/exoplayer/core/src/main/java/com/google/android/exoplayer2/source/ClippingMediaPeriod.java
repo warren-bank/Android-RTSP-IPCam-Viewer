@@ -172,16 +172,6 @@ public final class ClippingMediaPeriod implements MediaPeriod, MediaPeriod.Callb
   }
 
   @Override
-  public void pause() {
-    mediaPeriod.pause();
-  }
-
-  @Override
-  public void resume() {
-    mediaPeriod.resume();
-  }
-
-  @Override
   public long seekToUs(long positionUs) {
     pendingInitialDiscontinuityPositionUs = C.TIME_UNSET;
     for (ClippingSampleStream sampleStream : sampleStreams) {
@@ -219,6 +209,11 @@ public final class ClippingMediaPeriod implements MediaPeriod, MediaPeriod.Callb
   @Override
   public boolean continueLoading(long positionUs) {
     return mediaPeriod.continueLoading(positionUs);
+  }
+
+  @Override
+  public boolean isLoading() {
+    return mediaPeriod.isLoading();
   }
 
   // MediaPeriod.Callback implementation.

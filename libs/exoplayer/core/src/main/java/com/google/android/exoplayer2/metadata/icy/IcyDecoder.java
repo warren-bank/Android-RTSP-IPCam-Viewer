@@ -21,7 +21,6 @@ import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataDecoder;
 import com.google.android.exoplayer2.metadata.MetadataInputBuffer;
 import com.google.android.exoplayer2.util.Assertions;
-import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Util;
 import java.nio.ByteBuffer;
 import java.util.regex.Matcher;
@@ -30,14 +29,11 @@ import java.util.regex.Pattern;
 /** Decodes ICY stream information. */
 public final class IcyDecoder implements MetadataDecoder {
 
-  private static final String TAG = "IcyDecoder";
-
   private static final Pattern METADATA_ELEMENT = Pattern.compile("(.+?)='(.*?)';", Pattern.DOTALL);
   private static final String STREAM_KEY_NAME = "streamtitle";
   private static final String STREAM_KEY_URL = "streamurl";
 
   @Override
-  @Nullable
   @SuppressWarnings("ByteBufferBackingArray")
   public Metadata decode(MetadataInputBuffer inputBuffer) {
     ByteBuffer buffer = Assertions.checkNotNull(inputBuffer.data);
@@ -46,11 +42,10 @@ public final class IcyDecoder implements MetadataDecoder {
     return decode(Util.fromUtf8Bytes(data, 0, length));
   }
 
-  @Nullable
   @VisibleForTesting
   /* package */ Metadata decode(String metadata) {
-    String name = null;
-    String url = null;
+    @Nullable String name = null;
+    @Nullable String url = null;
     int index = 0;
     Matcher matcher = METADATA_ELEMENT.matcher(metadata);
     while (matcher.find(index)) {
@@ -63,12 +58,9 @@ public final class IcyDecoder implements MetadataDecoder {
         case STREAM_KEY_URL:
           url = value;
           break;
-        default:
-          Log.w(TAG, "Unrecognized ICY tag: " + name);
-          break;
       }
       index = matcher.end();
     }
-    return (name != null || url != null) ? new Metadata(new IcyInfo(name, url)) : null;
+    return new Metadata(new IcyInfo(metadata, name, url));
   }
 }

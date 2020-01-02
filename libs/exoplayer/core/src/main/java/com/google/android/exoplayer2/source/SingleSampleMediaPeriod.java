@@ -173,6 +173,11 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
   }
 
   @Override
+  public boolean isLoading() {
+    return loader.isLoading();
+  }
+
+  @Override
   public long readDiscontinuity() {
     if (!notifiedReadingStarted) {
       eventDispatcher.readingStarted();
@@ -189,16 +194,6 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
   @Override
   public long getBufferedPositionUs() {
     return loadingFinished ? C.TIME_END_OF_SOURCE : 0;
-  }
-
-  @Override
-  public void pause() {
-    // Do nothing.
-  }
-
-  @Override
-  public void resume() {
-    // Do nothing.
   }
 
   @Override
@@ -388,6 +383,8 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
     @Nullable private byte[] sampleData;
 
+    // the constructor does not initialize fields: sampleData
+    @SuppressWarnings("nullness:initialization.fields.uninitialized")
     public SourceLoadable(DataSpec dataSpec, DataSource dataSource) {
       this.dataSpec = dataSpec;
       this.dataSource = new StatsDataSource(dataSource);

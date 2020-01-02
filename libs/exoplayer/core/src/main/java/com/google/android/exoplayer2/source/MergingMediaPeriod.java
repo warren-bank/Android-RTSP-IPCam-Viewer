@@ -170,6 +170,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
   }
 
   @Override
+  public boolean isLoading() {
+    return compositeSequenceableLoader.isLoading();
+  }
+
+  @Override
   public long getNextLoadPositionUs() {
     return compositeSequenceableLoader.getNextLoadPositionUs();
   }
@@ -198,20 +203,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
   @Override
   public long getBufferedPositionUs() {
     return compositeSequenceableLoader.getBufferedPositionUs();
-  }
-
-  @Override
-  public void pause() {
-    for (MediaPeriod enabledPeriod : enabledPeriods) {
-      enabledPeriod.pause();
-    }
-  }
-
-  @Override
-  public void resume() {
-    for (MediaPeriod enabledPeriod : enabledPeriods) {
-      enabledPeriod.resume();
-    }
   }
 
   @Override

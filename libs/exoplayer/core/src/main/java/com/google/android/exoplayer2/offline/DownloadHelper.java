@@ -37,6 +37,8 @@ import com.google.android.exoplayer2.source.MediaSourceFactory;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.source.chunk.MediaChunk;
+import com.google.android.exoplayer2.source.chunk.MediaChunkIterator;
 import com.google.android.exoplayer2.trackselection.BaseTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
@@ -136,6 +138,9 @@ public final class DownloadHelper {
      */
     void onPrepareError(DownloadHelper helper, IOException e);
   }
+
+  /** Thrown at an attempt to download live content. */
+  public static class LiveContentUnsupportedException extends IOException {}
 
   @Nullable
   private static final Constructor<? extends MediaSourceFactory> DASH_FACTORY_CONSTRUCTOR =
@@ -950,7 +955,7 @@ public final class DownloadHelper {
     public boolean handleMessage(Message msg) {
       switch (msg.what) {
         case MESSAGE_PREPARE_SOURCE:
-          mediaSource.prepareSource(/* caller= */ this, /* mediaTransferListener= */ null, null);
+          mediaSource.prepareSource(/* caller= */ this, /* mediaTransferListener= */ null);
           mediaSourceHandler.sendEmptyMessage(MESSAGE_CHECK_FOR_FAILURE);
           return true;
         case MESSAGE_CHECK_FOR_FAILURE:
@@ -997,6 +1002,14 @@ public final class DownloadHelper {
     public void onSourceInfoRefreshed(MediaSource source, Timeline timeline) {
       if (this.timeline != null) {
         // Ignore dynamic updates.
+        return;
+      }
+      if (timeline.getWindow(/* windowIndex= */ 0, new Timeline.Window()).isLive) {
+        downloadHelperHandler
+            .obtainMessage(
+                DOWNLOAD_HELPER_CALLBACK_MESSAGE_FAILED,
+                /* obj= */ new LiveContentUnsupportedException())
+            .sendToTarget();
         return;
       }
       this.timeline = timeline;
@@ -1088,6 +1101,16 @@ public final class DownloadHelper {
     @Override
     public Object getSelectionData() {
       return null;
+    }
+
+    @Override
+    public void updateSelectedTrack(
+        long playbackPositionUs,
+        long bufferedDurationUs,
+        long availableDurationUs,
+        List<? extends MediaChunk> queue,
+        MediaChunkIterator[] mediaChunkIterators) {
+      // Do nothing.
     }
   }
 

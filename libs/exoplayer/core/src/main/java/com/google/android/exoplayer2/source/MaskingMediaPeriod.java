@@ -187,16 +187,6 @@ public final class MaskingMediaPeriod implements MediaPeriod, MediaPeriod.Callba
   }
 
   @Override
-  public void pause() {
-    mediaPeriod.pause();
-  }
-
-  @Override
-  public void resume() {
-    mediaPeriod.resume();
-  }
-
-  @Override
   public long seekToUs(long positionUs) {
     return castNonNull(mediaPeriod).seekToUs(positionUs);
   }
@@ -219,6 +209,11 @@ public final class MaskingMediaPeriod implements MediaPeriod, MediaPeriod.Callba
   @Override
   public boolean continueLoading(long positionUs) {
     return mediaPeriod != null && mediaPeriod.continueLoading(positionUs);
+  }
+
+  @Override
+  public boolean isLoading() {
+    return mediaPeriod != null && mediaPeriod.isLoading();
   }
 
   @Override

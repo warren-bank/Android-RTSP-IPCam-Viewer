@@ -30,6 +30,17 @@ import java.net.SocketException;
 public class UdpDataSource extends BaseDataSource {
 
   /**
+   * Thrown when an error is encountered when trying to read from a {@link UdpDataSource}.
+   */
+  public static final class UdpDataSourceException extends IOException {
+
+    public UdpDataSourceException(IOException cause) {
+      super(cause);
+    }
+
+  }
+
+  /**
    * The default maximum datagram packet size, in bytes.
    */
   public static final int DEFAULT_MAX_PACKET_SIZE = 2000;
@@ -46,7 +57,6 @@ public class UdpDataSource extends BaseDataSource {
   @Nullable private MulticastSocket multicastSocket;
   @Nullable private InetAddress address;
   @Nullable private InetSocketAddress socketAddress;
-
   private boolean opened;
 
   private int packetRemaining;
@@ -79,28 +89,30 @@ public class UdpDataSource extends BaseDataSource {
   }
 
   @Override
-  public long open(DataSpec dataSpec) throws IOException {
+  public long open(DataSpec dataSpec) throws UdpDataSourceException {
     uri = dataSpec.uri;
     String host = uri.getHost();
     int port = uri.getPort();
     transferInitializing(dataSpec);
-
-    address = InetAddress.getByName(host);
-    socketAddress = new InetSocketAddress(address, port);
-    if (address.isMulticastAddress()) {
-      multicastSocket = new MulticastSocket(socketAddress);
-      multicastSocket.joinGroup(address);
-      socket = multicastSocket;
-    } else {
-      if (dataSpec.isFlagSet(DataSpec.FLAG_FORCE_BOUND_LOCAL_ADDRESS)) {
-        socket = new DatagramSocket(uri.getPort());
+    try {
+      address = InetAddress.getByName(host);
+      socketAddress = new InetSocketAddress(address, port);
+      if (address.isMulticastAddress()) {
+        multicastSocket = new MulticastSocket(socketAddress);
+        multicastSocket.joinGroup(address);
+        socket = multicastSocket;
       } else {
-        socket = new DatagramSocket();
-        socket.connect(socketAddress);
+        socket = new DatagramSocket(socketAddress);
       }
+    } catch (IOException e) {
+      throw new UdpDataSourceException(e);
     }
 
-    socket.setSoTimeout(socketTimeoutMillis);
+    try {
+      socket.setSoTimeout(socketTimeoutMillis);
+    } catch (SocketException e) {
+      throw new UdpDataSourceException(e);
+    }
 
     opened = true;
     transferStarted(dataSpec);
@@ -108,14 +120,18 @@ public class UdpDataSource extends BaseDataSource {
   }
 
   @Override
-  public int read(byte[] buffer, int offset, int readLength) throws IOException {
+  public int read(byte[] buffer, int offset, int readLength) throws UdpDataSourceException {
     if (readLength == 0) {
       return 0;
     }
 
     if (packetRemaining == 0) {
       // We've read all of the data from the current packet. Get another.
-      socket.receive(packet);
+      try {
+        socket.receive(packet);
+      } catch (IOException e) {
+        throw new UdpDataSourceException(e);
+      }
       packetRemaining = packet.getLength();
       bytesTransferred(packetRemaining);
     }
