@@ -90,7 +90,8 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         if (Util.isRtspUri(uri)) {
             source = new RtspMediaSource.Factory(RtspDefaultClient.factory()
                 .setFlags(Client.FLAG_ENABLE_RTCP_SUPPORT)
-                .setNatMethod(Client.RTSP_NAT_DUMMY))
+                .setNatMethod(Client.RTSP_NAT_DUMMY)
+                .setPlayer(exoPlayer))
                 .createMediaSource(uri);
         } else {
             source = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);

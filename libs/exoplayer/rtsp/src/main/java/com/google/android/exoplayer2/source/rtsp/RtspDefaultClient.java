@@ -15,6 +15,7 @@
  */
 package com.google.android.exoplayer2.source.rtsp;
 
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 import com.google.android.exoplayer2.source.rtsp.core.Client;
 import com.google.android.exoplayer2.source.rtsp.message.Header;
@@ -34,6 +35,7 @@ public final class RtspDefaultClient extends Client {
             private @Flags int flags;
             private @Mode int mode;
             private @NatMethod int natMethod;
+            private ExoPlayer player;
 
             public Factory<RtspDefaultClient> setFlags(@Flags int flags) {
                 this.flags = flags;
@@ -50,12 +52,19 @@ public final class RtspDefaultClient extends Client {
                 return this;
             }
 
+            public Factory<RtspDefaultClient> setPlayer(ExoPlayer player) {
+                this.player = player;
+                return this;
+            }
+
             public RtspDefaultClient create(Builder builder) {
                 return new RtspDefaultClient(builder
                         .setUserAgent(USER_AGENT)
                         .setFlags(flags)
                         .setMode((mode < builder.mode) ? builder.mode : mode)
-                        .setNatMethod(natMethod));
+                        .setNatMethod(natMethod)
+                        .setPlayer(player)
+                );
             }
         };
     }

@@ -164,7 +164,6 @@ public final class RtspMediaSource extends BaseMediaSource implements Client.Eve
                 .setUri(uri)
                 .setMode((prepareCount++ > 0) ? RTSP_INTERLEAVED : RTSP_AUTO_DETECT)
                 .setListener(this)
-                .setPlayer(getPlayer())
                 .build();
 
         eventDispatcher = createEventDispatcher(null);

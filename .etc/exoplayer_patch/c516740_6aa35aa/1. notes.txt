@@ -123,6 +123,69 @@ changes to 'core' that require changes to 'rtsp':
 
 --------------------------------------------------------------------------------
 
+problem:
+========
+
+libs/exoplayer/rtsp/src/main/java/com/google/android/exoplayer2/source/rtsp/RtspMediaSource.java
+  - code:
+        client = new Client.Builder(factory)
+                .setUri(uri)
+                .setMode((prepareCount++ > 0) ? RTSP_INTERLEAVED : RTSP_AUTO_DETECT)
+                .setListener(this)
+                .setPlayer(getPlayer())
+                .build();
+  - where:
+      * getPlayer() was removed from base Class
+
+libs/exoplayer/rtsp/src/main/java/com/google/android/exoplayer2/source/rtsp/core/Client.java
+  - Client.Builder.setPlayer(ExoPlayer player)
+
+workaround:
+===========
+
+RTSP-IPCam-Viewer/src/main/java/com/github/warren_bank/rtsp_ipcam_viewer/list_view/recycler_view/RecyclerViewHolder.java
+RTSP-IPCam-Viewer/src/main/java/com/github/warren_bank/rtsp_ipcam_viewer/fullscreen_view/activities/VideoActivity.java
+  - code:
+      new RtspMediaSource.Factory(
+        RtspDefaultClient.factory().chained().params()
+      )
+  - where:
+    * parameter is interface:
+        Client.Factory
+    * implemented by:
+        RtspDefaultClient.Factory
+  - more concretely:
+    * parameter is the "factory" variable passed to Client.Builder()
+  - trace:
+    * Client.Builder.build() calls:
+    * factory.create(Client.Builder) calls:
+    * new RtspDefaultClient(Client.Builder) after setting some preset values on Client.Builder
+  - opportunity:
+    * the instance of ExoPlayer can become a preset value
+
+libs/exoplayer/rtsp/src/main/java/com/google/android/exoplayer2/source/rtsp/RtspDefaultClient.java
+  - pseudo code:
+      import com.google.android.exoplayer2.ExoPlayer;
+
+      public static Factory<RtspDefaultClient> factory() {
+        return new Factory<RtspDefaultClient>() {
+          private ExoPlayer player;
+
+          public Factory<RtspDefaultClient> setPlayer(ExoPlayer player) {
+            this.player = player;
+            return this;
+          }
+
+          public RtspDefaultClient create(Builder builder) {
+            return new RtspDefaultClient(builder
+              .setPlayer(player)
+            );
+
+        }
+      }
+
+--------------------------------------------------------------------------------
+
 cd ~/Android-RTSP-IPCam-Viewer
 
 patch_dir=./.etc/exoplayer_patch/c516740_6aa35aa
