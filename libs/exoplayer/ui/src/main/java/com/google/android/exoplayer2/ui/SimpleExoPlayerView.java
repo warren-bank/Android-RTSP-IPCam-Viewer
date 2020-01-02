@@ -15,17 +15,15 @@
  */
 package com.google.android.exoplayer2.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
+import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.AttributeSet;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 
 /** @deprecated Use {@link PlayerView}. */
 @Deprecated
-@TargetApi(16)
 public final class SimpleExoPlayerView extends PlayerView {
 
   public SimpleExoPlayerView(Context context) {

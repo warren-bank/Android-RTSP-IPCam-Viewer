@@ -16,8 +16,8 @@
 package com.google.android.exoplayer2.util;
 
 import android.os.SystemClock;
-import androidx.annotation.Nullable;
 import android.view.Surface;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -54,7 +54,7 @@ public class EventLogger implements AnalyticsListener {
     TIME_FORMAT.setGroupingUsed(false);
   }
 
-  private final @Nullable MappingTrackSelector trackSelector;
+  @Nullable private final MappingTrackSelector trackSelector;
   private final String tag;
   private final Timeline.Window window;
   private final Timeline.Period period;
@@ -93,7 +93,8 @@ public class EventLogger implements AnalyticsListener {
   }
 
   @Override
-  public void onPlayerStateChanged(EventTime eventTime, boolean playWhenReady, int state) {
+  public void onPlayerStateChanged(
+      EventTime eventTime, boolean playWhenReady, @Player.State int state) {
     logd(eventTime, "state", playWhenReady + ", " + getStateString(state));
   }
 
@@ -593,12 +594,10 @@ public class EventLogger implements AnalyticsListener {
 
   private static String getTimelineChangeReasonString(@Player.TimelineChangeReason int reason) {
     switch (reason) {
-      case Player.TIMELINE_CHANGE_REASON_PREPARED:
-        return "PREPARED";
-      case Player.TIMELINE_CHANGE_REASON_RESET:
-        return "RESET";
-      case Player.TIMELINE_CHANGE_REASON_DYNAMIC:
-        return "DYNAMIC";
+      case Player.TIMELINE_CHANGE_REASON_SOURCE_UPDATE:
+        return "SOURCE_UPDATE";
+      case Player.TIMELINE_CHANGE_REASON_PLAYLIST_CHANGED:
+        return "PLAYLIST_CHANGED";
       default:
         return "?";
     }

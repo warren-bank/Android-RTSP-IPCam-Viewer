@@ -15,6 +15,7 @@
  */
 package com.google.android.exoplayer2.source;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
@@ -28,12 +29,13 @@ import com.google.android.exoplayer2.upstream.Allocator;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.io.EOFException;
 import java.io.IOException;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.ByteBuffer;
 
-/**
- * A queue of media samples.
- */
-public final class SampleQueue implements TrackOutput {
+/** A queue of media samples. */
+public class SampleQueue implements TrackOutput {
 
   /**
    * A listener for changes to the upstream format.
@@ -48,6 +50,27 @@ public final class SampleQueue implements TrackOutput {
     void onUpstreamFormatChanged(Format format);
 
   }
+
+  /** Values returned by {@link #peekNext()}. */
+  @Documented
+  @Retention(RetentionPolicy.SOURCE)
+  @IntDef(
+      value = {
+        PEEK_RESULT_NOTHING,
+        PEEK_RESULT_FORMAT,
+        PEEK_RESULT_BUFFER_CLEAR,
+        PEEK_RESULT_BUFFER_ENCRYPTED
+      })
+  @interface PeekResult {}
+
+  /** Nothing is available for reading. */
+  public static final int PEEK_RESULT_NOTHING = 0;
+  /** A format change is available for reading */
+  public static final int PEEK_RESULT_FORMAT = 1;
+  /** A clear buffer is available for reading. */
+  public static final int PEEK_RESULT_BUFFER_CLEAR = 2;
+  /** An encrypted buffer is available for reading. */
+  public static final int PEEK_RESULT_BUFFER_ENCRYPTED = 3;
 
   public static final int ADVANCE_FAILED = -1;
 
@@ -226,6 +249,15 @@ public final class SampleQueue implements TrackOutput {
     return metadataQueue.getLargestQueuedTimestampUs();
   }
 
+  /**
+   * Returns whether the last sample of the stream has knowingly been queued. A return value of
+   * {@code false} means that the last sample had not been queued or that it's unknown whether the
+   * last sample has been queued.
+   */
+  public boolean isLastSampleQueued() {
+    return metadataQueue.isLastSampleQueued();
+  }
+
   /** Returns the timestamp of the first sample, or {@link Long#MIN_VALUE} if the queue is empty. */
   public long getFirstTimestampUs() {
     return metadataQueue.getFirstTimestampUs();
@@ -306,25 +338,51 @@ public final class SampleQueue implements TrackOutput {
   }
 
   /**
+   * Returns a {@link PeekResult} depending on what a following call to {@link #read
+   * read(formatHolder, decoderInputBuffer, formatRequired= false, allowOnlyClearBuffers= false,
+   * loadingFinished= false, decodeOnlyUntilUs= 0)} would result in.
+   */
+  @PeekResult
+  public int peekNext() {
+    return metadataQueue.peekNext(downstreamFormat);
+  }
+
+  /**
    * Attempts to read from the queue.
    *
    * @param formatHolder A {@link FormatHolder} to populate in the case of reading a format.
    * @param buffer A {@link DecoderInputBuffer} to populate in the case of reading a sample or the
-   *     end of the stream. If the end of the stream has been reached, the
-   *     {@link C#BUFFER_FLAG_END_OF_STREAM} flag will be set on the buffer.
+   *     end of the stream. If the end of the stream has been reached, the {@link
+   *     C#BUFFER_FLAG_END_OF_STREAM} flag will be set on the buffer. If a {@link
+   *     DecoderInputBuffer#isFlagsOnly() flags-only} buffer is passed, only the buffer flags may be
+   *     populated by this method and the read position of the queue will not change.
    * @param formatRequired Whether the caller requires that the format of the stream be read even if
    *     it's not changing. A sample will never be read if set to true, however it is still possible
    *     for the end of stream or nothing to be read.
+   * @param allowOnlyClearBuffers If set to true, this method will not return encrypted buffers,
+   *     returning {@link C#RESULT_NOTHING_READ} (without advancing the read position) instead.
    * @param loadingFinished True if an empty queue should be considered the end of the stream.
    * @param decodeOnlyUntilUs If a buffer is read, the {@link C#BUFFER_FLAG_DECODE_ONLY} flag will
    *     be set if the buffer's timestamp is less than this value.
    * @return The result, which can be {@link C#RESULT_NOTHING_READ}, {@link C#RESULT_FORMAT_READ} or
    *     {@link C#RESULT_BUFFER_READ}.
    */
-  public int read(FormatHolder formatHolder, DecoderInputBuffer buffer, boolean formatRequired,
-      boolean loadingFinished, long decodeOnlyUntilUs) {
-    int result = metadataQueue.read(formatHolder, buffer, formatRequired, loadingFinished,
-        downstreamFormat, extrasHolder);
+  public int read(
+      FormatHolder formatHolder,
+      DecoderInputBuffer buffer,
+      boolean formatRequired,
+      boolean allowOnlyClearBuffers,
+      boolean loadingFinished,
+      long decodeOnlyUntilUs) {
+    int result =
+        metadataQueue.read(
+            formatHolder,
+            buffer,
+            formatRequired,
+            allowOnlyClearBuffers,
+            loadingFinished,
+            downstreamFormat,
+            extrasHolder);
     switch (result) {
       case C.RESULT_FORMAT_READ:
         downstreamFormat = formatHolder.format;
@@ -334,13 +392,9 @@ public final class SampleQueue implements TrackOutput {
           if (buffer.timeUs < decodeOnlyUntilUs) {
             buffer.addFlag(C.BUFFER_FLAG_DECODE_ONLY);
           }
-          // Read encryption data if the sample is encrypted.
-          if (buffer.isEncrypted()) {
-            readEncryptionData(buffer, extrasHolder);
+          if (!buffer.isFlagsOnly()) {
+            readToBuffer(buffer, extrasHolder);
           }
-          // Write the sample data into the holder.
-          buffer.ensureSpaceForWrite(extrasHolder.size);
-          readData(extrasHolder.offset, buffer.data, extrasHolder.size);
         }
         return C.RESULT_BUFFER_READ;
       case C.RESULT_NOTHING_READ:
@@ -351,11 +405,47 @@ public final class SampleQueue implements TrackOutput {
   }
 
   /**
+   * Reads data from the rolling buffer to populate a decoder input buffer.
+   *
+   * @param buffer The buffer to populate.
+   * @param extrasHolder The extras holder whose offset should be read and subsequently adjusted.
+   */
+  private void readToBuffer(DecoderInputBuffer buffer, SampleExtrasHolder extrasHolder) {
+    // Read encryption data if the sample is encrypted.
+    if (buffer.isEncrypted()) {
+      readEncryptionData(buffer, extrasHolder);
+    }
+    // Read sample data, extracting supplemental data into a separate buffer if needed.
+    if (buffer.hasSupplementalData()) {
+      // If there is supplemental data, the sample data is prefixed by its size.
+      scratch.reset(4);
+      readData(extrasHolder.offset, scratch.data, 4);
+      int sampleSize = scratch.readUnsignedIntToInt();
+      extrasHolder.offset += 4;
+      extrasHolder.size -= 4;
+
+      // Write the sample data.
+      buffer.ensureSpaceForWrite(sampleSize);
+      readData(extrasHolder.offset, buffer.data, sampleSize);
+      extrasHolder.offset += sampleSize;
+      extrasHolder.size -= sampleSize;
+
+      // Write the remaining data as supplemental data.
+      buffer.resetSupplementalData(extrasHolder.size);
+      readData(extrasHolder.offset, buffer.supplementalData, extrasHolder.size);
+    } else {
+      // Write the sample data.
+      buffer.ensureSpaceForWrite(extrasHolder.size);
+      readData(extrasHolder.offset, buffer.data, extrasHolder.size);
+    }
+  }
+
+  /**
    * Reads encryption data for the current sample.
-   * <p>
-   * The encryption data is written into {@link DecoderInputBuffer#cryptoInfo}, and
-   * {@link SampleExtrasHolder#size} is adjusted to subtract the number of bytes that were read. The
-   * same value is added to {@link SampleExtrasHolder#offset}.
+   *
+   * <p>The encryption data is written into {@link DecoderInputBuffer#cryptoInfo}, and {@link
+   * SampleExtrasHolder#size} is adjusted to subtract the number of bytes that were read. The same
+   * value is added to {@link SampleExtrasHolder#offset}.
    *
    * @param buffer The buffer into which the encryption data should be written.
    * @param extrasHolder The extras holder whose offset should be read and subsequently adjusted.

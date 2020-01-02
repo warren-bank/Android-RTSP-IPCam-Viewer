@@ -15,9 +15,9 @@
  */
 package com.google.android.exoplayer2.util;
 
-import androidx.annotation.Nullable;
-import android.util.Base64;
 import android.util.Pair;
+import android.util.Base64;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ParserException;
 import java.util.ArrayList;

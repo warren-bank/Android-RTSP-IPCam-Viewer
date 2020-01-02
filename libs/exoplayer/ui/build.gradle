@@ -20,10 +20,10 @@ android {
 dependencies {
     implementation project(':exoplayer-core')
 
-    implementation      'androidx.legacy:legacy-support-v4:'  + project.ext.jetpackVersion
-    implementation      'androidx.media:media:'               + project.ext.jetpackVersion
-    implementation      'androidx.annotation:annotation:'     + project.ext.jetpackVersion
-    annotationProcessor 'androidx.annotation:annotation:'     + project.ext.jetpackVersion
+    implementation      'androidx.legacy:legacy-support-v4:'  + project.ext.jetpackLegacyVersion       // https://mvnrepository.com/artifact/androidx.legacy/legacy-support-v4?repo=google
+    implementation      'androidx.media:media:'               + project.ext.jetpackVersion             // https://mvnrepository.com/artifact/androidx.media/media?repo=google
+    implementation      'androidx.annotation:annotation:'     + project.ext.jetpackVersion             // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
+    annotationProcessor 'androidx.annotation:annotation:'     + project.ext.jetpackVersion             // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
 
     compileOnly         'org.checkerframework:checker-qual:'  + project.ext.checkerframeworkVersion    // https://mvnrepository.com/artifact/org.checkerframework/checker-qual
 }

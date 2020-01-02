@@ -49,6 +49,7 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
   }
 
   @Override
+  @Nullable
   public MediaClock getMediaClock() {
     return null;
   }
@@ -113,6 +114,7 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
   }
 
   @Override
+  @Nullable
   public final SampleStream getStream() {
     return stream;
   }
@@ -120,6 +122,11 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
   @Override
   public final boolean hasReadStreamToEnd() {
     return true;
+  }
+
+  @Override
+  public long getReadingPositionUs() {
+    return C.TIME_END_OF_SOURCE;
   }
 
   @Override
@@ -156,6 +163,12 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
     stream = null;
     streamIsFinal = false;
     onDisabled();
+  }
+
+  @Override
+  public final void reset() {
+    Assertions.checkState(state == STATE_DISABLED);
+    onReset();
   }
 
   @Override
@@ -257,6 +270,15 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
    * The default implementation is a no-op.
    */
   protected void onDisabled() {
+    // Do nothing.
+  }
+
+  /**
+   * Called when the renderer is reset.
+   *
+   * <p>The default implementation is a no-op.
+   */
+  protected void onReset() {
     // Do nothing.
   }
 

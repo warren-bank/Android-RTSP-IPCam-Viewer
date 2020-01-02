@@ -88,7 +88,7 @@ Android app to watch RTSP video streams; this format is typical of inexpensive I
 
 * ExoPlayer [pull request 3854](https://github.com/google/ExoPlayer/pull/3854) by github users [tresvecesseis](https://github.com/tresvecesseis) and [Pablo Ortiz](https://github.com/portizb)
   * adds [support for playing RTSP streams](https://github.com/google/ExoPlayer/issues/55)
-  * the code in this project is based on [commit 865ced0](https://github.com/tresvecesseis/ExoPlayer/tree/865ced05b6a1c817d0f2a5f0381b185c4c29bf82)
+  * the code in this project is based on [commit c516740](https://github.com/tresvecesseis/ExoPlayer/tree/c516740526818d6275188a73b5fdcab9a2a74821)
 * [MaterialFilePicker](https://github.com/nbsp-team/MaterialFilePicker)
   * great little library to browse the file system and select a file
 

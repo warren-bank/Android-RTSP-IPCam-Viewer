@@ -18,8 +18,9 @@ package com.google.android.exoplayer2.source.rtsp.core;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
-import androidx.annotation.IntDef;
 import android.util.Log;
+
+import androidx.annotation.IntDef;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -910,7 +911,8 @@ public abstract class Client implements Dispatcher.EventListener {
             if (uri == null) throw new NullPointerException("uri == null");
 
             if (uri.getPort() == C.PORT_UNSET) {
-                this.uri = Uri.parse(uri.getScheme() + "://" + uri.getHost() +
+                this.uri = Uri.parse(uri.getScheme() + "://" + ((uri.getUserInfo() != null) ?
+                        uri.getUserInfo() + "@" : "") + uri.getHost() +
                         ((uri.getPort() > 0) ? ":" + uri.getPort() : ":" + DEFAULT_PORT) +
                         uri.getPath() + ((uri.getQuery() != null) ? "?" + uri.getQuery() : ""));
             } else {

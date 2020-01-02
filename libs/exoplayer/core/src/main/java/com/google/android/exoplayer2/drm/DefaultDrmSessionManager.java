@@ -20,14 +20,16 @@ import android.annotation.TargetApi;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.drm.DefaultDrmSession.ProvisioningManager;
 import com.google.android.exoplayer2.drm.DrmInitData.SchemeData;
 import com.google.android.exoplayer2.drm.DrmSession.DrmSessionException;
 import com.google.android.exoplayer2.drm.ExoMediaDrm.OnEventListener;
+import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
+import com.google.android.exoplayer2.upstream.LoadErrorHandlingPolicy;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.EventDispatcher;
 import com.google.android.exoplayer2.util.Log;
@@ -40,16 +42,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * A {@link DrmSessionManager} that supports playbacks using {@link ExoMediaDrm}.
- */
+/** A {@link DrmSessionManager} that supports playbacks using {@link ExoMediaDrm}. */
 @TargetApi(18)
-public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSessionManager<T>,
-    ProvisioningManager<T> {
-
-  /** @deprecated Use {@link DefaultDrmSessionEventListener}. */
-  @Deprecated
-  public interface EventListener extends DefaultDrmSessionEventListener {}
+public class DefaultDrmSessionManager<T extends ExoMediaCrypto>
+    implements DrmSessionManager<T>, ProvisioningManager<T> {
 
   /**
    * Signals that the {@link DrmInitData} passed to {@link #acquireSession} does not contain does
@@ -80,9 +76,7 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
    * licenses.
    */
   public static final int MODE_PLAYBACK = 0;
-  /**
-   * Restores an offline license to allow its status to be queried.
-   */
+  /** Restores an offline license to allow its status to be queried. */
   public static final int MODE_QUERY = 1;
   /** Downloads an offline license or renews an existing one. */
   public static final int MODE_DOWNLOAD = 2;
@@ -96,38 +90,21 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
   private final UUID uuid;
   private final ExoMediaDrm<T> mediaDrm;
   private final MediaDrmCallback callback;
-  private final @Nullable HashMap<String, String> optionalKeyRequestParameters;
+  @Nullable private final HashMap<String, String> optionalKeyRequestParameters;
   private final EventDispatcher<DefaultDrmSessionEventListener> eventDispatcher;
   private final boolean multiSession;
-  private final int initialDrmRequestRetryCount;
+  private final boolean allowPlaceholderSessions;
+  private final LoadErrorHandlingPolicy loadErrorHandlingPolicy;
 
   private final List<DefaultDrmSession<T>> sessions;
   private final List<DefaultDrmSession<T>> provisioningSessions;
 
-  private @Nullable Looper playbackLooper;
+  @Nullable private DefaultDrmSession<T> placeholderDrmSession;
+  @Nullable private Looper playbackLooper;
   private int mode;
-  private @Nullable byte[] offlineLicenseKeySetId;
+  @Nullable private byte[] offlineLicenseKeySetId;
 
   /* package */ volatile @Nullable MediaDrmHandler mediaDrmHandler;
-
-  /**
-   * @deprecated Use {@link #newWidevineInstance(MediaDrmCallback, HashMap)} and {@link
-   *     #addListener(Handler, DefaultDrmSessionEventListener)}.
-   */
-  @Deprecated
-  public static DefaultDrmSessionManager<FrameworkMediaCrypto> newWidevineInstance(
-      MediaDrmCallback callback,
-      @Nullable HashMap<String, String> optionalKeyRequestParameters,
-      @Nullable Handler eventHandler,
-      @Nullable DefaultDrmSessionEventListener eventListener)
-      throws UnsupportedDrmException {
-    DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager =
-        newWidevineInstance(callback, optionalKeyRequestParameters);
-    if (eventHandler != null && eventListener != null) {
-      drmSessionManager.addListener(eventHandler, eventListener);
-    }
-    return drmSessionManager;
-  }
 
   /**
    * Instantiates a new instance using the Widevine scheme.
@@ -141,25 +118,6 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
       MediaDrmCallback callback, @Nullable HashMap<String, String> optionalKeyRequestParameters)
       throws UnsupportedDrmException {
     return newFrameworkInstance(C.WIDEVINE_UUID, callback, optionalKeyRequestParameters);
-  }
-
-  /**
-   * @deprecated Use {@link #newPlayReadyInstance(MediaDrmCallback, String)} and {@link
-   *     #addListener(Handler, DefaultDrmSessionEventListener)}.
-   */
-  @Deprecated
-  public static DefaultDrmSessionManager<FrameworkMediaCrypto> newPlayReadyInstance(
-      MediaDrmCallback callback,
-      @Nullable String customData,
-      @Nullable Handler eventHandler,
-      @Nullable DefaultDrmSessionEventListener eventListener)
-      throws UnsupportedDrmException {
-    DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager =
-        newPlayReadyInstance(callback, customData);
-    if (eventHandler != null && eventListener != null) {
-      drmSessionManager.addListener(eventHandler, eventListener);
-    }
-    return drmSessionManager;
   }
 
   /**
@@ -182,26 +140,6 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
       optionalKeyRequestParameters = null;
     }
     return newFrameworkInstance(C.PLAYREADY_UUID, callback, optionalKeyRequestParameters);
-  }
-
-  /**
-   * @deprecated Use {@link #newFrameworkInstance(UUID, MediaDrmCallback, HashMap)} and {@link
-   *     #addListener(Handler, DefaultDrmSessionEventListener)}.
-   */
-  @Deprecated
-  public static DefaultDrmSessionManager<FrameworkMediaCrypto> newFrameworkInstance(
-      UUID uuid,
-      MediaDrmCallback callback,
-      @Nullable HashMap<String, String> optionalKeyRequestParameters,
-      @Nullable Handler eventHandler,
-      @Nullable DefaultDrmSessionEventListener eventListener)
-      throws UnsupportedDrmException {
-    DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager =
-        newFrameworkInstance(uuid, callback, optionalKeyRequestParameters);
-    if (eventHandler != null && eventListener != null) {
-      drmSessionManager.addListener(eventHandler, eventListener);
-    }
-    return drmSessionManager;
   }
 
   /**
@@ -228,25 +166,6 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
   }
 
   /**
-   * @deprecated Use {@link #DefaultDrmSessionManager(UUID, ExoMediaDrm, MediaDrmCallback, HashMap)}
-   *     and {@link #addListener(Handler, DefaultDrmSessionEventListener)}.
-   */
-  @Deprecated
-  @SuppressWarnings("method.invocation.invalid")
-  public DefaultDrmSessionManager(
-      UUID uuid,
-      ExoMediaDrm<T> mediaDrm,
-      MediaDrmCallback callback,
-      @Nullable HashMap<String, String> optionalKeyRequestParameters,
-      @Nullable Handler eventHandler,
-      @Nullable DefaultDrmSessionEventListener eventListener) {
-    this(uuid, mediaDrm, callback, optionalKeyRequestParameters);
-    if (eventHandler != null && eventListener != null) {
-      addListener(eventHandler, eventListener);
-    }
-  }
-
-  /**
    * @param uuid The UUID of the drm scheme.
    * @param mediaDrm An underlying {@link ExoMediaDrm} for use by the manager.
    * @param callback Performs key and provisioning requests.
@@ -268,26 +187,6 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
   }
 
   /**
-   * @deprecated Use {@link #DefaultDrmSessionManager(UUID, ExoMediaDrm, MediaDrmCallback, HashMap,
-   *     boolean)} and {@link #addListener(Handler, DefaultDrmSessionEventListener)}.
-   */
-  @Deprecated
-  @SuppressWarnings("method.invocation.invalid")
-  public DefaultDrmSessionManager(
-      UUID uuid,
-      ExoMediaDrm<T> mediaDrm,
-      MediaDrmCallback callback,
-      @Nullable HashMap<String, String> optionalKeyRequestParameters,
-      @Nullable Handler eventHandler,
-      @Nullable DefaultDrmSessionEventListener eventListener,
-      boolean multiSession) {
-    this(uuid, mediaDrm, callback, optionalKeyRequestParameters, multiSession);
-    if (eventHandler != null && eventListener != null) {
-      addListener(eventHandler, eventListener);
-    }
-  }
-
-  /**
    * @param uuid The UUID of the drm scheme.
    * @param mediaDrm An underlying {@link ExoMediaDrm} for use by the manager.
    * @param callback Performs key and provisioning requests.
@@ -312,33 +211,6 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
   }
 
   /**
-   * @deprecated Use {@link #DefaultDrmSessionManager(UUID, ExoMediaDrm, MediaDrmCallback, HashMap,
-   *     boolean, int)} and {@link #addListener(Handler, DefaultDrmSessionEventListener)}.
-   */
-  @Deprecated
-  @SuppressWarnings("method.invocation.invalid")
-  public DefaultDrmSessionManager(
-      UUID uuid,
-      ExoMediaDrm<T> mediaDrm,
-      MediaDrmCallback callback,
-      @Nullable HashMap<String, String> optionalKeyRequestParameters,
-      @Nullable Handler eventHandler,
-      @Nullable DefaultDrmSessionEventListener eventListener,
-      boolean multiSession,
-      int initialDrmRequestRetryCount) {
-    this(
-        uuid,
-        mediaDrm,
-        callback,
-        optionalKeyRequestParameters,
-        multiSession,
-        initialDrmRequestRetryCount);
-    if (eventHandler != null && eventListener != null) {
-      addListener(eventHandler, eventListener);
-    }
-  }
-
-  /**
    * @param uuid The UUID of the drm scheme.
    * @param mediaDrm An underlying {@link ExoMediaDrm} for use by the manager.
    * @param callback Performs key and provisioning requests.
@@ -356,6 +228,24 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
       @Nullable HashMap<String, String> optionalKeyRequestParameters,
       boolean multiSession,
       int initialDrmRequestRetryCount) {
+    this(
+        uuid,
+        mediaDrm,
+        callback,
+        optionalKeyRequestParameters,
+        multiSession,
+        /* allowPlaceholderSessions= */ false,
+        new DefaultLoadErrorHandlingPolicy(initialDrmRequestRetryCount));
+  }
+
+  private DefaultDrmSessionManager(
+      UUID uuid,
+      ExoMediaDrm<T> mediaDrm,
+      MediaDrmCallback callback,
+      @Nullable HashMap<String, String> optionalKeyRequestParameters,
+      boolean multiSession,
+      boolean allowPlaceholderSessions,
+      LoadErrorHandlingPolicy loadErrorHandlingPolicy) {
     Assertions.checkNotNull(uuid);
     Assertions.checkNotNull(mediaDrm);
     Assertions.checkArgument(!C.COMMON_PSSH_UUID.equals(uuid), "Use C.CLEARKEY_UUID instead");
@@ -365,7 +255,12 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
     this.optionalKeyRequestParameters = optionalKeyRequestParameters;
     this.eventDispatcher = new EventDispatcher<>();
     this.multiSession = multiSession;
-    this.initialDrmRequestRetryCount = initialDrmRequestRetryCount;
+    boolean canAcquirePlaceholderSessions =
+        !FrameworkMediaCrypto.class.equals(mediaDrm.getExoMediaCryptoType())
+            || !FrameworkMediaCrypto.WORKAROUND_DEVICE_NEEDS_KEYS_TO_CONFIGURE_CODEC;
+    // TODO: Allow customization once this class has a Builder.
+    this.allowPlaceholderSessions = canAcquirePlaceholderSessions && allowPlaceholderSessions;
+    this.loadErrorHandlingPolicy = loadErrorHandlingPolicy;
     mode = MODE_PLAYBACK;
     sessions = new ArrayList<>();
     provisioningSessions = new ArrayList<>();
@@ -400,8 +295,8 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
 
   /**
    * Provides access to {@link ExoMediaDrm#getPropertyString(String)}.
-   * <p>
-   * This method may be called when the manager is in any state.
+   *
+   * <p>This method may be called when the manager is in any state.
    *
    * @param key The key to request.
    * @return The retrieved property.
@@ -412,8 +307,8 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
 
   /**
    * Provides access to {@link ExoMediaDrm#setPropertyString(String, String)}.
-   * <p>
-   * This method may be called when the manager is in any state.
+   *
+   * <p>This method may be called when the manager is in any state.
    *
    * @param key The property to write.
    * @param value The value to write.
@@ -424,8 +319,8 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
 
   /**
    * Provides access to {@link ExoMediaDrm#getPropertyByteArray(String)}.
-   * <p>
-   * This method may be called when the manager is in any state.
+   *
+   * <p>This method may be called when the manager is in any state.
    *
    * @param key The key to request.
    * @return The retrieved property.
@@ -436,8 +331,8 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
 
   /**
    * Provides access to {@link ExoMediaDrm#setPropertyByteArray(String, byte[])}.
-   * <p>
-   * This method may be called when the manager is in any state.
+   *
+   * <p>This method may be called when the manager is in any state.
    *
    * @param key The property to write.
    * @param value The value to write.
@@ -448,7 +343,8 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
 
   /**
    * Sets the mode, which determines the role of sessions acquired from the instance. This must be
-   * called before {@link #acquireSession(Looper, DrmInitData)} is called.
+   * called before {@link #acquireSession(Looper, DrmInitData)} or {@link
+   * #acquirePlaceholderSession(Looper)} is called.
    *
    * <p>By default, the mode is {@link #MODE_PLAYBACK} and a streaming license is requested when
    * required.
@@ -501,7 +397,8 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
     if (schemeType == null || C.CENC_TYPE_cenc.equals(schemeType)) {
       // If there is no scheme information, assume patternless AES-CTR.
       return true;
-    } else if (C.CENC_TYPE_cbc1.equals(schemeType) || C.CENC_TYPE_cbcs.equals(schemeType)
+    } else if (C.CENC_TYPE_cbc1.equals(schemeType)
+        || C.CENC_TYPE_cbcs.equals(schemeType)
         || C.CENC_TYPE_cens.equals(schemeType)) {
       // API support for AES-CBC and pattern encryption was added in API 24. However, the
       // implementation was not stable until API 25.
@@ -512,14 +409,27 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
   }
 
   @Override
-  public DrmSession<T> acquireSession(Looper playbackLooper, DrmInitData drmInitData) {
-    Assertions.checkState(this.playbackLooper == null || this.playbackLooper == playbackLooper);
-    if (sessions.isEmpty()) {
-      this.playbackLooper = playbackLooper;
-      if (mediaDrmHandler == null) {
-        mediaDrmHandler = new MediaDrmHandler(playbackLooper);
-      }
+  @Nullable
+  public DrmSession<T> acquirePlaceholderSession(Looper playbackLooper) {
+    assertExpectedPlaybackLooper(playbackLooper);
+    if (!allowPlaceholderSessions || mediaDrm.getExoMediaCryptoType() == null) {
+      return null;
     }
+    maybeCreateMediaDrmHandler(playbackLooper);
+    if (placeholderDrmSession == null) {
+      DefaultDrmSession<T> placeholderDrmSession =
+          createNewDefaultSession(/* schemeDatas= */ null, /* isPlaceholderSession= */ true);
+      sessions.add(placeholderDrmSession);
+      this.placeholderDrmSession = placeholderDrmSession;
+    }
+    placeholderDrmSession.acquireReference();
+    return placeholderDrmSession;
+  }
+
+  @Override
+  public DrmSession<T> acquireSession(Looper playbackLooper, DrmInitData drmInitData) {
+    assertExpectedPlaybackLooper(playbackLooper);
+    maybeCreateMediaDrmHandler(playbackLooper);
 
     List<SchemeData> schemeDatas = null;
     if (offlineLicenseKeySetId == null) {
@@ -547,48 +457,27 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
 
     if (session == null) {
       // Create a new session.
-      session =
-          new DefaultDrmSession<>(
-              uuid,
-              mediaDrm,
-              this,
-              schemeDatas,
-              mode,
-              offlineLicenseKeySetId,
-              optionalKeyRequestParameters,
-              callback,
-              playbackLooper,
-              eventDispatcher,
-              initialDrmRequestRetryCount);
+      session = createNewDefaultSession(schemeDatas, /* isPlaceholderSession= */ false);
       sessions.add(session);
     }
-    session.acquire();
+    session.acquireReference();
     return session;
   }
 
   @Override
-  public void releaseSession(DrmSession<T> session) {
-    if (session instanceof ErrorStateDrmSession) {
-      // Do nothing.
-      return;
-    }
-
-    DefaultDrmSession<T> drmSession = (DefaultDrmSession<T>) session;
-    if (drmSession.release()) {
-      sessions.remove(drmSession);
-      if (provisioningSessions.size() > 1 && provisioningSessions.get(0) == drmSession) {
-        // Other sessions were waiting for the released session to complete a provision operation.
-        // We need to have one of those sessions perform the provision operation instead.
-        provisioningSessions.get(1).provision();
-      }
-      provisioningSessions.remove(drmSession);
-    }
+  @Nullable
+  public Class<T> getExoMediaCryptoType(DrmInitData drmInitData) {
+    return canAcquireSession(drmInitData) ? mediaDrm.getExoMediaCryptoType() : null;
   }
 
   // ProvisioningManager implementation.
 
   @Override
   public void provisionRequired(DefaultDrmSession<T> session) {
+    if (provisioningSessions.contains(session)) {
+      // The session has already requested provisioning.
+      return;
+    }
     provisioningSessions.add(session);
     if (provisioningSessions.size() == 1) {
       // This is the first session requesting provisioning, so have it perform the operation.
@@ -614,6 +503,48 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
 
   // Internal methods.
 
+  private void assertExpectedPlaybackLooper(Looper playbackLooper) {
+    Assertions.checkState(this.playbackLooper == null || this.playbackLooper == playbackLooper);
+    this.playbackLooper = playbackLooper;
+  }
+
+  private void maybeCreateMediaDrmHandler(Looper playbackLooper) {
+    if (mediaDrmHandler == null) {
+      mediaDrmHandler = new MediaDrmHandler(playbackLooper);
+    }
+  }
+
+  private DefaultDrmSession<T> createNewDefaultSession(
+      @Nullable List<SchemeData> schemeDatas, boolean isPlaceholderSession) {
+    return new DefaultDrmSession<>(
+        uuid,
+        mediaDrm,
+        /* provisioningManager= */ this,
+        /* releaseCallback= */ this::onSessionReleased,
+        schemeDatas,
+        mode,
+        isPlaceholderSession,
+        offlineLicenseKeySetId,
+        optionalKeyRequestParameters,
+        callback,
+        Assertions.checkNotNull(playbackLooper),
+        eventDispatcher,
+        loadErrorHandlingPolicy);
+  }
+
+  private void onSessionReleased(DefaultDrmSession<T> drmSession) {
+    sessions.remove(drmSession);
+    if (placeholderDrmSession == drmSession) {
+      placeholderDrmSession = null;
+    }
+    if (provisioningSessions.size() > 1 && provisioningSessions.get(0) == drmSession) {
+      // Other sessions were waiting for the released session to complete a provision operation.
+      // We need to have one of those sessions perform the provision operation instead.
+      provisioningSessions.get(1).provision();
+    }
+    provisioningSessions.remove(drmSession);
+  }
+
   /**
    * Extracts {@link SchemeData} instances suitable for the given DRM scheme {@link UUID}.
    *
@@ -630,8 +561,9 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
     List<SchemeData> matchingSchemeDatas = new ArrayList<>(drmInitData.schemeDataCount);
     for (int i = 0; i < drmInitData.schemeDataCount; i++) {
       SchemeData schemeData = drmInitData.get(i);
-      boolean uuidMatches = schemeData.matches(uuid)
-          || (C.CLEARKEY_UUID.equals(uuid) && schemeData.matches(C.COMMON_PSSH_UUID));
+      boolean uuidMatches =
+          schemeData.matches(uuid)
+              || (C.CLEARKEY_UUID.equals(uuid) && schemeData.matches(C.COMMON_PSSH_UUID));
       if (uuidMatches && (schemeData.data != null || allowMissingData)) {
         matchingSchemeDatas.add(schemeData);
       }
@@ -649,6 +581,10 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
     @Override
     public void handleMessage(Message msg) {
       byte[] sessionId = (byte[]) msg.obj;
+      if (sessionId == null) {
+        // The event is not associated with any particular session.
+        return;
+      }
       for (DefaultDrmSession<T> session : sessions) {
         if (session.hasSessionId(sessionId)) {
           session.onMediaDrmEvent(msg.what);
@@ -656,7 +592,6 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
         }
       }
     }
-
   }
 
   private class MediaDrmEventListener implements OnEventListener<T> {
@@ -664,15 +599,11 @@ public class DefaultDrmSessionManager<T extends ExoMediaCrypto> implements DrmSe
     @Override
     public void onEvent(
         ExoMediaDrm<? extends T> md,
-        byte[] sessionId,
+        @Nullable byte[] sessionId,
         int event,
         int extra,
         @Nullable byte[] data) {
-      if (mode == DefaultDrmSessionManager.MODE_PLAYBACK) {
-        Assertions.checkNotNull(mediaDrmHandler).obtainMessage(event, sessionId).sendToTarget();
-      }
+      Assertions.checkNotNull(mediaDrmHandler).obtainMessage(event, sessionId).sendToTarget();
     }
-
   }
-
 }

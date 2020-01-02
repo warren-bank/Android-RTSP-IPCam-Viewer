@@ -22,6 +22,6 @@ dependencies {
     implementation project(':exoplayer-sdp')
     implementation project(':exoplayer-rtp')
 
-    implementation      'androidx.annotation:annotation:'  + project.ext.jetpackVersion
-    annotationProcessor 'androidx.annotation:annotation:'  + project.ext.jetpackVersion
+    implementation      'androidx.annotation:annotation:'  + project.ext.jetpackVersion    // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
+    annotationProcessor 'androidx.annotation:annotation:'  + project.ext.jetpackVersion    // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
 }

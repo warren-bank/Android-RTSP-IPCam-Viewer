@@ -656,8 +656,8 @@ public final class RtspSampleStreamWrapper implements
             return C.RESULT_NOTHING_READ;
         }
 
-        return sampleQueues[trackGroupIndex].read(formatHolder, buffer, requireFormat, loadingFinished,
-                C.TIME_UNSET);
+        return sampleQueues[trackGroupIndex].read(formatHolder, buffer, requireFormat, false, loadingFinished,
+                 C.TIME_UNSET);
     }
 
     public int skipData(int trackGroupIndex, long positionUs) {

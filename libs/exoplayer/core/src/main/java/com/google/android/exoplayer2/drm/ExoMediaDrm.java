@@ -33,9 +33,42 @@ import java.util.UUID;
  */
 public interface ExoMediaDrm<T extends ExoMediaCrypto> {
 
+  /** {@link ExoMediaDrm} instances provider. */
+  interface Provider<T extends ExoMediaCrypto> {
+
+    /**
+     * Returns an {@link ExoMediaDrm} instance with acquired ownership for the DRM scheme identified
+     * by the given UUID.
+     *
+     * <p>Each call to this method must have a corresponding call to {@link ExoMediaDrm#release()}
+     * to ensure correct resource management.
+     */
+    ExoMediaDrm<T> acquireExoMediaDrm(UUID uuid);
+  }
+
   /**
-   * @see MediaDrm#EVENT_KEY_REQUIRED
+   * {@link Provider} implementation which provides an {@link ExoMediaDrm} instance owned by the
+   * app.
+   *
+   * <p>This provider should be used to manually handle {@link ExoMediaDrm} resources.
    */
+  final class AppManagedProvider<T extends ExoMediaCrypto> implements Provider<T> {
+
+    private final ExoMediaDrm<T> exoMediaDrm;
+
+    /** Creates an instance, which provides the given {@link ExoMediaDrm}. */
+    public AppManagedProvider(ExoMediaDrm<T> exoMediaDrm) {
+      this.exoMediaDrm = exoMediaDrm;
+    }
+
+    @Override
+    public ExoMediaDrm<T> acquireExoMediaDrm(UUID uuid) {
+      exoMediaDrm.acquire();
+      return exoMediaDrm;
+    }
+  }
+
+  /** @see MediaDrm#EVENT_KEY_REQUIRED */
   @SuppressWarnings("InlinedApi")
   int EVENT_KEY_REQUIRED = MediaDrm.EVENT_KEY_REQUIRED;
   /**
@@ -80,7 +113,7 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
      */
     void onEvent(
         ExoMediaDrm<? extends T> mediaDrm,
-        byte[] sessionId,
+        @Nullable byte[] sessionId,
         int event,
         int extra,
         @Nullable byte[] data);
@@ -215,6 +248,7 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
       throws NotProvisionedException;
 
   /** @see MediaDrm#provideKeyResponse(byte[], byte[]) */
+  @Nullable
   byte[] provideKeyResponse(byte[] scope, byte[] response)
       throws NotProvisionedException, DeniedByServerException;
 
@@ -234,6 +268,16 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
   Map<String, String> queryKeyStatus(byte[] sessionId);
 
   /**
+   * Acquires ownership over this instance, which must be released by calling {@link #release()}.
+   */
+  void acquire();
+
+  /**
+   * Releases ownership of this instance. If a call to this method causes this instance to have no
+   * acquired ownerships, releases the underlying resources.
+   *
+   * <p>Callers of this method must not make any further use of this instance.
+   *
    * @see MediaDrm#release()
    */
   void release();
@@ -265,11 +309,16 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
 
   /**
    * @see android.media.MediaCrypto#MediaCrypto(UUID, byte[])
-   *
-   * @param initData Opaque initialization data specific to the crypto scheme.
+   * @param sessionId The DRM session ID.
    * @return An object extends {@link ExoMediaCrypto}, using opaque crypto scheme specific data.
    * @throws MediaCryptoException If the instance can't be created.
    */
-  T createMediaCrypto(byte[] initData) throws MediaCryptoException;
+  T createMediaCrypto(byte[] sessionId) throws MediaCryptoException;
 
+  /**
+   * Returns the {@link ExoMediaCrypto} type created by {@link #createMediaCrypto(byte[])}, or null
+   * if this instance cannot create any {@link ExoMediaCrypto} instances.
+   */
+  @Nullable
+  Class<T> getExoMediaCryptoType();
 }

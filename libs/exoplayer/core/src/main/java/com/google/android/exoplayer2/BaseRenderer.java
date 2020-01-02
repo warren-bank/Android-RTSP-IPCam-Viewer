@@ -15,13 +15,17 @@
  */
 package com.google.android.exoplayer2;
 
+import android.os.Looper;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.decoder.DecoderInputBuffer;
 import com.google.android.exoplayer2.drm.DrmInitData;
+import com.google.android.exoplayer2.drm.DrmSession;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
+import com.google.android.exoplayer2.drm.ExoMediaCrypto;
 import com.google.android.exoplayer2.source.SampleStream;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.MediaClock;
+import com.google.android.exoplayer2.util.Util;
 import java.io.IOException;
 
 /**
@@ -30,6 +34,7 @@ import java.io.IOException;
 public abstract class BaseRenderer implements Renderer, RendererCapabilities {
 
   private final int trackType;
+  private final FormatHolder formatHolder;
 
   private RendererConfiguration configuration;
   private int index;
@@ -37,7 +42,7 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
   private SampleStream stream;
   private Format[] streamFormats;
   private long streamOffsetUs;
-  private boolean readEndOfStream;
+  private long readingPositionUs;
   private boolean streamIsFinal;
 
   /**
@@ -46,7 +51,8 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
    */
   public BaseRenderer(int trackType) {
     this.trackType = trackType;
-    readEndOfStream = true;
+    formatHolder = new FormatHolder();
+    readingPositionUs = C.TIME_END_OF_SOURCE;
   }
 
   @Override
@@ -65,6 +71,7 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
   }
 
   @Override
+  @Nullable
   public MediaClock getMediaClock() {
     return null;
   }
@@ -98,20 +105,26 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
       throws ExoPlaybackException {
     Assertions.checkState(!streamIsFinal);
     this.stream = stream;
-    readEndOfStream = false;
+    readingPositionUs = offsetUs;
     streamFormats = formats;
     streamOffsetUs = offsetUs;
     onStreamChanged(formats, offsetUs);
   }
 
   @Override
+  @Nullable
   public final SampleStream getStream() {
     return stream;
   }
 
   @Override
   public final boolean hasReadStreamToEnd() {
-    return readEndOfStream;
+    return readingPositionUs == C.TIME_END_OF_SOURCE;
+  }
+
+  @Override
+  public final long getReadingPositionUs() {
+    return readingPositionUs;
   }
 
   @Override
@@ -132,7 +145,7 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
   @Override
   public final void resetPosition(long positionUs) throws ExoPlaybackException {
     streamIsFinal = false;
-    readEndOfStream = false;
+    readingPositionUs = positionUs;
     onPositionReset(positionUs, false);
   }
 
@@ -146,11 +159,19 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
   @Override
   public final void disable() {
     Assertions.checkState(state == STATE_ENABLED);
+    formatHolder.clear();
     state = STATE_DISABLED;
     stream = null;
     streamFormats = null;
     streamIsFinal = false;
     onDisabled();
+  }
+
+  @Override
+  public final void reset() {
+    Assertions.checkState(state == STATE_DISABLED);
+    formatHolder.clear();
+    onReset();
   }
 
   // RendererCapabilities implementation.
@@ -247,7 +268,22 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
     // Do nothing.
   }
 
+  /**
+   * Called when the renderer is reset.
+   *
+   * <p>The default implementation is a no-op.
+   */
+  protected void onReset() {
+    // Do nothing.
+  }
+
   // Methods to be called by subclasses.
+
+  /** Returns a clear {@link FormatHolder}. */
+  protected final FormatHolder getFormatHolder() {
+    formatHolder.clear();
+    return formatHolder;
+  }
 
   /** Returns the formats of the currently enabled stream. */
   protected final Format[] getStreamFormats() {
@@ -259,6 +295,35 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
    */
   protected final RendererConfiguration getConfiguration() {
     return configuration;
+  }
+
+  /** Returns a {@link DrmSession} ready for assignment, handling resource management. */
+  @Nullable
+  protected final <T extends ExoMediaCrypto> DrmSession<T> getUpdatedSourceDrmSession(
+      @Nullable Format oldFormat,
+      Format newFormat,
+      @Nullable DrmSessionManager<T> drmSessionManager,
+      @Nullable DrmSession<T> existingSourceSession)
+      throws ExoPlaybackException {
+    boolean drmInitDataChanged =
+        !Util.areEqual(newFormat.drmInitData, oldFormat == null ? null : oldFormat.drmInitData);
+    if (!drmInitDataChanged) {
+      return existingSourceSession;
+    }
+    @Nullable DrmSession<T> newSourceDrmSession = null;
+    if (newFormat.drmInitData != null) {
+      if (drmSessionManager == null) {
+        throw ExoPlaybackException.createForRenderer(
+            new IllegalStateException("Media requires a DrmSessionManager"), getIndex());
+      }
+      newSourceDrmSession =
+          drmSessionManager.acquireSession(
+              Assertions.checkNotNull(Looper.myLooper()), newFormat.drmInitData);
+    }
+    if (existingSourceSession != null) {
+      existingSourceSession.releaseReference();
+    }
+    return newSourceDrmSession;
   }
 
   /**
@@ -288,10 +353,11 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
     int result = stream.readData(formatHolder, buffer, formatRequired);
     if (result == C.RESULT_BUFFER_READ) {
       if (buffer.isEndOfStream()) {
-        readEndOfStream = true;
+        readingPositionUs = C.TIME_END_OF_SOURCE;
         return streamIsFinal ? C.RESULT_BUFFER_READ : C.RESULT_NOTHING_READ;
       }
       buffer.timeUs += streamOffsetUs;
+      readingPositionUs = Math.max(readingPositionUs, buffer.timeUs);
     } else if (result == C.RESULT_FORMAT_READ) {
       Format format = formatHolder.format;
       if (format.subsampleOffsetUs != Format.OFFSET_SAMPLE_RELATIVE) {
@@ -317,7 +383,7 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
    * Returns whether the upstream source is ready.
    */
   protected final boolean isSourceReady() {
-    return readEndOfStream ? streamIsFinal : stream.isReady();
+    return hasReadStreamToEnd() ? streamIsFinal : stream.isReady();
   }
 
   /**

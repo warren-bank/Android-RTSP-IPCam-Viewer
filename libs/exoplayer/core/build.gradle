@@ -18,9 +18,15 @@ android {
 }
 
 dependencies {
-    implementation      'androidx.annotation:annotation:'       + project.ext.jetpackVersion
-    annotationProcessor 'androidx.annotation:annotation:'       + project.ext.jetpackVersion
+    implementation      'androidx.annotation:annotation:'              + project.ext.jetpackVersion             // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
+    annotationProcessor 'androidx.annotation:annotation:'              + project.ext.jetpackVersion             // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
 
-    compileOnly    'org.checkerframework:checker-qual:'         + project.ext.checkerframeworkVersion    // https://mvnrepository.com/artifact/org.checkerframework/checker-qual
-    compileOnly    'org.checkerframework:checker-compat-qual:'  + project.ext.checkerframeworkVersion    // https://mvnrepository.com/artifact/org.checkerframework/checker-compat-qual
+    compileOnly         'org.jetbrains.kotlin:kotlin-stdlib-jdk8:'     + project.ext.kotlinVersion              // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
+    compileOnly         'org.jetbrains.kotlin:kotlin-annotations-jvm:' + project.ext.kotlinVersion              // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-annotations-jvm
+    annotationProcessor 'org.jetbrains.kotlin:kotlin-annotations-jvm:' + project.ext.kotlinVersion              // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-annotations-jvm
+
+    compileOnly         'org.checkerframework:checker-qual:'           + project.ext.checkerframeworkVersion    // https://mvnrepository.com/artifact/org.checkerframework/checker-qual
+    compileOnly         'org.checkerframework:checker-compat-qual:'    + project.ext.checkerframeworkVersion    // https://mvnrepository.com/artifact/org.checkerframework/checker-compat-qual
+
+    compileOnly         'com.google.code.findbugs:jsr305:'             + project.ext.jsr305Version              // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
 }

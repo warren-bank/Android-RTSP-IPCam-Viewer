@@ -27,18 +27,14 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.FormatHolder;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Util;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A renderer for metadata.
  */
 public final class MetadataRenderer extends BaseRenderer implements Callback {
-
-  /**
-   * @deprecated Use {@link MetadataOutput}.
-   */
-  @Deprecated
-  public interface Output extends MetadataOutput {}
 
   private static final int MSG_INVOKE_RENDERER = 0;
   // TODO: Holding multiple pending metadata objects is temporary mitigation against
@@ -48,8 +44,7 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
 
   private final MetadataDecoderFactory decoderFactory;
   private final MetadataOutput output;
-  private final @Nullable Handler outputHandler;
-  private final FormatHolder formatHolder;
+  @Nullable private final Handler outputHandler;
   private final MetadataInputBuffer buffer;
   private final Metadata[] pendingMetadata;
   private final long[] pendingMetadataTimestamps;
@@ -58,6 +53,7 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
   private int pendingMetadataCount;
   private MetadataDecoder decoder;
   private boolean inputStreamEnded;
+  private long subsampleOffsetUs;
 
   /**
    * @param output The output.
@@ -87,7 +83,6 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
     this.outputHandler =
         outputLooper == null ? null : Util.createHandler(outputLooper, /* callback= */ this);
     this.decoderFactory = Assertions.checkNotNull(decoderFactory);
-    formatHolder = new FormatHolder();
     buffer = new MetadataInputBuffer();
     pendingMetadata = new Metadata[MAX_PENDING_METADATA_COUNT];
     pendingMetadataTimestamps = new long[MAX_PENDING_METADATA_COUNT];
@@ -117,6 +112,7 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
   public void render(long positionUs, long elapsedRealtimeUs) throws ExoPlaybackException {
     if (!inputStreamEnded && pendingMetadataCount < MAX_PENDING_METADATA_COUNT) {
       buffer.clear();
+      FormatHolder formatHolder = getFormatHolder();
       int result = readSource(formatHolder, buffer, false);
       if (result == C.RESULT_BUFFER_READ) {
         if (buffer.isEndOfStream()) {
@@ -126,13 +122,24 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
           // If we ever need to support a metadata format where this is not the case, we'll need to
           // pass the buffer to the decoder and discard the output.
         } else {
-          buffer.subsampleOffsetUs = formatHolder.format.subsampleOffsetUs;
+          buffer.subsampleOffsetUs = subsampleOffsetUs;
           buffer.flip();
-          int index = (pendingMetadataIndex + pendingMetadataCount) % MAX_PENDING_METADATA_COUNT;
-          pendingMetadata[index] = decoder.decode(buffer);
-          pendingMetadataTimestamps[index] = buffer.timeUs;
-          pendingMetadataCount++;
+          Metadata metadata = decoder.decode(buffer);
+          if (metadata != null) {
+            List<Metadata.Entry> entries = new ArrayList<>(metadata.length());
+            decodeWrappedMetadata(metadata, entries);
+            if (!entries.isEmpty()) {
+              Metadata expandedMetadata = new Metadata(entries);
+              int index =
+                  (pendingMetadataIndex + pendingMetadataCount) % MAX_PENDING_METADATA_COUNT;
+              pendingMetadata[index] = expandedMetadata;
+              pendingMetadataTimestamps[index] = buffer.timeUs;
+              pendingMetadataCount++;
+            }
+          }
         }
+      } else if (result == C.RESULT_FORMAT_READ) {
+        subsampleOffsetUs = formatHolder.format.subsampleOffsetUs;
       }
     }
 
@@ -141,6 +148,36 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
       pendingMetadata[pendingMetadataIndex] = null;
       pendingMetadataIndex = (pendingMetadataIndex + 1) % MAX_PENDING_METADATA_COUNT;
       pendingMetadataCount--;
+    }
+  }
+
+  /**
+   * Iterates through {@code metadata.entries} and checks each one to see if contains wrapped
+   * metadata. If it does, then we recursively decode the wrapped metadata. If it doesn't (recursion
+   * base-case), we add the {@link Metadata.Entry} to {@code decodedEntries} (output parameter).
+   */
+  private void decodeWrappedMetadata(Metadata metadata, List<Metadata.Entry> decodedEntries) {
+    for (int i = 0; i < metadata.length(); i++) {
+      Format wrappedMetadataFormat = metadata.get(i).getWrappedMetadataFormat();
+      if (wrappedMetadataFormat != null && decoderFactory.supportsFormat(wrappedMetadataFormat)) {
+        MetadataDecoder wrappedMetadataDecoder =
+            decoderFactory.createDecoder(wrappedMetadataFormat);
+        // wrappedMetadataFormat != null so wrappedMetadataBytes must be non-null too.
+        byte[] wrappedMetadataBytes =
+            Assertions.checkNotNull(metadata.get(i).getWrappedMetadataBytes());
+        buffer.clear();
+        buffer.ensureSpaceForWrite(wrappedMetadataBytes.length);
+        buffer.data.put(wrappedMetadataBytes);
+        buffer.flip();
+        @Nullable Metadata innerMetadata = wrappedMetadataDecoder.decode(buffer);
+        if (innerMetadata != null) {
+          // The decoding succeeded, so we'll try another level of unwrapping.
+          decodeWrappedMetadata(innerMetadata, decodedEntries);
+        }
+      } else {
+        // Entry doesn't contain any wrapped metadata, so output it directly.
+        decodedEntries.add(metadata.get(i));
+      }
     }
   }
 
@@ -174,7 +211,6 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
     pendingMetadataCount = 0;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public boolean handleMessage(Message msg) {
     switch (msg.what) {
