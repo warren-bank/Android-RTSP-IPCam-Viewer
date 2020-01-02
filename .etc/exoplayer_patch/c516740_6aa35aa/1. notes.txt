@@ -72,6 +72,8 @@ changes to 'core' that require changes to 'rtp':
       public int read(byte[] buffer, int offset, int readLength) throws IOException {...}
   - overridden method does not throw IOException
 
+--------------------------------------------------------------------------------
+
 changes to 'core' that require changes to 'rtsp':
 =================================================
 
@@ -120,6 +122,17 @@ changes to 'core' that require changes to 'rtsp':
           /* manifest=  */ null,
           /* tag=       */ null
         ));
+
+--------------------------------------------------------------------------------
+
+changes to 'core' that require changes to 'ui':
+===============================================
+
+* ui\src\main\java\com\google\android\exoplayer2\ui\spherical\SceneRenderer.java
+  - interface method with new parameter:
+      public void onVideoFrameAboutToBeRendered(long presentationTimeUs, long releaseTimeNs, Format format)
+    to:
+      public void onVideoFrameAboutToBeRendered(long presentationTimeUs, long releaseTimeNs, Format format, @Nullable android.media.MediaFormat mediaFormat)
 
 --------------------------------------------------------------------------------
 
