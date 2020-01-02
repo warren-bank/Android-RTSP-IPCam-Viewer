@@ -104,75 +104,80 @@ public final class RtpDataSource extends UdpDataSinkSource  {
 
     @Override
     public int read(byte[] buffer, int offset, int readLength) throws UdpDataSinkSource.UdpDataSourceException {
-        int bytesRead = super.read(packetBuffer, 0, RtpPacket.MAX_PACKET_SIZE);
+        try {
+            int bytesRead = super.read(packetBuffer, 0, RtpPacket.MAX_PACKET_SIZE);
 
-        if (bytesRead > 0) {
+            if (bytesRead > 0) {
 
-            RtpPacket packet = RtpPacket.parse(packetBuffer, bytesRead);
-
-            if (packet != null) {
-
-                samplesQueue.offer(packet);
-
-                packet = samplesQueue.pop();
+                RtpPacket packet = RtpPacket.parse(packetBuffer, bytesRead);
 
                 if (packet != null) {
 
-                    if (isSet(FLAG_ENABLE_RTCP_FEEDBACK)) {
-                        if (statsFeedback.getRemoteSsrc() == Long.MIN_VALUE) {
-                            statsFeedback.setRemoteSsrc(packet.ssrc());
+                    samplesQueue.offer(packet);
+
+                    packet = samplesQueue.pop();
+
+                    if (packet != null) {
+
+                        if (isSet(FLAG_ENABLE_RTCP_FEEDBACK)) {
+                            if (statsFeedback.getRemoteSsrc() == Long.MIN_VALUE) {
+                                statsFeedback.setRemoteSsrc(packet.ssrc());
+                            }
+
+                            statistics.update(samplesQueue.getStatsInfo());
                         }
 
-                        statistics.update(samplesQueue.getStatsInfo());
+                        byte[] bytes = packet.getBytes();
+                        System.arraycopy(bytes, 0, buffer, offset, bytes.length);
+                        return bytes.length;
                     }
 
-                    byte[] bytes = packet.getBytes();
-                    System.arraycopy(bytes, 0, buffer, offset, bytes.length);
-                    return bytes.length;
-                }
+                    return 0;
 
-                return 0;
+                } else {
 
-            } else {
+                    if (isSet(FLAG_ENABLE_RTCP_FEEDBACK | FLAG_FORCE_RTCP_MULTIPLEXING)) {
+                        RtcpPacket rtcpPacket = RtcpPacket.parse(packetBuffer, bytesRead);
 
-                if (isSet(FLAG_ENABLE_RTCP_FEEDBACK | FLAG_FORCE_RTCP_MULTIPLEXING)) {
-                    RtcpPacket rtcpPacket = RtcpPacket.parse(packetBuffer, bytesRead);
+                        if (rtcpPacket != null) {
+                            @RtcpPacket.PacketType int packetType = rtcpPacket.getPayloadType();
 
-                    if (rtcpPacket != null) {
-                        @RtcpPacket.PacketType int packetType = rtcpPacket.getPayloadType();
+                            switch (packetType) {
+                                case RtcpPacket.SR:
+                                    statsFeedback.onSenderReport((RtcpSrPacket) rtcpPacket);
+                                    break;
 
-                        switch (packetType) {
-                            case RtcpPacket.SR:
-                                statsFeedback.onSenderReport((RtcpSrPacket) rtcpPacket);
-                                break;
+                                case RtcpPacket.COMPOUND:
+                                    RtcpCompoundPacket compoundPacket = (RtcpCompoundPacket)rtcpPacket;
 
-                            case RtcpPacket.COMPOUND:
-                                RtcpCompoundPacket compoundPacket = (RtcpCompoundPacket)rtcpPacket;
+                                    for (RtcpPacket simpleRtcpPacket : compoundPacket.getPackets()) {
+                                        switch (simpleRtcpPacket.getPayloadType()) {
+                                            case RtcpPacket.SR:
+                                                statsFeedback.onSenderReport(
+                                                        (RtcpSrPacket) simpleRtcpPacket);
+                                                break;
 
-                                for (RtcpPacket simpleRtcpPacket : compoundPacket.getPackets()) {
-                                    switch (simpleRtcpPacket.getPayloadType()) {
-                                        case RtcpPacket.SR:
-                                            statsFeedback.onSenderReport(
-                                                    (RtcpSrPacket) simpleRtcpPacket);
-                                            break;
-
-                                        case RtcpPacket.SDES:
-                                            statsFeedback.onSourceDescription(
-                                                    (RtcpSdesPacket) simpleRtcpPacket);
-                                            break;
+                                            case RtcpPacket.SDES:
+                                                statsFeedback.onSourceDescription(
+                                                        (RtcpSdesPacket) simpleRtcpPacket);
+                                                break;
+                                        }
                                     }
-                                }
 
-                                break;
+                                    break;
+                            }
                         }
                     }
+
+                    return 0;
                 }
-
-                return 0;
             }
-        }
 
-        return bytesRead;
+            return bytesRead;
+        }
+        catch (IOException e) {
+            throw new UdpDataSinkSource.UdpDataSourceException(e);
+        }
     }
 
     @Override
