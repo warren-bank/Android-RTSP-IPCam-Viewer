@@ -60,6 +60,15 @@ public class VideoActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        stop();
+        release();
+        finish();
+
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -127,8 +136,6 @@ public class VideoActivity extends AppCompatActivity {
 
     public static void open(Context context, String url) {
         Intent intent = new Intent(context, VideoActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         intent.putExtra(EXTRA_URL, url);
         context.startActivity(intent);
     }

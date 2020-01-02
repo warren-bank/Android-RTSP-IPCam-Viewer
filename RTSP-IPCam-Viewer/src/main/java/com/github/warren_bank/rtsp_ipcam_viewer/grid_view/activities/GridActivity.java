@@ -58,8 +58,6 @@ public final class GridActivity extends AppCompatActivity {
 
     public static void open(Context context, String jsonVideos, int columns) {
         Intent intent = new Intent(context, GridActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         if ((jsonVideos != null) && (!jsonVideos.isEmpty()))
             intent.putExtra(EXTRA_JSON_VIDEOS, jsonVideos);
         if (columns > 1)

@@ -28,7 +28,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
+public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     private PlayerView view;
     private TextView title;
@@ -71,7 +71,6 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
 
         this.gestureDetector = new GestureDetectorCompat(context, this);
         this.gestureDetector.setIsLongpressEnabled(true);
-        this.gestureDetector.setOnDoubleTapListener(this);
 
         this.view.setOnTouchListener(this);
         this.view.setUseController(false);
@@ -181,21 +180,4 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public void onShowPress(MotionEvent e) {}
-
-    // interface: GestureDetector.OnDoubleTapListener
-
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-        doOnClick();
-        return true;
-    }
-
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        doOnClick();
-        return true;
-    }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {return false;}
 }
