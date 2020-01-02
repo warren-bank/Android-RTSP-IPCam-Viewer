@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.FormatHolder;
 import com.google.android.exoplayer2.decoder.DecoderInputBuffer;
+import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.extractor.DefaultExtractorInput;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.Extractor;
@@ -486,6 +487,11 @@ public final class RtspSampleStreamWrapper implements
     // SequenceableLoader implementation
 
     @Override
+    public boolean isLoading() {
+        return !loadingFinished || loader.isLoading();
+    }
+
+    @Override
     public boolean continueLoading(long positionUs) {
         if (loadingFinished || !prepared) {
             return false;
@@ -610,7 +616,7 @@ public final class RtspSampleStreamWrapper implements
             }
         }
 
-        SampleQueue sampleQueue = new SampleQueue(allocator);
+        SampleQueue sampleQueue = new SampleQueue(allocator, DrmSessionManager.DUMMY);
         sampleQueue.setUpstreamFormatChangeListener(this);
         sampleQueueTrackIds = Arrays.copyOf(sampleQueueTrackIds, trackCount + 1);
         sampleQueueTrackIds[trackCount] = id;
@@ -643,7 +649,7 @@ public final class RtspSampleStreamWrapper implements
 
     // SampleStream implementation.
     public boolean isReady(int trackGroupIndex) {
-        return loadingFinished || (sampleQueues[trackGroupIndex].hasNextSample());
+        return loadingFinished || (sampleQueues[trackGroupIndex].isReady(/* loadingFinished= */ false));
     }
 
     public void maybeThrowError() throws IOException {
@@ -656,7 +662,7 @@ public final class RtspSampleStreamWrapper implements
             return C.RESULT_NOTHING_READ;
         }
 
-        return sampleQueues[trackGroupIndex].read(formatHolder, buffer, requireFormat, false, loadingFinished,
+        return sampleQueues[trackGroupIndex].read(formatHolder, buffer, requireFormat, loadingFinished,
                  C.TIME_UNSET);
     }
 
@@ -983,7 +989,7 @@ public final class RtspSampleStreamWrapper implements
             dataSource.addTransferListener(transferListener);
 
             DataSpec dataSpec = new DataSpec(Uri.parse((isUdpSchema ? "udp" : "rtp") + "://" +
-                    IPV4_ANY_ADDR + ":" + localPort), DataSpec.FLAG_FORCE_BOUND_LOCAL_ADDRESS);
+                    IPV4_ANY_ADDR + ":" + localPort));
 
             dataSource.open(dataSpec);
 

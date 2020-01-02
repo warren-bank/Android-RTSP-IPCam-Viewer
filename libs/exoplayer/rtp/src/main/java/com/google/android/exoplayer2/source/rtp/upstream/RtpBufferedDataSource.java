@@ -117,7 +117,7 @@ public final class RtpBufferedDataSource extends UdpDataSource {
     }
 
     @Override
-    public long open(DataSpec dataSpec) throws IOException {
+    public long open(DataSpec dataSpec) throws UdpDataSource.UdpDataSourceException {
         uri = dataSpec.uri;
         length = dataSpec.length;
 
@@ -134,7 +134,7 @@ public final class RtpBufferedDataSource extends UdpDataSource {
     }
 
     @Override
-    public int read(byte[] buffer, int offset, int readLength) throws IOException {
+    public int read(byte[] buffer, int offset, int readLength) throws UdpDataSource.UdpDataSourceException {
         if (opened && !canceled) {
             RtpSamplesQueue samples = samplesHolder.samples();
 

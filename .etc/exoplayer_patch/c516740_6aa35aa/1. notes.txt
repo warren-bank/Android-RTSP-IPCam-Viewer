@@ -1,0 +1,122 @@
+-------------------------------------------------------------------------------- '2. core.patch'
+
+cd ~/exoplayer_patch
+git init
+
+git checkout -b 'dev-v2-rtsp'
+# https://github.com/tresvecesseis/ExoPlayer/tree/c516740526818d6275188a73b5fdcab9a2a74821
+git add --all .
+git commit -m 'dev-v2-rtsp'
+
+git checkout -b 'release-v2'
+# https://github.com/google/ExoPlayer/tree/6aa35aaaa5f594dfec8e9916d962676f671424f5
+git add --all .
+git commit -m 'release-v2'
+
+git format-patch 'dev-v2-rtsp' --stdout > core.patch
+
+-------------------------------------------------------------------------------- manual tweaks => '3. core.patch'
+
+.../android/exoplayer2/util/TrackIdGenerator.java
+.../android/exoplayer2/upstream/UdpDataSink.java
+.../exoplayer2/upstream/UdpDataSinkSource.java
+.../google/android/exoplayer2/util/InetUtil.java
+  do NOT delete
+
+.../google/android/exoplayer2/util/MimeTypes.java
+.../extractor/DefaultExtractorInput.java
+.../exoplayer2/extractor/ExtractorInput.java
+.../google/android/exoplayer2/upstream/Loader.java
+  do NOT update
+
+.../android/exoplayer2/upstream/UdpDataSource.java
+  class NOT final
+  socket NOT private
+
+.../main/java/com/google/android/exoplayer2/C.java
+  do NOT delete PORT_UNSET
+  do NOT delete TransportProtocol
+  do NOT delete TCP
+  do NOT delete UDP
+
+.../exoplayer2/util/CodecSpecificDataUtil.java
+  3-way merge
+  do NOT delete methods
+
+--------------------------------------------------------------------------------
+
+3-way merge:
+============
+https://github.com/tresvecesseis/ExoPlayer/blob/c516740526818d6275188a73b5fdcab9a2a74821/library/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
+https://github.com/google/ExoPlayer/tree/6aa35aaaa5f594dfec8e9916d962676f671424f5/library/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
+  add: public static Pair<Integer, Integer> parseAlacAudioSpecificConfig(byte[] audioSpecificConfig) {...}
+
+--------------------------------------------------------------------------------
+
+changes to 'core' that require changes to 'rtp':
+================================================
+
+* UdpDataSource.java
+  - methods:
+      open(DataSpec)
+      read(byte[],int,int)
+  - previously:
+      throws IOException
+  - now:
+      throws UdpDataSource.UdpDataSourceException
+
+* rtp\src\main\java\com\google\android\exoplayer2\source\rtp\upstream\RtpDataSource.java
+* rtp\src\main\java\com\google\android\exoplayer2\source\rtp\upstream\RtpBufferedDataSource.java
+  - methods:
+      public long open(DataSpec dataSpec) throws IOException {...}
+      public int read(byte[] buffer, int offset, int readLength) throws IOException {...}
+  - overridden method does not throw IOException
+
+changes to 'core' that require changes to 'rtsp':
+=================================================
+
+* rtsp\src\main\java\com\google\android\exoplayer2\source\rtsp\RtspSampleStreamWrapper.java
+  - implement interface:
+      SequenceableLoader.isLoading()
+  - constructor call:
+      new SampleQueue(allocator)
+    new required parameter:
+      new SampleQueue(allocator, com.google.android.exoplayer2.drm.DrmSessionManager.DUMMY)
+  - constructor call:
+            DataSpec dataSpec = new DataSpec(Uri.parse((isUdpSchema ? "udp" : "rtp") + "://" +
+                    IPV4_ANY_ADDR + ":" + localPort), DataSpec.FLAG_FORCE_BOUND_LOCAL_ADDRESS);
+    to:
+            DataSpec dataSpec = new DataSpec(Uri.parse((isUdpSchema ? "udp" : "rtp") + "://" +
+                    IPV4_ANY_ADDR + ":" + localPort));
+  - method that no-longer exists:
+      return loadingFinished || (sampleQueues[trackGroupIndex].hasNextSample());
+    to:
+      return loadingFinished || (sampleQueues[trackGroupIndex].isReady(/* loadingFinished= */ false));
+  - method that requires fewer parameters:
+      sampleQueues[trackGroupIndex].read(formatHolder, buffer, requireFormat, false, loadingFinished,
+    to:
+      sampleQueues[trackGroupIndex].read(formatHolder, buffer, requireFormat, loadingFinished,
+
+* rtsp\src\main\java\com\google\android\exoplayer2\source\rtsp\RtspMediaPeriod.java
+  - implement interface:
+      MediaPeriod.isLoading()
+
+* rtsp\src\main\java\com\google\android\exoplayer2\source\rtsp\RtspMediaPeriod.java
+* rtsp\src\main\java\com\google\android\exoplayer2\source\rtsp\RtspMediaSource.java
+  - methods removed from interface:
+      public void pause()
+      public void resume()
+
+--------------------------------------------------------------------------------
+
+cd ~/Android-RTSP-IPCam-Viewer
+
+patch_dir=./.etc/exoplayer_patch/c516740_6aa35aa
+
+git apply --directory='libs/exoplayer/' < "${patch_dir}/3. core.patch"
+cp -f "${patch_dir}/merge/CodecSpecificDataUtil.java" ./libs/exoplayer/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
+
+git add --all .
+git commit -m "Merge branch 'release-v2' (6aa35aa) into dev-v2-rtsp (c516740)"
+
+--------------------------------------------------------------------------------

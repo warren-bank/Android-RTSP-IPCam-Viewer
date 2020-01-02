@@ -80,24 +80,30 @@ public final class RtpDataSource extends UdpDataSinkSource  {
     }
 
     @Override
-    public long open(DataSpec dataSpec) throws IOException {
-        long bytes = super.open(dataSpec);
+    public long open(DataSpec dataSpec) throws UdpDataSinkSource.UdpDataSourceException {
+        try {
+            long bytes = super.open(dataSpec);
 
-        if (isSet(FLAG_ENABLE_RTCP_FEEDBACK)) {
-            if (isSet(FLAG_FORCE_RTCP_MULTIPLEXING)) {
-                statsFeedback.open();
+            if (isSet(FLAG_ENABLE_RTCP_FEEDBACK)) {
+                if (isSet(FLAG_FORCE_RTCP_MULTIPLEXING)) {
+                    statsFeedback.open();
 
-            } else {
-                statsFeedback.open(dataSpec.uri.getHost(), getLocalPort() + 1,
-                    dataSpec.flags);
+                } else {
+                    statsFeedback.open(dataSpec.uri.getHost(), getLocalPort() + 1,
+                        dataSpec.flags);
+                }
             }
-        }
+        
 
-        return bytes;
+            return bytes;
+        }
+        catch (IOException e) {
+            throw new UdpDataSinkSource.UdpDataSourceException(e);
+        }
     }
 
     @Override
-    public int read(byte[] buffer, int offset, int readLength) throws IOException {
+    public int read(byte[] buffer, int offset, int readLength) throws UdpDataSinkSource.UdpDataSourceException {
         int bytesRead = super.read(packetBuffer, 0, RtpPacket.MAX_PACKET_SIZE);
 
         if (bytesRead > 0) {

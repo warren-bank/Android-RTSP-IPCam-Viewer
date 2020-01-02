@@ -197,7 +197,6 @@ import static com.google.android.exoplayer2.C.DATA_TYPE_MEDIA_INITIALIZATION;
         return C.TIME_UNSET;
     }
 
-    @Override
     public void pause() {
         if (session.getDuration() == C.TIME_UNSET) {
             for (RtspSampleStreamWrapper sampleStreamWrapper : preparedSampleStreamWrappers) {
@@ -208,7 +207,6 @@ import static com.google.android.exoplayer2.C.DATA_TYPE_MEDIA_INITIALIZATION;
         session.pause();
     }
 
-    @Override
     public void resume() {
         if (session.getDuration() == C.TIME_UNSET) {
             for (RtspSampleStreamWrapper sampleStreamWrapper : preparedSampleStreamWrappers) {
@@ -265,6 +263,18 @@ import static com.google.android.exoplayer2.C.DATA_TYPE_MEDIA_INITIALIZATION;
         }
 
         return nextLoadPositionUs == Long.MAX_VALUE ? C.TIME_END_OF_SOURCE : nextLoadPositionUs;
+    }
+
+    @Override
+    public boolean isLoading() {
+        boolean loading = false;
+        synchronized (preparedSampleStreamWrappers) {
+            for (RtspSampleStreamWrapper sampleStreamWrapper : preparedSampleStreamWrappers) {
+                loading |= sampleStreamWrapper.isLoading();
+            }
+        }
+
+        return loading;
     }
 
     @Override
