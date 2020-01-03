@@ -1,0 +1,1009 @@
+Subject: [PATCH] 'v02.01.00-alpha.01' -> 'release-v2'
+
+---
+ .../main/java/com/google/android/exoplayer2/C.java |  28 ----
+ .../extractor/DefaultExtractorInput.java           |  16 --
+ .../exoplayer2/extractor/ExtractorInput.java       | 109 +++++++------
+ .../google/android/exoplayer2/upstream/Loader.java |  56 ++-----
+ .../android/exoplayer2/upstream/UdpDataSink.java   |  91 -----------
+ .../exoplayer2/upstream/UdpDataSinkSource.java     |  87 ----------
+ .../android/exoplayer2/upstream/UdpDataSource.java |   4 +-
+ .../exoplayer2/util/CodecSpecificDataUtil.java     | 180 +--------------------
+ .../google/android/exoplayer2/util/InetUtil.java   |  36 -----
+ .../google/android/exoplayer2/util/MimeTypes.java  |   4 -
+ .../android/exoplayer2/util/TrackIdGenerator.java  |  82 ----------
+ .../com/google/android/exoplayer2/util/Util.java   |  10 --
+ 12 files changed, 82 insertions(+), 621 deletions(-)
+ delete mode 100644 core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSink.java
+ delete mode 100644 core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSinkSource.java
+ delete mode 100644 core/src/main/java/com/google/android/exoplayer2/util/InetUtil.java
+ delete mode 100644 core/src/main/java/com/google/android/exoplayer2/util/TrackIdGenerator.java
+
+diff --git a/core/src/main/java/com/google/android/exoplayer2/C.java b/core/src/main/java/com/google/android/exoplayer2/C.java
+index 0cea0d8..567ce98 100644
+--- a/core/src/main/java/com/google/android/exoplayer2/C.java
++++ b/core/src/main/java/com/google/android/exoplayer2/C.java
+@@ -71,11 +71,6 @@ public final class C {
+    */
+   public static final int LENGTH_UNSET = -1;
+ 
+-  /**
+-   * Represents an unset or unknown port.
+-   */
+-  public static final int PORT_UNSET = -1;
+-
+   /** Represents an unset or unknown percentage. */
+   public static final int PERCENTAGE_UNSET = -1;
+ 
+@@ -1023,29 +1018,6 @@ public final class C {
+    */
+   public static final int NETWORK_TYPE_OTHER = 8;
+ 
+-
+-  /**
+-   * Transport protocol. One of {@link #TCP}, {@link #UDP}.
+-   */
+-  @Documented
+-  @Retention(RetentionPolicy.SOURCE)
+-  @IntDef({
+-          TCP,
+-          UDP
+-  })
+-  public @interface TransportProtocol {}
+-
+-  /**
+-   * Indicates TCP transport protocol.
+-   */
+-  public static final int TCP = 0;
+-
+-  /**
+-   * Indicates UDP transport protocol.
+-   */
+-  public static final int UDP = 1;
+-
+-
+   /**
+    * Track role flags. Possible flag values are {@link #ROLE_FLAG_MAIN}, {@link
+    * #ROLE_FLAG_ALTERNATE}, {@link #ROLE_FLAG_SUPPLEMENTARY}, {@link #ROLE_FLAG_COMMENTARY}, {@link
+diff --git a/core/src/main/java/com/google/android/exoplayer2/extractor/DefaultExtractorInput.java b/core/src/main/java/com/google/android/exoplayer2/extractor/DefaultExtractorInput.java
+index 80b9c5b..450cca4 100644
+--- a/core/src/main/java/com/google/android/exoplayer2/extractor/DefaultExtractorInput.java
++++ b/core/src/main/java/com/google/android/exoplayer2/extractor/DefaultExtractorInput.java
+@@ -111,22 +111,6 @@ public final class DefaultExtractorInput implements ExtractorInput {
+   }
+ 
+   @Override
+-  public int peek(byte[] target, int offset, int length) throws IOException, InterruptedException {
+-    ensureSpaceForPeek(length);
+-    int bytesPeeked = Math.min(peekBufferLength - peekBufferPosition, length);
+-    if (bytesPeeked < length) {
+-      bytesPeeked = readFromDataSource(peekBuffer, peekBufferPosition, length, bytesPeeked, true);
+-    }
+-
+-    System.arraycopy(peekBuffer, peekBufferPosition, target, offset, bytesPeeked);
+-
+-    peekBufferPosition += bytesPeeked;
+-    peekBufferLength = Math.max(peekBufferLength, peekBufferPosition);
+-
+-    return bytesPeeked;
+-  }
+-
+-  @Override
+   public boolean peekFully(byte[] target, int offset, int length, boolean allowEndOfInput)
+       throws IOException, InterruptedException {
+     if (!advancePeekPosition(length, allowEndOfInput)) {
+diff --git a/core/src/main/java/com/google/android/exoplayer2/extractor/ExtractorInput.java b/core/src/main/java/com/google/android/exoplayer2/extractor/ExtractorInput.java
+index 7c7a73e..461b059 100644
+--- a/core/src/main/java/com/google/android/exoplayer2/extractor/ExtractorInput.java
++++ b/core/src/main/java/com/google/android/exoplayer2/extractor/ExtractorInput.java
+@@ -18,9 +18,50 @@ package com.google.android.exoplayer2.extractor;
+ import com.google.android.exoplayer2.C;
+ import java.io.EOFException;
+ import java.io.IOException;
++import java.io.InputStream;
+ 
+ /**
+  * Provides data to be consumed by an {@link Extractor}.
++ *
++ * <p>This interface provides two modes of accessing the underlying input. See the subheadings below
++ * for more info about each mode.
++ *
++ * <ul>
++ *   <li>The {@code read()} and {@code skip()} methods provide {@link InputStream}-like byte-level
++ *       access operations.
++ *   <li>The {@code read/skip/peekFully()} and {@code advancePeekPosition()} methods assume the user
++ *       wants to read an entire block/frame/header of known length.
++ * </ul>
++ *
++ * <h3>{@link InputStream}-like methods</h3>
++ *
++ * <p>The {@code read()} and {@code skip()} methods provide {@link InputStream}-like byte-level
++ * access operations. The {@code length} parameter is a maximum, and each method returns the number
++ * of bytes actually processed. This may be less than {@code length} because the end of the input
++ * was reached, or the method was interrupted, or the operation was aborted early for another
++ * reason.
++ *
++ * <h3>Block-based methods</h3>
++ *
++ * <p>The {@code read/skip/peekFully()} and {@code advancePeekPosition()} methods assume the user
++ * wants to read an entire block/frame/header of known length.
++ *
++ * <p>These methods all have a variant that takes a boolean {@code allowEndOfInput} parameter. This
++ * parameter is intended to be set to true when the caller believes the input might be fully
++ * exhausted before the call is made (i.e. they've previously read/skipped/peeked the final
++ * block/frame/header). It's <b>not</b> intended to allow a partial read (i.e. greater than 0 bytes,
++ * but less than {@code length}) to succeed - this will always throw an {@link EOFException} from
++ * these methods (a partial read is assumed to indicate a malformed block/frame/header - and
++ * therefore a malformed file).
++ *
++ * <p>The expected behaviour of the block-based methods is therefore:
++ *
++ * <ul>
++ *   <li>Already at end-of-input and {@code allowEndOfInput=false}: Throw {@link EOFException}.
++ *   <li>Already at end-of-input and {@code allowEndOfInput=true}: Return {@code false}.
++ *   <li>Encounter end-of-input during read/skip/peek/advance: Throw {@link EOFException}
++ *       (regardless of {@code allowEndOfInput}).
++ * </ul>
+  */
+ public interface ExtractorInput {
+ 
+@@ -41,22 +82,16 @@ public interface ExtractorInput {
+ 
+   /**
+    * Like {@link #read(byte[], int, int)}, but reads the requested {@code length} in full.
+-   * <p>
+-   * If the end of the input is found having read no data, then behavior is dependent on
+-   * {@code allowEndOfInput}. If {@code allowEndOfInput == true} then {@code false} is returned.
+-   * Otherwise an {@link EOFException} is thrown.
+-   * <p>
+-   * Encountering the end of input having partially satisfied the read is always considered an
+-   * error, and will result in an {@link EOFException} being thrown.
+    *
+    * @param target A target array into which data should be written.
+    * @param offset The offset into the target array at which to write.
+    * @param length The number of bytes to read from the input.
+    * @param allowEndOfInput True if encountering the end of the input having read no data is
+    *     allowed, and should result in {@code false} being returned. False if it should be
+-   *     considered an error, causing an {@link EOFException} to be thrown.
+-   * @return True if the read was successful. False if the end of the input was encountered having
+-   *     read no data.
++   *     considered an error, causing an {@link EOFException} to be thrown. See note in class
++   *     Javadoc.
++   * @return True if the read was successful. False if {@code allowEndOfInput=true} and the end of
++   *     the input was encountered having read no data.
+    * @throws EOFException If the end of input was encountered having partially satisfied the read
+    *     (i.e. having read at least one byte, but fewer than {@code length}), or if no bytes were
+    *     read and {@code allowEndOfInput} is false.
+@@ -94,9 +129,10 @@ public interface ExtractorInput {
+    * @param length The number of bytes to skip from the input.
+    * @param allowEndOfInput True if encountering the end of the input having skipped no data is
+    *     allowed, and should result in {@code false} being returned. False if it should be
+-   *     considered an error, causing an {@link EOFException} to be thrown.
+-   * @return True if the skip was successful. False if the end of the input was encountered having
+-   *     skipped no data.
++   *     considered an error, causing an {@link EOFException} to be thrown. See note in class
++   *     Javadoc.
++   * @return True if the skip was successful. False if {@code allowEndOfInput=true} and the end of
++   *     the input was encountered having skipped no data.
+    * @throws EOFException If the end of input was encountered having partially satisfied the skip
+    *     (i.e. having skipped at least one byte, but fewer than {@code length}), or if no bytes were
+    *     skipped and {@code allowEndOfInput} is false.
+@@ -121,29 +157,8 @@ public interface ExtractorInput {
+   /**
+    * Peeks {@code length} bytes from the peek position, writing them into {@code target} at index
+    * {@code offset}. The current read position is left unchanged.
+-   * <p>
+-   * Calling {@link #resetPeekPosition()} resets the peek position to equal the current read
+-   * position, so the caller can peek the same data again. Reading or skipping also resets the peek
+-   * position.
+    *
+-   * @param target A target array into which data should be written.
+-   * @param offset The offset into the target array at which to write.
+-   * @param length The number of bytes to peek from the input.
+-   * @return The number of bytes peeked, or {@link C#RESULT_END_OF_INPUT} if the input has ended.
+-   * @throws IOException If an error occurs peeking from the input.
+-   * @throws InterruptedException If the thread is interrupted.
+-   */
+-  int peek(byte[] target, int offset, int length) throws IOException, InterruptedException;
+-
+-  /**
+-   * Peeks {@code length} bytes from the peek position, writing them into {@code target} at index
+-   * {@code offset}. The current read position is left unchanged.
+-   * <p>
+-   * If the end of the input is found having peeked no data, then behavior is dependent on
+-   * {@code allowEndOfInput}. If {@code allowEndOfInput == true} then {@code false} is returned.
+-   * Otherwise an {@link EOFException} is thrown.
+-   * <p>
+-   * Calling {@link #resetPeekPosition()} resets the peek position to equal the current read
++   * <p>Calling {@link #resetPeekPosition()} resets the peek position to equal the current read
+    * position, so the caller can peek the same data again. Reading or skipping also resets the peek
+    * position.
+    *
+@@ -152,9 +167,10 @@ public interface ExtractorInput {
+    * @param length The number of bytes to peek from the input.
+    * @param allowEndOfInput True if encountering the end of the input having peeked no data is
+    *     allowed, and should result in {@code false} being returned. False if it should be
+-   *     considered an error, causing an {@link EOFException} to be thrown.
+-   * @return True if the peek was successful. False if the end of the input was encountered having
+-   *     peeked no data.
++   *     considered an error, causing an {@link EOFException} to be thrown. See note in class
++   *     Javadoc.
++   * @return True if the peek was successful. False if {@code allowEndOfInput=true} and the end of
++   *     the input was encountered having peeked no data.
+    * @throws EOFException If the end of input was encountered having partially satisfied the peek
+    *     (i.e. having peeked at least one byte, but fewer than {@code length}), or if no bytes were
+    *     peeked and {@code allowEndOfInput} is false.
+@@ -182,18 +198,16 @@ public interface ExtractorInput {
+   void peekFully(byte[] target, int offset, int length) throws IOException, InterruptedException;
+ 
+   /**
+-   * Advances the peek position by {@code length} bytes.
+-   * <p>
+-   * If the end of the input is encountered before advancing the peek position, then behavior is
+-   * dependent on {@code allowEndOfInput}. If {@code allowEndOfInput == true} then {@code false} is
+-   * returned. Otherwise an {@link EOFException} is thrown.
++   * Advances the peek position by {@code length} bytes. Like {@link #peekFully(byte[], int, int,
++   * boolean)} except the data is skipped instead of read.
+    *
+    * @param length The number of bytes by which to advance the peek position.
+    * @param allowEndOfInput True if encountering the end of the input before advancing is allowed,
+    *     and should result in {@code false} being returned. False if it should be considered an
+-   *     error, causing an {@link EOFException} to be thrown.
+-   * @return True if advancing the peek position was successful. False if the end of the input was
+-   *     encountered before the peek position could be advanced.
++   *     error, causing an {@link EOFException} to be thrown. See note in class Javadoc.
++   * @return True if advancing the peek position was successful. False if {@code
++   *     allowEndOfInput=true} and the end of the input was encountered before advancing over any
++   *     data.
+    * @throws EOFException If the end of input was encountered having partially advanced (i.e. having
+    *     advanced by at least one byte, but fewer than {@code length}), or if the end of input was
+    *     encountered before advancing and {@code allowEndOfInput} is false.
+@@ -204,7 +218,8 @@ public interface ExtractorInput {
+       throws IOException, InterruptedException;
+ 
+   /**
+-   * Advances the peek position by {@code length} bytes.
++   * Advances the peek position by {@code length} bytes. Like {@link #peekFully(byte[], int, int)}
++   * except the data is skipped instead of read.
+    *
+    * @param length The number of bytes to peek from the input.
+    * @throws EOFException If the end of input was encountered.
+diff --git a/core/src/main/java/com/google/android/exoplayer2/upstream/Loader.java b/core/src/main/java/com/google/android/exoplayer2/upstream/Loader.java
+index 1ff54c0..a498f51 100644
+--- a/core/src/main/java/com/google/android/exoplayer2/upstream/Loader.java
++++ b/core/src/main/java/com/google/android/exoplayer2/upstream/Loader.java
+@@ -190,8 +190,8 @@ public final class Loader implements LoaderErrorThrower {
+ 
+   private final ExecutorService downloadExecutorService;
+ 
+-  private LoadTask<? extends Loadable> currentTask;
+-  private IOException fatalError;
++  @Nullable private LoadTask<? extends Loadable> currentTask;
++  @Nullable private IOException fatalError;
+ 
+   /**
+    * @param threadName A name for the loader's thread.
+@@ -242,59 +242,34 @@ public final class Loader implements LoaderErrorThrower {
+    */
+   public <T extends Loadable> long startLoading(
+       T loadable, Callback<T> callback, int defaultMinRetryCount) {
+-    Looper looper = Looper.myLooper();
+-    return startLoading(loadable, callback, looper, defaultMinRetryCount);
+-  }
+-
+-  /**
+-   * Starts loading a {@link Loadable}.
+-   *
+-   * <p>The calling thread must be a {@link Looper} thread, which is the thread on which the {@link
+-   * Callback} will be called.
+-   *
+-   * @param <T> The type of the loadable.
+-   * @param loadable The {@link Loadable} to load.
+-   * @param callback A callback to be called when the load ends.
+-   * @param looper The {@link Looper} thread.
+-   * @param defaultMinRetryCount The minimum number of times the load must be retried before {@link
+-   *     #maybeThrowError()} will propagate an error.
+-   * @throws IllegalStateException If the calling thread does not have an associated {@link Looper}.
+-   * @return {@link SystemClock#elapsedRealtime} when the load started.
+-   */
+-  public <T extends Loadable> long startLoading(
+-          T loadable, Callback<T> callback, Looper looper, int defaultMinRetryCount) {
+-    Assertions.checkState(looper != null);
++    Looper looper = Assertions.checkStateNotNull(Looper.myLooper());
+     fatalError = null;
+     long startTimeMs = SystemClock.elapsedRealtime();
+     new LoadTask<>(looper, loadable, callback, defaultMinRetryCount, startTimeMs).start(0);
+     return startTimeMs;
+   }
+ 
+-  /**
+-   * Returns whether the {@link Loader} is currently loading a {@link Loadable}.
+-   */
++  /** Returns whether the loader is currently loading. */
+   public boolean isLoading() {
+     return currentTask != null;
+   }
+ 
+   /**
+-   * Cancels the current load. This method should only be called when a load is in progress.
++   * Cancels the current load.
++   *
++   * @throws IllegalStateException If the loader is not currently loading.
+    */
+   public void cancelLoading() {
+-    currentTask.cancel(false);
++    Assertions.checkStateNotNull(currentTask).cancel(false);
+   }
+ 
+-  /**
+-   * Releases the {@link Loader}. This method should be called when the {@link Loader} is no longer
+-   * required.
+-   */
++  /** Releases the loader. This method should be called when the loader is no longer required. */
+   public void release() {
+     release(null);
+   }
+ 
+   /**
+-   * Releases the {@link Loader}. This method should be called when the {@link Loader} is no longer
+-   * required.
++   * Releases the loader. This method should be called when the loader is no longer required.
+    *
+    * @param callback An optional callback to be called on the loading thread once the loader has
+    *     been released.
+@@ -345,10 +320,10 @@ public final class Loader implements LoaderErrorThrower {
+     private final long startTimeMs;
+ 
+     @Nullable private Loader.Callback<T> callback;
+-    private IOException currentError;
++    @Nullable private IOException currentError;
+     private int errorCount;
+ 
+-    private volatile Thread executorThread;
++    @Nullable private volatile Thread executorThread;
+     private volatile boolean canceled;
+     private volatile boolean released;
+ 
+@@ -388,6 +363,7 @@ public final class Loader implements LoaderErrorThrower {
+       } else {
+         canceled = true;
+         loadable.cancelLoad();
++        Thread executorThread = this.executorThread;
+         if (executorThread != null) {
+           executorThread.interrupt();
+         }
+@@ -395,7 +371,8 @@ public final class Loader implements LoaderErrorThrower {
+       if (released) {
+         finish();
+         long nowMs = SystemClock.elapsedRealtime();
+-        callback.onLoadCanceled(loadable, nowMs, nowMs - startTimeMs, true);
++        Assertions.checkNotNull(callback)
++            .onLoadCanceled(loadable, nowMs, nowMs - startTimeMs, true);
+         // If loading, this task will be referenced from a GC root (the loading thread) until
+         // cancellation completes. The time taken for cancellation to complete depends on the
+         // implementation of the Loadable that the task is loading. We null the callback reference
+@@ -470,6 +447,7 @@ public final class Loader implements LoaderErrorThrower {
+       finish();
+       long nowMs = SystemClock.elapsedRealtime();
+       long durationMs = nowMs - startTimeMs;
++      Loader.Callback<T> callback = Assertions.checkNotNull(this.callback);
+       if (canceled) {
+         callback.onLoadCanceled(loadable, nowMs, durationMs, false);
+         return;
+@@ -512,7 +490,7 @@ public final class Loader implements LoaderErrorThrower {
+ 
+     private void execute() {
+       currentError = null;
+-      downloadExecutorService.execute(currentTask);
++      downloadExecutorService.execute(Assertions.checkNotNull(currentTask));
+     }
+ 
+     private void finish() {
+diff --git a/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSink.java b/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSink.java
+deleted file mode 100644
+index 088826e..0000000
+--- a/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSink.java
++++ /dev/null
+@@ -1,91 +0,0 @@
+-/*
+- * Copyright (C) 2018 The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package com.google.android.exoplayer2.upstream;
+-
+-import com.google.android.exoplayer2.C;
+-import java.io.IOException;
+-import java.net.InetAddress;
+-
+-/**
+- * A component to which streams of data can be written.
+- */
+-public interface UdpDataSink {
+-
+-  /**
+-   * A factory for {@link UdpDataSink} instances.
+-   */
+-  interface Factory {
+-
+-    /**
+-     * Creates a {@link UdpDataSink} instance.
+-     */
+-    UdpDataSink createUdpDataSink();
+-
+-  }
+-
+-  /**
+-   * Opens the sink to write the specified data.
+-   * <p>
+-   * Note: If an {@link IOException} is thrown, callers must still call {@link #close()} to ensure
+-   * that any partial effects of the invocation are cleaned up.
+-   *
+-   * @param dataSpec Defines the data to be write.
+-   * @throws IOException If an error occurs opening the sink.
+-   * @return {@link C#LENGTH_UNSET}) for support compatibility with {@link DataSource#open(DataSpec)}
+-   */
+-  long open(DataSpec dataSpec) throws IOException;
+-
+-  /**
+-   * Consumes the provided data.
+-   *
+-   * @param buffer The buffer from which data should be consumed.
+-   * @param offset The offset of the data to consume in {@code buffer}.
+-   * @param length The length of the data to consume, in bytes.
+-   * @throws IOException If an error occurs writing to the sink.
+-   */
+-  void write(byte[] buffer, int offset, int length) throws IOException;
+-
+-  /**
+-   * Consumes the provided data for address/port specific.
+-   *
+-   * @param buffer The buffer from which data should be consumed.
+-   * @param offset The offset of the data to consume in {@code buffer}.
+-   * @param length The length of the data to consume, in bytes.
+-   * @param address The address to send the data to.
+-   * @param port The port to send the data to.
+-   * @throws IOException If an error occurs writing to the sink.
+-   */
+-  void writeTo(byte[] buffer, int offset, int length, InetAddress address, int port)
+-      throws IOException;
+-
+-
+-  /**
+-   * Get the local port.
+-   *
+-   * @return The local port of the opened sink or {@link C#PORT_UNSET} if the sink isn't opened.
+-   */
+-  int getLocalPort();
+-
+-  /**
+-   * Closes the sink.
+-   * <p>
+-   * Note: This method must be called even if the corresponding call to {@link #open(DataSpec)}
+-   * threw an {@link IOException}. See {@link #open(DataSpec)} for more details.
+-   *
+-   * @throws IOException If an error occurs closing the sink.
+-   */
+-  void close() throws IOException;
+-}
+diff --git a/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSinkSource.java b/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSinkSource.java
+deleted file mode 100644
+index 4ed0a27..0000000
+--- a/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSinkSource.java
++++ /dev/null
+@@ -1,87 +0,0 @@
+-/*
+- * Copyright (C) 2018 The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package com.google.android.exoplayer2.upstream;
+-
+-import com.google.android.exoplayer2.C;
+-import java.io.IOException;
+-import java.net.DatagramPacket;
+-import java.net.InetAddress;
+-import java.net.InetSocketAddress;
+-import java.net.SocketAddress;
+-import java.util.Arrays;
+-
+-/**
+- * A UDP Sink {@link UdpDataSource}.
+- */
+-public class UdpDataSinkSource extends UdpDataSource implements UdpDataSink {
+-
+-    public UdpDataSinkSource() {
+-        this(UdpDataSource.DEFAULT_MAX_PACKET_SIZE, DEFAULT_SOCKET_TIMEOUT_MILLIS);
+-    }
+-
+-    /**
+-     * @param maxPacketSize The maximum datagram packet size, in bytes.
+-     */
+-    public UdpDataSinkSource(int maxPacketSize) {
+-        this(maxPacketSize, DEFAULT_SOCKET_TIMEOUT_MILLIS);
+-    }
+-
+-    /**
+-     * @param maxPacketSize The maximum datagram packet size, in bytes.
+-     * @param socketTimeoutMillis The socket timeout in milliseconds. A timeout of zero is interpreted
+-     *     as an infinite timeout.
+-     */
+-    public UdpDataSinkSource(int maxPacketSize, int socketTimeoutMillis) {
+-        super(maxPacketSize, socketTimeoutMillis);
+-    }
+-
+-    @Override
+-    public void write(byte[] buffer, int offset, int length) throws IOException {
+-        if (buffer == null || (offset >= length) || (buffer.length < (length - offset))) {
+-            return;
+-        }
+-
+-        if (socket != null && socket.isConnected()) {
+-            byte[] data = Arrays.copyOfRange(buffer, offset, offset + length);
+-            DatagramPacket packet = new DatagramPacket(data, data.length);
+-            socket.send(packet);
+-        }
+-    }
+-
+-    @Override
+-    public void writeTo(byte[] buffer, int offset, int length, InetAddress address, int port)
+-            throws IOException {
+-        if (buffer == null || (offset >= length) || (buffer.length < (length - offset))) {
+-            return;
+-        }
+-
+-        if (socket != null && socket.isBound()) {
+-            byte[] data = Arrays.copyOfRange(buffer, offset, offset + length);
+-            DatagramPacket packet = new DatagramPacket(data, data.length, address, port);
+-            socket.send(packet);
+-        }
+-    }
+-
+-    @Override
+-    public int getLocalPort() {
+-        if (socket != null) {
+-            SocketAddress socketAddress = socket.getLocalSocketAddress();
+-            return ((InetSocketAddress) socketAddress).getPort();
+-        }
+-
+-        return C.PORT_UNSET;
+-    }
+-}
+diff --git a/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSource.java b/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSource.java
+index 03fcf8d..4d9b375 100644
+--- a/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSource.java
++++ b/core/src/main/java/com/google/android/exoplayer2/upstream/UdpDataSource.java
+@@ -27,7 +27,7 @@ import java.net.MulticastSocket;
+ import java.net.SocketException;
+ 
+ /** A UDP {@link DataSource}. */
+-public class UdpDataSource extends BaseDataSource {
++public final class UdpDataSource extends BaseDataSource {
+ 
+   /**
+    * Thrown when an error is encountered when trying to read from a {@link UdpDataSource}.
+@@ -53,7 +53,7 @@ public class UdpDataSource extends BaseDataSource {
+   private final DatagramPacket packet;
+ 
+   @Nullable private Uri uri;
+-  @Nullable DatagramSocket socket;
++  @Nullable private DatagramSocket socket;
+   @Nullable private MulticastSocket multicastSocket;
+   @Nullable private InetAddress address;
+   @Nullable private InetSocketAddress socketAddress;
+diff --git a/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java b/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
+index 82abc43..3372f23 100644
+--- a/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
++++ b/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
+@@ -16,7 +16,6 @@
+ package com.google.android.exoplayer2.util;
+ 
+ import android.util.Pair;
+-import android.util.Base64;
+ import androidx.annotation.Nullable;
+ import com.google.android.exoplayer2.C;
+ import com.google.android.exoplayer2.ParserException;
+@@ -81,13 +80,6 @@ public final class CodecSpecificDataUtil {
+   // Escape code for extended audio object types.
+   private static final int AUDIO_OBJECT_TYPE_ESCAPE = 31;
+ 
+-
+-  private static final int VISUAL_OBJECT_LAYER = 1;
+-  private static final int VISUAL_OBJECT_LAYER_START = 0x20;
+-  private static final int EXTENDED_PAR = 0x0F;
+-  private static final int RECTANGULAR = 0x00;
+-  private static final int FINE_GRANULARITY_SCALABLE = 0x12;
+-
+   private CodecSpecificDataUtil() {}
+ 
+   /**
+@@ -174,7 +166,7 @@ public final class CodecSpecificDataUtil {
+    * Builds a simple HE-AAC LC AudioSpecificConfig, as defined in ISO 14496-3 1.6.2.1
+    *
+    * @param sampleRate The sample rate in Hz.
+-   * @param channelCount The number of channels.
++   * @param channelCount The channel count.
+    * @return The AudioSpecificConfig.
+    */
+   public static byte[] buildAacLcAudioSpecificConfig(int sampleRate, int channelCount) {
+@@ -214,176 +206,6 @@ public final class CodecSpecificDataUtil {
+   }
+ 
+   /**
+-   * Parses an MPEG-4 Audio Stream Mux configuration, as defined in ISO/IEC14496-3
+-   *
+-   * @param audioStreamMuxConfig A byte array containing the MPEG-4 Audio Stream Mux configuration
+-   *                to parse.
+-   * @return A pair consisting of the number of subframes, sample rate in Hz and the channel count.
+-   * @throws ParserException If the MPEG-4 Audio Stream Mux configuration cannot be parsed as
+-   *                        it's not supported.
+-   */
+-  public static Pair<Integer, Pair<Integer, Integer>> parseMpeg4AudioStreamMuxConfig(byte[] audioStreamMuxConfig)
+-          throws ParserException {
+-    ParsableBitArray scdScratchBits = new ParsableBitArray(audioStreamMuxConfig);
+-
+-    int audioMuxVersion = scdScratchBits.readBits(1);
+-    if (audioMuxVersion == 0) {
+-      int allStreamsSameTimeFraming = scdScratchBits.readBits(1);
+-      Assertions.checkArgument(allStreamsSameTimeFraming == 1);
+-
+-      int numSubFrames = scdScratchBits.readBits(6);
+-      int numProgram = scdScratchBits.readBits(4);
+-      Assertions.checkArgument(numProgram == 0);
+-      int numLayer = scdScratchBits.readBits(3);
+-      Assertions.checkArgument(numLayer == 0);
+-
+-      return Pair.create(numSubFrames, parseAacAudioSpecificConfig(scdScratchBits, true));
+-    }
+-
+-    throw new ParserException("audio mux version wrong");
+-  }
+-
+-  /**
+-   * Builds a H.264 configuration information, as defined in RFC 6814 and ISO/IEC 14496-10
+-   *
+-   * @param config A representation of an octet string that expresses the H.264 configuration information
+-   * @return The H.264 configuration information
+-   */
+-  public static List<byte[]> buildH264SpecificConfig(String config)
+-          throws IllegalArgumentException {
+-    List<byte[]> codecSpecificData = null;
+-
+-    /* For H.264 MPEG4 Part15, the CodecPrivateData field must contain SPS and PPS in the following
+-      form, base16-encoded: [start code][SPS][start code][PPS], where [start code] is the following
+-      four bytes: 0x00, 0x00, 0x00, 0x01 */
+-
+-    String[] paramSets = config.split(",");
+-    if (paramSets.length == 2) {
+-      codecSpecificData = new ArrayList<>();
+-      for (String s : paramSets) {
+-        if ((s != null) && (s.length() != 0)) {
+-          byte[] nal = Base64.decode(s, Base64.DEFAULT);
+-          if ((nal != null) && (nal.length != 0)) {
+-            codecSpecificData.add(buildNalUnit(nal, 0, nal.length));
+-          }
+-        }
+-      }
+-    }
+-
+-    return codecSpecificData;
+-  }
+-
+-  /**
+-   * Parses an H.264 configuration information, as defined in ISO/IEC 14496-10
+-   *
+-   * @param videoSpecificConfig A byte array list containing the H.264 configuration information to parse.
+-   * @return A pair consisting of the pixel width aspect ratio and the dimensions.
+-   * @throws ParserException If the H.264 configuration information cannot be parsed as it's not
+-   *                         supported.
+-   */
+-  public static Pair<Float, Pair<Integer, Integer>> parseH264SpecificConfig(
+-          List<byte[]> videoSpecificConfig) throws ParserException {
+-
+-    try {
+-      byte[] sps = videoSpecificConfig.get(0);
+-      NalUnitUtil.SpsData spsData = NalUnitUtil.parseSpsNalUnit(sps, 4, sps.length);
+-      return Pair.create(spsData.pixelWidthAspectRatio, Pair.create(spsData.width, spsData.height));
+-
+-    } catch (IllegalStateException | NullPointerException ex) {
+-      throw new ParserException("H.264 configuration information malformed");
+-    }
+-  }
+-
+-  /**
+-   * Parses an MPEG-4 Visual configuration information, as defined in ISO/IEC14496-2
+-   *
+-   * @param videoSpecificConfig A byte array containing the MPEG-4 Visual configuration
+-   *                information to parse.
+-   * @return A pair consisting of the width and the height.
+-   * @throws ParserException If the MPEG-4 Visual configuration information cannot be parsed as
+-   *                        it's not supported.
+-   */
+-  public static Pair<Integer, Integer> parseMpeg4VideoSpecificConfig(byte[] videoSpecificConfig)
+-          throws ParserException {
+-    int offset = 0;
+-    boolean foundVOL = false;
+-
+-    ParsableBitArray scdScratchBits = new ParsableBitArray(videoSpecificConfig);
+-    ParsableByteArray scdScratchBytes = new ParsableByteArray(videoSpecificConfig);
+-
+-    while (offset + 3 < videoSpecificConfig.length) {
+-      if (scdScratchBytes.readUnsignedInt24() != VISUAL_OBJECT_LAYER
+-              || (videoSpecificConfig[offset + 3] & 0xf0) != VISUAL_OBJECT_LAYER_START) {
+-        scdScratchBytes.setPosition(scdScratchBytes.getPosition() - 2);
+-        offset++;
+-        continue;
+-      }
+-
+-      foundVOL = true;
+-      break;
+-    }
+-
+-    if (!foundVOL) {
+-      throw new ParserException("MPEG-4 Visual configuration information malformed");
+-    }
+-
+-    scdScratchBits.skipBits((offset + 4) * 8);
+-    scdScratchBits.skipBits(1);  // random_accessible_vol
+-
+-    int videoObjectTypeIndication = scdScratchBits.readBits(8);
+-    Assertions.checkArgument(videoObjectTypeIndication != FINE_GRANULARITY_SCALABLE);
+-
+-    if (scdScratchBits.readBit()) { // object_layer_identifier
+-      scdScratchBits.skipBits(4); // video_object_layer_verid
+-      scdScratchBits.skipBits(3); // video_object_layer_priority
+-    }
+-
+-    int aspectRatioInfo = scdScratchBits.readBits(4);
+-    if (aspectRatioInfo == EXTENDED_PAR) {
+-      scdScratchBits.skipBits(8);  // par_width
+-      scdScratchBits.skipBits(8);  // par_height
+-    }
+-
+-    if (scdScratchBits.readBit()) {  // vol_control_parameters
+-      scdScratchBits.skipBits(2);  // chroma_format
+-      scdScratchBits.skipBits(1);  // low_delay
+-      if (scdScratchBits.readBit()) {  // vbv_parameters
+-        throw new ParserException("Should not be here");
+-      }
+-    }
+-
+-    int videoObjectLayerShape = scdScratchBits.readBits(2);
+-    Assertions.checkArgument(videoObjectLayerShape == RECTANGULAR);
+-
+-    Assertions.checkArgument(scdScratchBits.readBit());  // marker_bit
+-    int vopTimeIncrementResolution= scdScratchBits.readBits(16);
+-    Assertions.checkArgument(scdScratchBits.readBit());  // marker_bit
+-
+-    if (scdScratchBits.readBit()) {  // fixed_vop_rate
+-      Assertions.checkArgument(vopTimeIncrementResolution > 0);
+-      --vopTimeIncrementResolution;
+-
+-      int numBits = 0;
+-      while (vopTimeIncrementResolution > 0) {
+-        ++numBits;
+-        vopTimeIncrementResolution >>= 1;
+-      }
+-
+-      scdScratchBits.skipBits(numBits);  // fixed_vop_time_increment
+-    }
+-
+-    Assertions.checkArgument(scdScratchBits.readBit());  // marker_bit
+-    int videoObjectLayerWidth = scdScratchBits.readBits(13);
+-    Assertions.checkArgument(scdScratchBits.readBit());  // marker_bit
+-    int videoObjectLayerHeight = scdScratchBits.readBits(13);
+-    Assertions.checkArgument(scdScratchBits.readBit());  // marker_bit
+-
+-    scdScratchBits.skipBits(1); // interlaced
+-
+-    return Pair.create(videoObjectLayerWidth, videoObjectLayerHeight);
+-  }
+-
+-  /**
+    * Parses an ALAC AudioSpecificConfig (i.e. an <a
+    * href="https://github.com/macosforge/alac/blob/master/ALACMagicCookieDescription.txt">ALACSpecificConfig</a>).
+    *
+diff --git a/core/src/main/java/com/google/android/exoplayer2/util/InetUtil.java b/core/src/main/java/com/google/android/exoplayer2/util/InetUtil.java
+deleted file mode 100644
+index e6c5495..0000000
+--- a/core/src/main/java/com/google/android/exoplayer2/util/InetUtil.java
++++ /dev/null
+@@ -1,36 +0,0 @@
+-package com.google.android.exoplayer2.util;
+-
+-import java.util.regex.Matcher;
+-import java.util.regex.Pattern;
+-
+-public class InetUtil {
+-    private static final Pattern regexIpv4 = Pattern.compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})",
+-            Pattern.CASE_INSENSITIVE);
+-
+-    public static boolean isPrivateIpAddress(String ipAddress) {
+-        Matcher matcher = regexIpv4.matcher(ipAddress);
+-        if (matcher.find()) {
+-            String[] ip = matcher.group(0).split("\\.");
+-            short[] ipNumber = new short[] {
+-                    Short.parseShort(ip[0]),
+-                    Short.parseShort(ip[1]),
+-                    Short.parseShort(ip[2]),
+-                    Short.parseShort(ip[3])
+-            };
+-
+-            boolean is24BitBlock = ipNumber[0] == 10;
+-            if (is24BitBlock) return true; // Return to prevent further processing
+-
+-            boolean is20BitBlock = ipNumber[0] == 172 && ipNumber[1] >= 16 && ipNumber[1] <= 31;
+-            if (is20BitBlock) return true; // Return to prevent further processing
+-
+-            boolean is16BitBlock = ipNumber[0] == 192 && ipNumber[1] == 168;
+-            if (is16BitBlock) return true; // Return to prevent further processing
+-
+-            boolean isLinkLocalAddress = ipNumber[0] == 169 && ipNumber[1] == 254;
+-            return isLinkLocalAddress;
+-        }
+-
+-        return false;
+-    }
+-}
+diff --git a/core/src/main/java/com/google/android/exoplayer2/util/MimeTypes.java b/core/src/main/java/com/google/android/exoplayer2/util/MimeTypes.java
+index f3a6886..de30cfd 100644
+--- a/core/src/main/java/com/google/android/exoplayer2/util/MimeTypes.java
++++ b/core/src/main/java/com/google/android/exoplayer2/util/MimeTypes.java
+@@ -37,7 +37,6 @@ public final class MimeTypes {
+   public static final String VIDEO_H265 = BASE_TYPE_VIDEO + "/hevc";
+   public static final String VIDEO_VP8 = BASE_TYPE_VIDEO + "/x-vnd.on2.vp8";
+   public static final String VIDEO_VP9 = BASE_TYPE_VIDEO + "/x-vnd.on2.vp9";
+-  public static final String VIDEO_MP2T = BASE_TYPE_VIDEO + "/mp2t";
+   public static final String VIDEO_AV1 = BASE_TYPE_VIDEO + "/av01";
+   public static final String VIDEO_MP4V = BASE_TYPE_VIDEO + "/mp4v-es";
+   public static final String VIDEO_MPEG = BASE_TYPE_VIDEO + "/mpeg";
+@@ -71,7 +70,6 @@ public final class MimeTypes {
+   public static final String AUDIO_FLAC = BASE_TYPE_AUDIO + "/flac";
+   public static final String AUDIO_ALAC = BASE_TYPE_AUDIO + "/alac";
+   public static final String AUDIO_MSGSM = BASE_TYPE_AUDIO + "/gsm";
+-  public static final String AUDIO_L16 = BASE_TYPE_AUDIO + "/l16";
+   public static final String AUDIO_UNKNOWN = BASE_TYPE_AUDIO + "/x-unknown";
+ 
+   public static final String TEXT_VTT = BASE_TYPE_TEXT + "/vtt";
+@@ -210,8 +208,6 @@ public final class MimeTypes {
+       return MimeTypes.VIDEO_VP9;
+     } else if (codec.startsWith("vp8") || codec.startsWith("vp08")) {
+       return MimeTypes.VIDEO_VP8;
+-    } else if (codec.startsWith("mp4v")) {
+-      return MimeTypes.VIDEO_MP4V;
+     } else if (codec.startsWith("mp4a")) {
+       String mimeType = null;
+       if (codec.startsWith("mp4a.")) {
+diff --git a/core/src/main/java/com/google/android/exoplayer2/util/TrackIdGenerator.java b/core/src/main/java/com/google/android/exoplayer2/util/TrackIdGenerator.java
+deleted file mode 100644
+index f7c58f8..0000000
+--- a/core/src/main/java/com/google/android/exoplayer2/util/TrackIdGenerator.java
++++ /dev/null
+@@ -1,82 +0,0 @@
+-/*
+- * Copyright (C) 2018 The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package com.google.android.exoplayer2.util;
+-
+-/**
+- * Generates track ids for initializing payload readers
+- */
+-public final class TrackIdGenerator {
+-
+-    private static final int ID_UNSET = Integer.MIN_VALUE;
+-
+-    private final String formatIdPrefix;
+-    private final int firstTrackId;
+-    private final int trackIdIncrement;
+-    private int trackId;
+-    private String formatId;
+-
+-    public TrackIdGenerator(int firstTrackId, int trackIdIncrement) {
+-        this(ID_UNSET, firstTrackId, trackIdIncrement);
+-    }
+-
+-    public TrackIdGenerator(int programNumber, int firstTrackId, int trackIdIncrement) {
+-        this.formatIdPrefix = programNumber != ID_UNSET ? programNumber + "/" : "";
+-        this.firstTrackId = firstTrackId;
+-        this.trackIdIncrement = trackIdIncrement;
+-        trackId = ID_UNSET;
+-    }
+-
+-    /**
+-     * Generates a new set of track and track format ids. Must be called before {@code get*}
+-     * methods.
+-     */
+-    public void generateNewId() {
+-        trackId = trackId == ID_UNSET ? firstTrackId : trackId + trackIdIncrement;
+-        formatId = formatIdPrefix + trackId;
+-    }
+-
+-    /**
+-     * Returns the last generated track id. Must be called after the first {@link #generateNewId()}
+-     * call.
+-     *
+-     * @return The last generated track id.
+-     */
+-    public int getTrackId() {
+-        maybeThrowUninitializedError();
+-        return trackId;
+-    }
+-
+-    /**
+-     * Returns the last generated format id, with the format {@code "programNumber/trackId"}. If no
+-     * {@code programNumber} was provided, the {@code trackId} alone is used as format id. Must be
+-     * called after the first {@link #generateNewId()} call.
+-     *
+-     * @return The last generated format id, with the format {@code "programNumber/trackId"}. If no
+-     *     {@code programNumber} was provided, the {@code trackId} alone is used as
+-     *     format id.
+-     */
+-    public String getFormatId() {
+-        maybeThrowUninitializedError();
+-        return formatId;
+-    }
+-
+-    private void maybeThrowUninitializedError() {
+-        if (trackId == ID_UNSET) {
+-            throw new IllegalStateException("generateNewId() must be called before retrieving ids.");
+-        }
+-    }
+-
+-}
+\ No newline at end of file
+diff --git a/core/src/main/java/com/google/android/exoplayer2/util/Util.java b/core/src/main/java/com/google/android/exoplayer2/util/Util.java
+index 53b26f0..0ee52db 100644
+--- a/core/src/main/java/com/google/android/exoplayer2/util/Util.java
++++ b/core/src/main/java/com/google/android/exoplayer2/util/Util.java
+@@ -238,16 +238,6 @@ public final class Util {
+   }
+ 
+   /**
+-   * Returns true if the URI is a rtsp stream.
+-   *
+-   * @param uri The uri to test.
+-   */
+-  public static boolean isRtspUri(Uri uri) {
+-    String scheme = uri.getScheme();
+-    return "rtsp".equals(scheme);
+-  }
+-
+-  /**
+    * Tests two objects for {@link Object#equals(Object)} equality, handling the case where one or
+    * both may be null.
+    *
+-- 
+1.9.2.msysgit.0
+

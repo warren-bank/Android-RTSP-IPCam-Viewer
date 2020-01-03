@@ -1,0 +1,39 @@
+-------------------------------------------------------------------------------- '2a. core.patch'
+
+# [PATCH] 'v02.01.00-alpha.01' -> 'release-v2'
+
+cd ~/exoplayer_patch
+git init
+
+git checkout -b 'v02.01.00-alpha.01'
+# ~/Android-RTSP-IPCam-Viewer/libs/exoplayer/core
+git add --all .
+git commit -m 'v02.01.00-alpha.01'
+
+git checkout -b 'release-v2'
+# https://github.com/google/ExoPlayer/tree/6aa35aaaa5f594dfec8e9916d962676f671424f5/library/core
+git add --all .
+git commit -m 'release-v2'
+
+git format-patch 'v02.01.00-alpha.01' --stdout > core.patch
+
+-------------------------------------------------------------------------------- '2b. core.patch'
+
+# [PATCH] 'release-v2' -> 'v02.01.00-alpha.01'
+
+cd ~/exoplayer_patch
+git init
+
+git checkout -b 'release-v2'
+# https://github.com/google/ExoPlayer/tree/6aa35aaaa5f594dfec8e9916d962676f671424f5/library/core
+git add --all .
+git commit -m 'release-v2'
+
+git checkout -b 'v02.01.00-alpha.01'
+# ~/Android-RTSP-IPCam-Viewer/libs/exoplayer/core
+git add --all .
+git commit -m 'v02.01.00-alpha.01'
+
+git format-patch 'release-v2' --stdout > core.patch
+
+--------------------------------------------------------------------------------

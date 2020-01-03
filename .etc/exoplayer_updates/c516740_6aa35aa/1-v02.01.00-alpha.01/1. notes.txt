@@ -1,15 +1,17 @@
 -------------------------------------------------------------------------------- '2. core.patch'
 
+# [PATCH] 'dev-v2-rtsp' -> 'release-v2'
+
 cd ~/exoplayer_patch
 git init
 
 git checkout -b 'dev-v2-rtsp'
-# https://github.com/tresvecesseis/ExoPlayer/tree/c516740526818d6275188a73b5fdcab9a2a74821
+# https://github.com/tresvecesseis/ExoPlayer/tree/c516740526818d6275188a73b5fdcab9a2a74821/library/core
 git add --all .
 git commit -m 'dev-v2-rtsp'
 
 git checkout -b 'release-v2'
-# https://github.com/google/ExoPlayer/tree/6aa35aaaa5f594dfec8e9916d962676f671424f5
+# https://github.com/google/ExoPlayer/tree/6aa35aaaa5f594dfec8e9916d962676f671424f5/library/core
 git add --all .
 git commit -m 'release-v2'
 
@@ -53,6 +55,18 @@ git format-patch 'dev-v2-rtsp' --stdout > core.patch
 https://github.com/tresvecesseis/ExoPlayer/blob/c516740526818d6275188a73b5fdcab9a2a74821/library/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
 https://github.com/google/ExoPlayer/tree/6aa35aaaa5f594dfec8e9916d962676f671424f5/library/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
   add: public static Pair<Integer, Integer> parseAlacAudioSpecificConfig(byte[] audioSpecificConfig) {...}
+
+--------------------------------------------------------------------------------
+
+cd ~/Android-RTSP-IPCam-Viewer
+
+patch_dir=./.etc/exoplayer_updates/c516740_6aa35aa/1-v02.01.00-alpha.01
+
+git apply --directory='libs/exoplayer/' < "${patch_dir}/3. core.patch"
+cp -f "${patch_dir}/merge/CodecSpecificDataUtil.java" ./libs/exoplayer/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
+
+git add --all .
+git commit -m "Merge branch 'release-v2' (6aa35aa) into dev-v2-rtsp (c516740)"
 
 --------------------------------------------------------------------------------
 
@@ -199,17 +213,5 @@ libs/exoplayer/rtsp/src/main/java/com/google/android/exoplayer2/source/rtsp/Rtsp
 
         }
       }
-
---------------------------------------------------------------------------------
-
-cd ~/Android-RTSP-IPCam-Viewer
-
-patch_dir=./.etc/exoplayer_patch/c516740_6aa35aa
-
-git apply --directory='libs/exoplayer/' < "${patch_dir}/3. core.patch"
-cp -f "${patch_dir}/merge/CodecSpecificDataUtil.java" ./libs/exoplayer/core/src/main/java/com/google/android/exoplayer2/util/CodecSpecificDataUtil.java
-
-git add --all .
-git commit -m "Merge branch 'release-v2' (6aa35aa) into dev-v2-rtsp (c516740)"
 
 --------------------------------------------------------------------------------
