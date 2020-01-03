@@ -488,7 +488,7 @@ public final class RtspSampleStreamWrapper implements
 
     @Override
     public boolean isLoading() {
-        return !loadingFinished || loader.isLoading();
+        return loadingFinished ? false : loader.isLoading();
     }
 
     @Override
