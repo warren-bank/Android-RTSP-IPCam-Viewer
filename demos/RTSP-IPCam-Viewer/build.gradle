@@ -13,8 +13,7 @@ android {
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-
-        applicationId "com.github.warren_bank.rtsp_ipcam_viewer"
+//        applicationId "com.github.warren_bank.rtsp_ipcam_viewer"
         versionName project.ext.releaseVersion
         versionCode project.ext.releaseVersionCode
     }
@@ -24,8 +23,8 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles = [
-                "proguard-rules.txt",
-                getDefaultProguardFile('proguard-android.txt')
+                    "proguard-rules.txt",
+                    getDefaultProguardFile('proguard-android.txt')
             ]
         }
         debug {
@@ -34,8 +33,22 @@ android {
     }
 
     lintOptions {
+        // The demo app isn't indexed, doesn't have translations, and has a
+        // banner for AndroidTV that's only in xhdpi density.
+        disable 'GoogleAppIndexingWarning','MissingTranslation','IconDensities'
         disable 'MissingTranslation'
         abortOnError true
+    }
+
+    flavorDimensions "extensions"
+
+    productFlavors {
+        noExtensions {
+            dimension "extensions"
+        }
+        withExtensions {
+            dimension "extensions"
+        }
     }
 }
 
@@ -50,13 +63,13 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:'                              + '2.8.5'                               // (235 KB) https://mvnrepository.com/artifact/com.google.code.gson/gson
 
-    implementation project(':MaterialFilePicker')                                                                    //          https://github.com/nbsp-team/MaterialFilePicker
+    implementation project(modulePrefix +'MaterialFilePicker')                                                                    //          https://github.com/nbsp-team/MaterialFilePicker
 
-    implementation project(':library-core')
-    implementation project(':library-ui')
-    implementation project(':extension-sdp')
-    implementation project(':extension-rtp')
-    implementation project(':extension-rtsp')
+    implementation project(modulePrefix +'library-core')
+    implementation project(modulePrefix +'library-ui')
+    withExtensionsImplementation project(path: modulePrefix + 'extension-sdp')
+    withExtensionsImplementation project(path: modulePrefix + 'extension-rtp')
+    withExtensionsImplementation project(path: modulePrefix + 'extension-rtsp')
 }
 
 apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'

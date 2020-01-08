@@ -17,8 +17,19 @@ allprojects {
         jcenter()
         maven {url "http://dl.bintray.com/lukaville/maven"}
     }
+    project.ext {
+        exoplayerPublishEnabled = false
+    }
+    if (it.hasProperty('externalBuildDir')) {
+        if (!new File(externalBuildDir).isAbsolute()) {
+            externalBuildDir = new File(rootDir, externalBuildDir)
+        }
+        buildDir = "${externalBuildDir}/${project.name}"
+    }
+//   group = 'com.google.android.exoplayer' //FIXME  Your project contains 2 or more modules with the same identification You must use different identification (either name or group) for each modules.
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+apply from: 'javadoc_combined.gradle'

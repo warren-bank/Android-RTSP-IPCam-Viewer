@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    implementation project(':library-core')
+    implementation project(modulePrefix + 'library-core')
 
     implementation      'androidx.legacy:legacy-support-v4:'  + project.ext.jetpackLegacyVersion       // https://mvnrepository.com/artifact/androidx.legacy/legacy-support-v4?repo=google
     implementation      'androidx.media:media:'               + project.ext.jetpackVersion             // https://mvnrepository.com/artifact/androidx.media/media?repo=google
@@ -27,3 +27,14 @@ dependencies {
 
     compileOnly         'org.checkerframework:checker-qual:'  + project.ext.checkerframeworkVersion    // https://mvnrepository.com/artifact/org.checkerframework/checker-qual
 }
+
+ext {
+    javadocTitle = 'UI module'
+}
+apply from: '../../javadoc_library.gradle'
+
+ext {
+    releaseArtifact = 'exoplayer-ui'
+    releaseDescription = 'The ExoPlayer library UI module.'
+}
+apply from: '../../publish.gradle'

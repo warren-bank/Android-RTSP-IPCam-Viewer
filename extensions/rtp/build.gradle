@@ -1,5 +1,5 @@
-apply plugin: 'com.android.library'
 apply from: '../../constants.gradle'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -18,8 +18,8 @@ android {
 }
 
 dependencies {
-    implementation project(':library-core')
-    implementation project(':extension-sdp')
+    implementation project(modulePrefix + 'library-core')
+    implementation project(modulePrefix + 'extension-sdp')
 
     implementation      'androidx.annotation:annotation:'  + project.ext.jetpackVersion    // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
     annotationProcessor 'androidx.annotation:annotation:'  + project.ext.jetpackVersion    // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
