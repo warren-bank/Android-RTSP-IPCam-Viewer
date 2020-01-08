@@ -7,9 +7,9 @@ include ':exoplayer-rtsp'
 include ':exoplayer-sdp'
 include ':MaterialFilePicker'
 
-project(':exoplayer-core'    ).projectDir = new File(rootDir, 'libs/exoplayer/core')
-project(':exoplayer-ui'      ).projectDir = new File(rootDir, 'libs/exoplayer/ui')
-project(':exoplayer-rtp'     ).projectDir = new File(rootDir, 'libs/exoplayer/rtp')
-project(':exoplayer-rtsp'    ).projectDir = new File(rootDir, 'libs/exoplayer/rtsp')
-project(':exoplayer-sdp'     ).projectDir = new File(rootDir, 'libs/exoplayer/sdp')
+project(':exoplayer-core'    ).projectDir = new File(rootDir, 'library/exoplayer/core')
+project(':exoplayer-ui'      ).projectDir = new File(rootDir, 'library/exoplayer/ui')
+project(':exoplayer-rtp'     ).projectDir = new File(rootDir, 'library/exoplayer/rtp')
+project(':exoplayer-rtsp'    ).projectDir = new File(rootDir, 'library/exoplayer/rtsp')
+project(':exoplayer-sdp'     ).projectDir = new File(rootDir, 'library/exoplayer/sdp')
 project(':MaterialFilePicker').projectDir = new File(rootDir, 'libs/MaterialFilePicker')
