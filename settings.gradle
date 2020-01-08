@@ -1,16 +1,24 @@
-include ':RTSP-IPCam-Viewer'
-project(':RTSP-IPCam-Viewer'    ).projectDir = new File(rootDir, 'demos/RTSP-IPCam-Viewer')
+gradle.ext.exoplayerRoot = settingsDir
 
-include ':exoplayer-core'
-include ':exoplayer-ui'
-include ':exoplayer-rtp'
-include ':exoplayer-rtsp'
-include ':exoplayer-sdp'
-include ':MaterialFilePicker'
+def modulePrefix = ':'
+if (gradle.ext.has('exoplayerModulePrefix')) {
+    modulePrefix += gradle.ext.exoplayerModulePrefix
+}
 
-project(':exoplayer-core'    ).projectDir = new File(rootDir, 'library/core')
-project(':exoplayer-ui'      ).projectDir = new File(rootDir, 'library/ui')
-project(':exoplayer-sdp'     ).projectDir = new File(rootDir, 'extensions/sdp')
-project(':exoplayer-rtp'     ).projectDir = new File(rootDir, 'extensions/rtp')
-project(':exoplayer-rtsp'    ).projectDir = new File(rootDir, 'extensions/rtsp')
-project(':MaterialFilePicker').projectDir = new File(rootDir, 'libs/MaterialFilePicker')
+include modulePrefix + 'RTSP-IPCam-Viewer'
+project(modulePrefix + 'RTSP-IPCam-Viewer').projectDir = new File(rootDir, 'demos/RTSP-IPCam-Viewer')
+
+
+include  modulePrefix +'exoplayer-core'
+include  modulePrefix +'exoplayer-ui'
+include  modulePrefix +'exoplayer-rtp'
+include  modulePrefix +'exoplayer-rtsp'
+include  modulePrefix +'exoplayer-sdp'
+include  modulePrefix +'MaterialFilePicker'
+
+project( modulePrefix +'exoplayer-core'    ).projectDir = new File(rootDir, 'library/core')
+project( modulePrefix +'exoplayer-ui'      ).projectDir = new File(rootDir, 'library/ui')
+project( modulePrefix +'exoplayer-sdp'     ).projectDir = new File(rootDir, 'extensions/sdp')
+project( modulePrefix +'exoplayer-rtp'     ).projectDir = new File(rootDir, 'extensions/rtp')
+project( modulePrefix +'exoplayer-rtsp'    ).projectDir = new File(rootDir, 'extensions/rtsp')
+project( modulePrefix +'MaterialFilePicker').projectDir = new File(rootDir, 'libs/MaterialFilePicker')
