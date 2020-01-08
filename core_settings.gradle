@@ -1,0 +1,30 @@
+// Copyright (C) 2017 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+def rootDir = gradle.ext.exoplayerRoot
+def modulePrefix = ':'
+if (gradle.ext.has('exoplayerModulePrefix')) {
+    modulePrefix += gradle.ext.exoplayerModulePrefix
+}
+
+include  modulePrefix +'exoplayer-core'
+include  modulePrefix +'exoplayer-ui'
+include  modulePrefix +'exoplayer-rtp'
+include  modulePrefix +'exoplayer-rtsp'
+include  modulePrefix +'exoplayer-sdp'
+
+project( modulePrefix +'exoplayer-core'    ).projectDir = new File(rootDir, 'library/core')
+project( modulePrefix +'exoplayer-ui'      ).projectDir = new File(rootDir, 'library/ui')
+project( modulePrefix +'exoplayer-sdp'     ).projectDir = new File(rootDir, 'extensions/sdp')
+project( modulePrefix +'exoplayer-rtp'     ).projectDir = new File(rootDir, 'extensions/rtp')
+project( modulePrefix +'exoplayer-rtsp'    ).projectDir = new File(rootDir, 'extensions/rtsp')
