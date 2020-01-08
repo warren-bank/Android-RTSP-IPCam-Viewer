@@ -54,9 +54,9 @@ dependencies {
 
     implementation project(':exoplayer-core')
     implementation project(':exoplayer-ui')
-    implementation project(':exoplayer-rtp')
-    implementation project(':exoplayer-rtsp')
-    implementation project(':exoplayer-sdp')
+    implementation project(':extension-sdp')
+    implementation project(':extension-rtp')
+    implementation project(':extension-rtsp')
 }
 
 apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'
