@@ -25,3 +25,14 @@ dependencies {
     implementation      'androidx.annotation:annotation:'  + project.ext.jetpackVersion    // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
     annotationProcessor 'androidx.annotation:annotation:'  + project.ext.jetpackVersion    // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
 }
+
+ext {
+    javadocTitle = 'RTSP extension'
+}
+
+apply from: '../../javadoc_library.gradle'
+
+ext {
+    releaseArtifact = 'extension-rtsp'
+    releaseDescription = 'RTSP extension for ExoPlayer.'
+}

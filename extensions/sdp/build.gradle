@@ -21,3 +21,14 @@ dependencies {
     implementation      'androidx.annotation:annotation:'  + project.ext.jetpackVersion    // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
     annotationProcessor 'androidx.annotation:annotation:'  + project.ext.jetpackVersion    // https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
 }
+
+ext {
+    javadocTitle = 'SDP extension'
+}
+
+apply from: '../../javadoc_library.gradle'
+
+ext {
+    releaseArtifact = 'extension-sdp'
+    releaseDescription = 'SDP extension for ExoPlayer.'
+}
