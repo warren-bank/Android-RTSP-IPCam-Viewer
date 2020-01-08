@@ -67,9 +67,10 @@ dependencies {
 
     implementation project(modulePrefix +'library-core')
     implementation project(modulePrefix +'library-ui')
-    withExtensionsImplementation project(path: modulePrefix + 'extension-sdp')
-    withExtensionsImplementation project(path: modulePrefix + 'extension-rtp')
-    withExtensionsImplementation project(path: modulePrefix + 'extension-rtsp')
+    //FIXME  withExtensionsImplementation ?
+    implementation project(path: modulePrefix + 'extension-rtsp')
+    implementation project(path: modulePrefix + 'extension-rtp')
+    implementation project(path: modulePrefix + 'extension-sdp')
 }
 
 apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'
