@@ -1,4 +1,5 @@
 include ':RTSP-IPCam-Viewer'
+project(':RTSP-IPCam-Viewer'    ).projectDir = new File(rootDir, 'demos/RTSP-IPCam-Viewer')
 
 include ':exoplayer-core'
 include ':exoplayer-ui'
