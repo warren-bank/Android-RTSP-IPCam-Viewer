@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    implementation project(':exoplayer-core')
+    implementation project(':library-core')
 
     implementation      'androidx.legacy:legacy-support-v4:'  + project.ext.jetpackLegacyVersion       // https://mvnrepository.com/artifact/androidx.legacy/legacy-support-v4?repo=google
     implementation      'androidx.media:media:'               + project.ext.jetpackVersion             // https://mvnrepository.com/artifact/androidx.media/media?repo=google

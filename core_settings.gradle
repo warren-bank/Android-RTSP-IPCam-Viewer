@@ -17,14 +17,14 @@ if (gradle.ext.has('exoplayerModulePrefix')) {
     modulePrefix += gradle.ext.exoplayerModulePrefix
 }
 
-include  modulePrefix +'exoplayer-core'
-include  modulePrefix +'exoplayer-ui'
+include  modulePrefix +'library-core'
+include  modulePrefix +'library-ui'
 include  modulePrefix +'extension-rtp'
 include  modulePrefix +'extension-rtsp'
 include  modulePrefix +'extension-sdp'
 
-project( modulePrefix +'exoplayer-core'    ).projectDir = new File(rootDir, 'library/core')
-project( modulePrefix +'exoplayer-ui'      ).projectDir = new File(rootDir, 'library/ui')
+project( modulePrefix +'library-core'    ).projectDir = new File(rootDir, 'library/core')
+project( modulePrefix +'library-ui'      ).projectDir = new File(rootDir, 'library/ui')
 project( modulePrefix +'extension-sdp'     ).projectDir = new File(rootDir, 'extensions/sdp')
 project( modulePrefix +'extension-rtp'     ).projectDir = new File(rootDir, 'extensions/rtp')
 project( modulePrefix +'extension-rtsp'    ).projectDir = new File(rootDir, 'extensions/rtsp')

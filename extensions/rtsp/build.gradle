@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    implementation project(':exoplayer-core')
+    implementation project(':library-core')
     implementation project(':extension-sdp')
     implementation project(':extension-rtp')
 
