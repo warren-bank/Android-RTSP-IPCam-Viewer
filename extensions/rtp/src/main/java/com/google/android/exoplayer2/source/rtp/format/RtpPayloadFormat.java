@@ -16,6 +16,7 @@
 package com.google.android.exoplayer2.source.rtp.format;
 
 import com.google.android.exoplayer2.util.MimeTypes;
+import com.google.android.exoplayer2.util.MimeTypes_Extend;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -235,7 +236,7 @@ public abstract class RtpPayloadFormat {
                         this.sampleMimeType = MimeTypes.AUDIO_AAC;
                         break;
                     case L16:
-                        this.sampleMimeType = MimeTypes.AUDIO_L16;
+                        this.sampleMimeType = MimeTypes_Extend.AUDIO_L16;
                         break;
                     case MPA:
                         this.sampleMimeType = MimeTypes.AUDIO_MP4;
@@ -261,7 +262,7 @@ public abstract class RtpPayloadFormat {
                         this.sampleMimeType = MimeTypes.VIDEO_H265;
                         break;
                     case MP2T:
-                        this.sampleMimeType = MimeTypes.VIDEO_MP2T;
+                        this.sampleMimeType = MimeTypes_Extend.VIDEO_MP2T;
                         break;
                     case MPV:
                         this.sampleMimeType = MimeTypes.VIDEO_MP4;

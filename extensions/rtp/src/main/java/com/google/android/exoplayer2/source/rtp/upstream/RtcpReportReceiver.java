@@ -20,6 +20,7 @@ import com.google.android.exoplayer2.source.rtp.rtcp.RtcpCompoundPacket;
 import com.google.android.exoplayer2.source.rtp.rtcp.RtcpPacket;
 import com.google.android.exoplayer2.source.rtp.rtcp.RtcpSdesPacket;
 import com.google.android.exoplayer2.source.rtp.rtcp.RtcpSrPacket;
+import com.google.android.exoplayer2.upstream.UdpDataSinkSource;
 import com.google.android.exoplayer2.upstream.UdpDataSource;
 
 import android.os.Handler;
@@ -43,9 +44,9 @@ import java.io.IOException;
 
     private final byte[] packetBuffer;
     private final EventListener listener;
-    private final UdpDataSource dataSource;
+    private final UdpDataSinkSource dataSource;
 
-    public RtcpReportReceiver(UdpDataSource dataSource, EventListener listener) {
+    public RtcpReportReceiver(UdpDataSinkSource dataSource, EventListener listener) {
         this.dataSource = dataSource;
         this.listener = listener;
 

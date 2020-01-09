@@ -21,7 +21,7 @@ import com.google.android.exoplayer2.ParserException;
 import com.google.android.exoplayer2.extractor.ExtractorOutput;
 import com.google.android.exoplayer2.extractor.TrackOutput;
 import com.google.android.exoplayer2.source.rtp.format.RtpVideoPayload;
-import com.google.android.exoplayer2.util.CodecSpecificDataUtil;
+import com.google.android.exoplayer2.util.CodecSpecificDataUtil_Extend;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.NalUnitUtil;
 import com.google.android.exoplayer2.util.ParsableByteArray;
@@ -505,9 +505,9 @@ import java.util.List;
                 if (spsNalUnit != null && ppsNalUnit != null) {
                     List<byte[]> initializationData = new ArrayList<>();
 
-                    initializationData.add(CodecSpecificDataUtil.
+                    initializationData.add(CodecSpecificDataUtil_Extend.
                             buildNalUnit(spsNalUnit.data, 0, spsNalUnit.limit()));
-                    initializationData.add(CodecSpecificDataUtil.
+                    initializationData.add(CodecSpecificDataUtil_Extend.
                             buildNalUnit(ppsNalUnit.data, 0, ppsNalUnit.limit()));
 
                     NalUnitUtil.SpsData spsData = NalUnitUtil.parseSpsNalUnit(

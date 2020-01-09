@@ -80,7 +80,7 @@ public final class RtpDataSource extends UdpDataSinkSource  {
     }
 
     @Override
-    public long open(DataSpec dataSpec) throws UdpDataSinkSource.UdpDataSourceException {
+    public long open(DataSpec dataSpec) throws UdpDataSinkSource.UdpDataSinkSourceException {
         try {
             long bytes = super.open(dataSpec);
 
@@ -98,12 +98,12 @@ public final class RtpDataSource extends UdpDataSinkSource  {
             return bytes;
         }
         catch (IOException e) {
-            throw new UdpDataSinkSource.UdpDataSourceException(e);
+            throw new UdpDataSinkSource.UdpDataSinkSourceException(e);
         }
     }
 
     @Override
-    public int read(byte[] buffer, int offset, int readLength) throws UdpDataSinkSource.UdpDataSourceException {
+    public int read(byte[] buffer, int offset, int readLength) throws UdpDataSinkSource.UdpDataSinkSourceException {
         try {
             int bytesRead = super.read(packetBuffer, 0, RtpPacket.MAX_PACKET_SIZE);
 
@@ -176,7 +176,7 @@ public final class RtpDataSource extends UdpDataSinkSource  {
             return bytesRead;
         }
         catch (IOException e) {
-            throw new UdpDataSinkSource.UdpDataSourceException(e);
+            throw new UdpDataSinkSource.UdpDataSinkSourceException(e);
         }
     }
 

@@ -15,7 +15,7 @@
  */
 package com.google.android.exoplayer2.source.rtsp.core;
 
-import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.C_Extend;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MediaSourceEventListener;
@@ -90,7 +90,7 @@ public abstract class Client implements Dispatcher.EventListener {
          * Called when the transport protocol changed.
          *
          */
-        void onTransportProtocolChanged(@C.TransportProtocol int protocol);
+        void onTransportProtocolChanged(@C_Extend.TransportProtocol int protocol);
 
         /**
          * Called when an error occurs on rtsp client.
@@ -653,9 +653,9 @@ public abstract class Client implements Dispatcher.EventListener {
         session.onPlaySuccess();
 
         if (session.isInterleaved()) {
-            listener.onTransportProtocolChanged(C.TCP);
+            listener.onTransportProtocolChanged(C_Extend.TCP);
         } else {
-            listener.onTransportProtocolChanged(C.UDP);
+            listener.onTransportProtocolChanged(C_Extend.UDP);
         }
     }
 
@@ -911,7 +911,7 @@ public abstract class Client implements Dispatcher.EventListener {
         public Builder setUri(Uri uri) {
             if (uri == null) throw new NullPointerException("uri == null");
 
-            if (uri.getPort() == C.PORT_UNSET) {
+            if (uri.getPort() == C_Extend.PORT_UNSET) {
                 this.uri = Uri.parse(uri.getScheme() + "://" + ((uri.getUserInfo() != null) ?
                         uri.getUserInfo() + "@" : "") + uri.getHost() +
                         ((uri.getPort() > 0) ? ":" + uri.getPort() : ":" + DEFAULT_PORT) +

@@ -17,7 +17,7 @@ package com.google.android.exoplayer2.source.rtp.format;
 
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.ParserException;
-import com.google.android.exoplayer2.util.CodecSpecificDataUtil;
+import com.google.android.exoplayer2.util.CodecSpecificDataUtil_Extend;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
@@ -94,11 +94,11 @@ public final class RtpVideoPayload extends RtpPayloadFormat {
                     String spropParamSets = parameters.value(
                             FormatSpecificParameter.SPROP_PARAMETER_SETS);
                     if (spropParamSets != null && spropParamSets.length() > 0) {
-                        codecSpecificData = CodecSpecificDataUtil.
+                        codecSpecificData = CodecSpecificDataUtil_Extend.
                                 buildH264SpecificConfig(spropParamSets);
 
                         try {
-                            Pair<Float, Pair<Integer, Integer>> h264Config = CodecSpecificDataUtil
+                            Pair<Float, Pair<Integer, Integer>> h264Config = CodecSpecificDataUtil_Extend
                                     .parseH264SpecificConfig(codecSpecificData);
 
                             pixelWidthAspectRatio = h264Config.first;
@@ -131,7 +131,7 @@ public final class RtpVideoPayload extends RtpPayloadFormat {
                             codecSpecificData = Collections.singletonList(csd);
 
                             if (width == Format.NO_VALUE || height == Format.NO_VALUE) {
-                                Pair<Integer, Integer> dimensions = CodecSpecificDataUtil.
+                                Pair<Integer, Integer> dimensions = CodecSpecificDataUtil_Extend.
                                         parseMpeg4VideoSpecificConfig(csd);
                                 width = dimensions.first;
                                 height = dimensions.second;

@@ -16,6 +16,7 @@
 package com.google.android.exoplayer2.source.rtsp;
 
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.C_Extend;
 import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 import com.google.android.exoplayer2.source.BaseMediaSource;
 import com.google.android.exoplayer2.source.MediaPeriod;
@@ -36,7 +37,6 @@ import java.io.IOException;
 
 import androidx.annotation.Nullable;
 
-import static com.google.android.exoplayer2.C.TCP;
 import static com.google.android.exoplayer2.source.rtsp.core.Client.RTSP_AUTO_DETECT;
 import static com.google.android.exoplayer2.source.rtsp.core.Client.RTSP_INTERLEAVED;
 
@@ -108,7 +108,7 @@ public final class RtspMediaSource extends BaseMediaSource implements Client.Eve
     private boolean isLive;
     private int prepareCount;
 
-    private @C.TransportProtocol
+    private @C_Extend.TransportProtocol
     int transportProtocol;
 
     private @Nullable TransferListener transferListener;
@@ -118,10 +118,12 @@ public final class RtspMediaSource extends BaseMediaSource implements Client.Eve
         this.isLive = isLive;
         this.factory = factory;
 
-        transportProtocol = TCP;
+        transportProtocol = C_Extend.TCP;
     }
 
-    public boolean isTcp() { return transportProtocol == TCP; }
+    public boolean isTcp() {
+        return transportProtocol == C_Extend.TCP;
+    }
 
     public boolean isLive() {
         return isLive;
@@ -206,7 +208,7 @@ public final class RtspMediaSource extends BaseMediaSource implements Client.Eve
     }
 
     @Override
-    public void onTransportProtocolChanged(@C.TransportProtocol int protocol) {
+    public void onTransportProtocolChanged(@C_Extend.TransportProtocol int protocol) {
         transportProtocol = protocol;
     }
 

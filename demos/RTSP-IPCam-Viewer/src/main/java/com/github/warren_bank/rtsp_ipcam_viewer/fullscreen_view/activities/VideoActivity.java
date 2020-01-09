@@ -13,7 +13,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
+import com.google.android.exoplayer2.util.Util_Extend;
 
 import android.content.Context;
 import android.content.Intent;
@@ -94,7 +94,7 @@ public class VideoActivity extends AppCompatActivity {
         Uri uri = Uri.parse(this.url);
         MediaSource source;
 
-        if (Util.isRtspUri(uri)) {
+        if (Util_Extend.isRtspUri(uri)) {
             source = new RtspMediaSource.Factory(RtspDefaultClient.factory()
                 .setFlags(Client.FLAG_ENABLE_RTCP_SUPPORT)
                 .setNatMethod(Client.RTSP_NAT_DUMMY)

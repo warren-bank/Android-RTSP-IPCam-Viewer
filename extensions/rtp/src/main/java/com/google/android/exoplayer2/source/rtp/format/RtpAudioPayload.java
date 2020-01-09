@@ -2,7 +2,7 @@ package com.google.android.exoplayer2.source.rtp.format;
 
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.ParserException;
-import com.google.android.exoplayer2.util.CodecSpecificDataUtil;
+import com.google.android.exoplayer2.util.CodecSpecificDataUtil_Extend;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
@@ -76,7 +76,7 @@ public final class RtpAudioPayload extends RtpPayloadFormat {
             if (MimeTypes.AUDIO_AAC.equals(sampleMimeType())) {
                 if (channels > 0 && clockrate > 0) {
                     codecSpecificData = Collections.singletonList(
-                            CodecSpecificDataUtil.buildAacLcAudioSpecificConfig(clockrate,
+                            CodecSpecificDataUtil_Extend.buildAacLcAudioSpecificConfig(clockrate,
                                     channels));
                 } else {
 
@@ -84,13 +84,13 @@ public final class RtpAudioPayload extends RtpPayloadFormat {
                         byte[] config = parameters.value(FormatSpecificParameter.CONFIG).getBytes();
 
                         try {
-                            Pair<Integer, Integer> specConfigParsed = CodecSpecificDataUtil
+                            Pair<Integer, Integer> specConfigParsed = CodecSpecificDataUtil_Extend
                                     .parseAacAudioSpecificConfig(config);
 
                             clockrate = (clockrate > 0) ? clockrate : specConfigParsed.first;
                             channels = (channels > 0) ? channels : specConfigParsed.second;
 
-                            codecSpecificData = Collections.singletonList(CodecSpecificDataUtil
+                            codecSpecificData = Collections.singletonList(CodecSpecificDataUtil_Extend
                                     .buildAacLcAudioSpecificConfig(clockrate, channels));
 
                         } catch (ParserException ex) {
@@ -111,7 +111,7 @@ public final class RtpAudioPayload extends RtpPayloadFormat {
                     try {
                         if (config.length() % 2 == 0) {
                             byte[] smc = Util.getBytesFromHexString(config);
-                            Pair<Integer, Pair<Integer, Integer>> cfgOpts = CodecSpecificDataUtil.
+                            Pair<Integer, Pair<Integer, Integer>> cfgOpts = CodecSpecificDataUtil_Extend.
                                     parseMpeg4AudioStreamMuxConfig(smc);
 
                             numSubFrames = cfgOpts.first;
@@ -119,7 +119,7 @@ public final class RtpAudioPayload extends RtpPayloadFormat {
                             channels = cfgOpts.second.second;
 
                             codecSpecificData = Collections.singletonList(
-                                    CodecSpecificDataUtil.buildAacLcAudioSpecificConfig(
+                                    CodecSpecificDataUtil_Extend.buildAacLcAudioSpecificConfig(
                                             clockrate, channels));
                         }
 
@@ -131,7 +131,7 @@ public final class RtpAudioPayload extends RtpPayloadFormat {
                     if (cpresent) {
                         if (channels > 0 && clockrate > 0) {
                             codecSpecificData = Collections.singletonList(
-                                    CodecSpecificDataUtil.buildAacLcAudioSpecificConfig(clockrate,
+                                    CodecSpecificDataUtil_Extend.buildAacLcAudioSpecificConfig(clockrate,
                                             channels));
                         }
                     }

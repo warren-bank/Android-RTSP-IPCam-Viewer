@@ -54,13 +54,13 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.Allocator;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.Loader;
+import com.google.android.exoplayer2.upstream.Loader_Extend;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.upstream.UdpDataSinkSource;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.ConditionVariable;
 import com.google.android.exoplayer2.util.InetUtil;
-import com.google.android.exoplayer2.util.MimeTypes;
+import com.google.android.exoplayer2.util.MimeTypes_Extend;
 import com.google.android.exoplayer2.util.TrackIdGenerator;
 import com.google.android.exoplayer2.util.Util;
 
@@ -86,7 +86,7 @@ import static com.google.android.exoplayer2.source.rtp.upstream.RtpDataSource.FL
 import static com.google.android.exoplayer2.upstream.UdpDataSource.DEFAULT_SOCKET_TIMEOUT_MILLIS;
 
 public final class RtspSampleStreamWrapper implements
-    Loader.Callback<RtspSampleStreamWrapper.MediaStreamLoadable>,
+        Loader_Extend.Callback<RtspSampleStreamWrapper.MediaStreamLoadable>,
     SequenceableLoader, ExtractorOutput,
     SampleQueue.UpstreamFormatChangedListener, MediaSession.EventListener,
     RtcpOutputReportDispatcher.EventListener {
@@ -141,7 +141,7 @@ public final class RtspSampleStreamWrapper implements
     private int enabledTrackCount;
     private boolean released;
 
-    private Loader loader;
+    private Loader_Extend loader;
 
     // Indexed by track (as exposed by this source).
     private TrackGroupArray trackGroups;
@@ -190,7 +190,7 @@ public final class RtspSampleStreamWrapper implements
 
         loadCondition = new ConditionVariable();
 
-        loader = new Loader("Loader:RtspSampleStreamWrapper");
+        loader = new Loader_Extend("Loader:RtspSampleStreamWrapper");
 
         sampleQueueTrackIds = new int[0];
         sampleQueueTrackTypes = new int[0];
@@ -579,9 +579,9 @@ public final class RtspSampleStreamWrapper implements
     }
 
     @Override
-    public Loader.LoadErrorAction onLoadError(MediaStreamLoadable loadable, long elapsedRealtimeMs,
-                                              final long loadDurationMs, final IOException error,
-                                              int errorCount) {
+    public Loader_Extend.LoadErrorAction onLoadError(MediaStreamLoadable loadable, long elapsedRealtimeMs,
+                                                     final long loadDurationMs, final IOException error,
+                                                     int errorCount) {
         loadingFinished = true;
 
         handler.post(new Runnable() {
@@ -603,7 +603,7 @@ public final class RtspSampleStreamWrapper implements
             }
         });
 
-        return Loader.DONT_RETRY;
+        return Loader_Extend.DONT_RETRY;
     }
 
 
@@ -742,7 +742,7 @@ public final class RtspSampleStreamWrapper implements
         return new TrackGroupArray(trackGroups);
     }
 
-    /* package */ abstract class MediaStreamLoadable implements Loader.Loadable {
+    /* package */ abstract class MediaStreamLoadable implements Loader_Extend.Loadable {
         /**
          * The maximum length of an datagram data packet size, in bytes.
          * 65535 bytes minus IP header (20 bytes) and UDP header (8 bytes)
@@ -825,7 +825,7 @@ public final class RtspSampleStreamWrapper implements
 
                     extractorInput = new RtpExtractorInput(dataSource);
 
-                    if (MimeTypes.VIDEO_MP2T.equals(format.format().sampleMimeType())) {
+                    if (MimeTypes_Extend.VIDEO_MP2T.equals(format.format().sampleMimeType())) {
                         extractor = new RtpMp2tExtractor(FLAG_ALLOW_NON_IDR_KEYFRAMES);
                     } else {
                         extractor = new DefaultRtpExtractor(format.format(), trackIdGenerator);

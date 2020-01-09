@@ -18,14 +18,14 @@ package com.google.android.exoplayer2.source.rtp.upstream;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.source.rtp.RtpPacket;
 import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.UdpDataSource;
+import com.google.android.exoplayer2.upstream.UdpDataSinkSource;
 
 import android.net.Uri;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public final class RtpBufferedDataSource extends UdpDataSource {
+public final class RtpBufferedDataSource extends UdpDataSinkSource {
 
     private final class TimeoutMonitor {
         private Timer timer;
@@ -116,7 +116,7 @@ public final class RtpBufferedDataSource extends UdpDataSource {
     }
 
     @Override
-    public long open(DataSpec dataSpec) throws UdpDataSource.UdpDataSourceException {
+    public long open(DataSpec dataSpec) throws UdpDataSinkSource.UdpDataSinkSourceException {
         uri = dataSpec.uri;
         length = dataSpec.length;
 
@@ -133,7 +133,7 @@ public final class RtpBufferedDataSource extends UdpDataSource {
     }
 
     @Override
-    public int read(byte[] buffer, int offset, int readLength) throws UdpDataSource.UdpDataSourceException {
+    public int read(byte[] buffer, int offset, int readLength) throws UdpDataSinkSource.UdpDataSinkSourceException {
         if (opened && !canceled) {
             RtpSamplesQueue samples = samplesHolder.samples();
 

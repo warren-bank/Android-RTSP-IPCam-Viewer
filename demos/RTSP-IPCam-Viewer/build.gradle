@@ -16,6 +16,7 @@ android {
 //        applicationId "com.github.warren_bank.rtsp_ipcam_viewer"
         versionName project.ext.releaseVersion
         versionCode project.ext.releaseVersionCode
+        multiDexEnabled true // FIX : DexArchiveMergerException: Error while merging dex archives:
     }
 
     buildTypes {
@@ -65,8 +66,12 @@ dependencies {
 
     implementation project(modulePrefix +'MaterialFilePicker')                                                                    //          https://github.com/nbsp-team/MaterialFilePicker
 
-    implementation project(modulePrefix +'library-core')
-    implementation project(modulePrefix +'library-ui')
+//    implementation project(modulePrefix +'library-core')
+    implementation project(modulePrefix + 'library-core-dev2')
+    implementation project(modulePrefix + 'library-core-extra')
+//    implementation project(modulePrefix +'library-ui')
+    implementation project(modulePrefix + 'library-ui-dev2')
+//    implementation project(modulePrefix + 'library-ui-extra')
     //FIXME  withExtensionsImplementation ?
     implementation project(path: modulePrefix + 'extension-rtsp')
     implementation project(path: modulePrefix + 'extension-rtp')
