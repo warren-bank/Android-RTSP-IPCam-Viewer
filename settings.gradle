@@ -11,4 +11,22 @@ project(modulePrefix + 'RTSP-IPCam-Viewer').projectDir = new File(rootDir, 'demo
 include  modulePrefix +'MaterialFilePicker'
 project( modulePrefix +'MaterialFilePicker').projectDir = new File(rootDir, 'libs/MaterialFilePicker')
 
+// Ref : Google ExoPlayer branch dev-v2  https://github.com/google/ExoPlayer/tree/dev-v2 4f15cfaa78f8053c4bf83ef0871df98d29fa6e0b
+include  modulePrefix +'library-core-dev2'
+include  modulePrefix +'library-ui-dev2'
+// Ref : Google ExoPlayer branch dev-v2  https://github.com/google/ExoPlayer/tree/dev-v2
+project( modulePrefix +'library-core-dev2'    ).projectDir = new File(rootDir, 'ExoPlayer/library/core')
+project( modulePrefix +'library-ui-dev2'      ).projectDir = new File(rootDir, 'ExoPlayer/library/ui')
+
+// Ref : Extra for SDP/RTP/RTSP
+include  modulePrefix +'library-core-extra'
+include  modulePrefix +'library-ui-extra'
+
+project( modulePrefix +'library-core-extra'    ).projectDir = new File(rootDir, 'library/core_extra')
+project( modulePrefix +'library-ui-extra'      ).projectDir = new File(rootDir, 'library/ui_extra')
+
+//For test submodule
+include modulePrefix + 'testutils'
+project(modulePrefix + 'testutils').projectDir = new File(rootDir, 'ExoPlayer/testutils')
+
 apply from: 'core_settings.gradle'
