@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Open Grid">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam 뷰어</string>
+    <string name="action_add_video">비디오 추가</string>
+    <string name="action_open_list">공개 목록</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">읽기 파일</string>
+    <string name="action_read_file_import">비디오 가져오기</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">종료</string>
+    <string name="dialog_title_add_video">비디오 추가</string>
+    <string name="dialog_title_edit_video">비디오 편집</string>
+    <string name="dialog_title_custom_grid">사용자 정의 그리드</string>
+    <string name="label_video_title">제목</string>
+    <string name="label_video_url_low_res">낮은 해상도 URL</string>
+    <string name="label_video_url_high_res">높은 해상도 URL</string>
+    <string name="label_video_is_enabled">사용 가능?</string>
+    <string name="label_custom_grid_columns">열</string>
+</resources>

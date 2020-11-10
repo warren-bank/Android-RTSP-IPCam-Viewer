@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "打开网格">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam 查看器</string>
+    <string name="action_add_video">添加视频</string>
+    <string name="action_open_list">打开列表</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">读取文件</string>
+    <string name="action_read_file_import">导入视频</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">退出</string>
+    <string name="dialog_title_add_video">添加视频</string>
+    <string name="dialog_title_edit_video">编辑视频</string>
+    <string name="dialog_title_custom_grid">定制网格</string>
+    <string name="label_video_title">标题</string>
+    <string name="label_video_url_low_res">低分辨率 URL</string>
+    <string name="label_video_url_high_res">高分辨率 URL</string>
+    <string name="label_video_is_enabled">已启用?</string>
+    <string name="label_custom_grid_columns">列</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Open Grid">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam Viewer</string>
+    <string name="action_add_video">Aggiungi video</string>
+    <string name="action_open_list">Elenco aperto</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">File di lettura</string>
+    <string name="action_read_file_import">Import Video</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">Uscita</string>
+    <string name="dialog_title_add_video">Aggiungi video</string>
+    <string name="dialog_title_edit_video">Modifica video</string>
+    <string name="dialog_title_custom_grid">Griglia Personalizzata</string>
+    <string name="label_video_title">Titolo</string>
+    <string name="label_video_url_low_res">Bassa risoluzione URL</string>
+    <string name="label_video_url_high_res">Alta risoluzione URL</string>
+    <string name="label_video_is_enabled">È Abilitato?</string>
+    <string name="label_custom_grid_columns">Colonne</string>
+</resources>

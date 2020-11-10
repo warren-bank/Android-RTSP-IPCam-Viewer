@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Otevřít mřížku">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam Prohlížeč</string>
+    <string name="action_add_video">Přidat video</string>
+    <string name="action_open_list">Otevřít seznam</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">Číst soubor</string>
+    <string name="action_read_file_import">Importovat videa</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">Ukončit</string>
+    <string name="dialog_title_add_video">Přidat video</string>
+    <string name="dialog_title_edit_video">Upravit video</string>
+    <string name="dialog_title_custom_grid">Vlastní mřížka</string>
+    <string name="label_video_title">Název</string>
+    <string name="label_video_url_low_res">Nízké rozlišení URL</string>
+    <string name="label_video_url_high_res">Vysoké rozlišení URL</string>
+    <string name="label_video_is_enabled">Je povoleno?</string>
+    <string name="label_custom_grid_columns">Sloupce</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Öppna rutnät">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam Visningsprogram</string>
+    <string name="action_add_video">Lägg till video</string>
+    <string name="action_open_list">Öppna lista</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">Läsfil</string>
+    <string name="action_read_file_import">Importera videor</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">Avsluta</string>
+    <string name="dialog_title_add_video">Lägg till video</string>
+    <string name="dialog_title_edit_video">Redigera video</string>
+    <string name="dialog_title_custom_grid">Anpassat rutnät</string>
+    <string name="label_video_title">Rubrik</string>
+    <string name="label_video_url_low_res">Låg upplösning URL</string>
+    <string name="label_video_url_high_res">Hög upplösning URL</string>
+    <string name="label_video_is_enabled">Är aktiverad?</string>
+    <string name="label_custom_grid_columns">Kolumner</string>
+</resources>

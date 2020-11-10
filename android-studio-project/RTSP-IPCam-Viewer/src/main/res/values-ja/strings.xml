@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "グリッドを開く">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam ビューアー</string>
+    <string name="action_add_video">ビデオの追加</string>
+    <string name="action_open_list">リストを開く</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">ファイルの読み取り</string>
+    <string name="action_read_file_import">ビデオのインポート</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">出口</string>
+    <string name="dialog_title_add_video">ビデオの追加</string>
+    <string name="dialog_title_edit_video">ビデオの編集</string>
+    <string name="dialog_title_custom_grid">カスタム・グリッド</string>
+    <string name="label_video_title">書名</string>
+    <string name="label_video_url_low_res">低解像度 URL</string>
+    <string name="label_video_url_high_res">高解像度 URL</string>
+    <string name="label_video_is_enabled">使用可能?</string>
+    <string name="label_custom_grid_columns">柱</string>
+</resources>

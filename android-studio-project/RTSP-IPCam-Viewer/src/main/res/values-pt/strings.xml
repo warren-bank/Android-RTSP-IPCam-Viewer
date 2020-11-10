@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Grade aberta">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam Espectador</string>
+    <string name="action_add_video">Adicionar Video</string>
+    <string name="action_open_list">Lista aberta</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">Arquivo de leitura</string>
+    <string name="action_read_file_import">Importar Vídeos</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">Saída</string>
+    <string name="dialog_title_add_video">Adicionar Video</string>
+    <string name="dialog_title_edit_video">Vídeo editar</string>
+    <string name="dialog_title_custom_grid">Grade Personalizada</string>
+    <string name="label_video_title">Título</string>
+    <string name="label_video_url_low_res">Baixa Resolução URL</string>
+    <string name="label_video_url_high_res">Alta Resolução URL</string>
+    <string name="label_video_is_enabled">Está Ativado?</string>
+    <string name="label_custom_grid_columns">Colunas</string>
+</resources>

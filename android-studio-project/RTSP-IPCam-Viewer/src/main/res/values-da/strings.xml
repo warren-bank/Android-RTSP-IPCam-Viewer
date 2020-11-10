@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Åbn gitter">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam Fremviser</string>
+    <string name="action_add_video">Tilføj video</string>
+    <string name="action_open_list">Åbn liste</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">Læsefil</string>
+    <string name="action_read_file_import">Importér videoer</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">Afslut</string>
+    <string name="dialog_title_add_video">Tilføj video</string>
+    <string name="dialog_title_edit_video">Redigér video</string>
+    <string name="dialog_title_custom_grid">Tilpasset gitter</string>
+    <string name="label_video_title">Titel</string>
+    <string name="label_video_url_low_res">Lav opløsning URL</string>
+    <string name="label_video_url_high_res">Høj opløsning URL</string>
+    <string name="label_video_is_enabled">Er aktiveret?</string>
+    <string name="label_custom_grid_columns">Kolonner</string>
+</resources>

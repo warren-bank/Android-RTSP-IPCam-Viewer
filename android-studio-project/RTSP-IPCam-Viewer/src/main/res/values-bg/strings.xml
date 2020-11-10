@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Отворена мрежа">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam Преглед:</string>
+    <string name="action_add_video">Добавяне на видео</string>
+    <string name="action_open_list">Отваряне на списък</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">Четене на файл</string>
+    <string name="action_read_file_import">Внасяне на видеоклипове</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">Изход:</string>
+    <string name="dialog_title_add_video">Добавяне на видео</string>
+    <string name="dialog_title_edit_video">Редактиране на видео</string>
+    <string name="dialog_title_custom_grid">Потребителска мрежа:</string>
+    <string name="label_video_title">Име:</string>
+    <string name="label_video_url_low_res">Ниска резолюция. URL</string>
+    <string name="label_video_url_high_res">Висока резолюция: URL</string>
+    <string name="label_video_is_enabled">е активирано?</string>
+    <string name="label_custom_grid_columns">Колони:</string>
+</resources>

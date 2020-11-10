@@ -1,0 +1,11 @@
+{
+  "name": "@warren-bank/Android-RTSP-IPCam-Viewer",
+  "private": true,
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "@warren-bank/translate-android-strings": "^1.7.3"
+  },
+  "scripts": {
+    "translate": "node_modules/.bin/translate-android-strings -i \"en\" -f \"android-studio-project/RTSP-IPCam-Viewer/src/main/res/values/strings.xml\" -d \"android-studio-project/RTSP-IPCam-Viewer/src/main/res\" -m --na --nc --nw -b \"RTSP IP-Cam\" -b \"URL\" -b \"\\(2 col\\)\" -b \"\\(N col\\)\""
+  }
+}

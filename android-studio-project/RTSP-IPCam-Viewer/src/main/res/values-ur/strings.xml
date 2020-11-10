@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "اوپن گرڈ">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam مناظر</string>
+    <string name="action_add_video">شامل هیں ویڈیو</string>
+    <string name="action_open_list">اوپن لسٹ</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">فائل پڑھیں</string>
+    <string name="action_read_file_import">امپورٹ ویڈیوز</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">باہر نکلیں</string>
+    <string name="dialog_title_add_video">شامل هیں ویڈیو</string>
+    <string name="dialog_title_edit_video">تصیح ویڈیو</string>
+    <string name="dialog_title_custom_grid">کسٹم گرڈ</string>
+    <string name="label_video_title">شیرشک</string>
+    <string name="label_video_url_low_res">کم قرارداد URL</string>
+    <string name="label_video_url_high_res">اعلی قرارداد URL</string>
+    <string name="label_video_is_enabled">Enabled ہے?</string>
+    <string name="label_custom_grid_columns">کالم</string>
+</resources>

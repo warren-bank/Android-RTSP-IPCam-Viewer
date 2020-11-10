@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Ava alusvõrk">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam Näitaja</string>
+    <string name="action_add_video">Lisa video</string>
+    <string name="action_open_list">Ava nimekiri</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">Faili lugemine</string>
+    <string name="action_read_file_import">Impordi videod</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">Välju</string>
+    <string name="dialog_title_add_video">Lisa video</string>
+    <string name="dialog_title_edit_video">Muuda video</string>
+    <string name="dialog_title_custom_grid">Kohandatud alusvõrk</string>
+    <string name="label_video_title">Pealkiri</string>
+    <string name="label_video_url_low_res">Madal lahutus URL</string>
+    <string name="label_video_url_high_res">Kõrge lahutus URL</string>
+    <string name="label_video_is_enabled">Lubatud?</string>
+    <string name="label_custom_grid_columns">Veerud</string>
+</resources>

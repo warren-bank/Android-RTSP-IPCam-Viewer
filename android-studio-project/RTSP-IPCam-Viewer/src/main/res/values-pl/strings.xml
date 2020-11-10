@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "Otwórz siatkę">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam Przeglądarka</string>
+    <string name="action_add_video">Dodaj film wideo</string>
+    <string name="action_open_list">Otwórz listę</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">Odczytaj plik</string>
+    <string name="action_read_file_import">Importuj filmy wideo</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">Wyjdź</string>
+    <string name="dialog_title_add_video">Dodaj film wideo</string>
+    <string name="dialog_title_edit_video">Edytuj film wideo</string>
+    <string name="dialog_title_custom_grid">Siatka niestandardowa</string>
+    <string name="label_video_title">Tytuł</string>
+    <string name="label_video_url_low_res">Niska rozdzielczość URL</string>
+    <string name="label_video_url_high_res">Wysoka rozdzielczość URL</string>
+    <string name="label_video_is_enabled">Jest włączony?</string>
+    <string name="label_custom_grid_columns">Kolumny</string>
+</resources>

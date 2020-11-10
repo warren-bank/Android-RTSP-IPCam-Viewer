@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY action_open_grid "જાળી ખોલો">
+]>
+<resources>
+    <string name="app_name">RTSP IP-Cam દર્શક</string>
+    <string name="action_add_video">વિડિયો ઉમેરો</string>
+    <string name="action_open_list">યાદી ખોલો</string>
+    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
+    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
+    <string name="action_read_file">ફાઈલ વાંચો</string>
+    <string name="action_read_file_import">વિડિયોને આયાત કરો</string>
+    <string name="action_read_file_open_grid">&action_open_grid;</string>
+    <string name="action_exit">બહાર નીકળવો</string>
+    <string name="dialog_title_add_video">વિડિયો ઉમેરો</string>
+    <string name="dialog_title_edit_video">વીડિયોમાં ફેરફાર કરો</string>
+    <string name="dialog_title_custom_grid">વૈવિધ્યપૂર્ણ જાળી</string>
+    <string name="label_video_title">શીર્ષક</string>
+    <string name="label_video_url_low_res">નીચી રીઝોલ્યુશન URL</string>
+    <string name="label_video_url_high_res">ઉચ્ચ રીઝોલ્યુશન URL</string>
+    <string name="label_video_is_enabled">સક્રિય થયેલ છે?</string>
+    <string name="label_custom_grid_columns">સ્તંભો</string>
+</resources>

@@ -30,14 +30,14 @@
 
     <!-- == form fields ============================================== -->
     <string name="label_video_title">Title</string>
-    <string name="label_video_url_low_res">Low-Res URL</string>
-    <string name="label_video_url_high_res">High-Res URL</string>
+    <string name="label_video_url_low_res">Low Resolution URL</string>
+    <string name="label_video_url_high_res">High Resolution URL</string>
     <string name="label_video_is_enabled">Is Enabled?</string>
     <!-- ============================================================= -->
     <string name="label_custom_grid_columns">Columns</string>
     <!-- ============================================================= -->
 
     <!-- == misc ===================================================== -->
-    <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36</string>
+    <string translatable="false" name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36</string>
     <!-- ============================================================= -->
 </resources>
