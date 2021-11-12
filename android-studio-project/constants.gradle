@@ -1,13 +1,11 @@
 project.ext {
-    releaseVersionCode = Integer.parseInt("002000216", 10)  //Integer.MAX_VALUE == 2147483647
-    releaseVersion     = '002.00.02-16API'
-    javaVersion        = JavaVersion.VERSION_1_8
-    minSdkVersion      = 16
-    targetSdkVersion   = 28
-    compileSdkVersion  = 28
-    buildToolsVersion  = '28.0.3'
+    releaseVersionCode  = Integer.parseInt("002020016", 10)  //Integer.MAX_VALUE == 2147483647
+    releaseVersion      = '002.02.00-16API'
+    javaVersion         = JavaVersion.VERSION_1_8
+    minSdkVersion       = 16
+    targetSdkVersion    = 29
+    compileSdkVersion   = 30
+    buildToolsVersion   = '30.0.3'
 
-    jetpackVersion          = '1.0.0'
- // exoPlayerVersion        = '2.10.0'
-    checkerframeworkVersion = '2.5.5'
+    libVersionExoPlayer = '2.16.0'
 }

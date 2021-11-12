@@ -2,40 +2,24 @@ package com.github.warren_bank.rtsp_ipcam_viewer.list_view.recycler_view;
 
 import com.github.warren_bank.rtsp_ipcam_viewer.R;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.data.VideoType;
+import com.github.warren_bank.rtsp_ipcam_viewer.common.helpers.ExoPlayerUtils;
 import com.github.warren_bank.rtsp_ipcam_viewer.fullscreen_view.activities.VideoActivity;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
-import android.net.Uri;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.rtsp.RtspDefaultClient;
-import com.google.android.exoplayer2.source.rtsp.RtspMediaSource;
-import com.google.android.exoplayer2.source.rtsp.core.Client;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
-public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
+public final class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     private PlayerView view;
-    private TextView title;
-    private SimpleExoPlayer exoPlayer;
-    private DefaultHttpDataSourceFactory dataSourceFactory;
-    private GestureDetector gestureDetector;
-
-    private VideoType data;
+    private ExoPlayer  exoPlayer;
+    private VideoType  data;
 
     public RecyclerViewHolder(View view) {
         this(view, 0);
@@ -44,15 +28,17 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
     public RecyclerViewHolder(View view, int defaultHeight) {
         super(view);
 
-        this.view  = (PlayerView) view;
-        this.title = (TextView) view.findViewById(R.id.exo_title);
+        this.view = (PlayerView) view;
+
+        TextView title = (TextView) view.findViewById(R.id.exo_error_message);  // https://github.com/google/ExoPlayer/blob/r2.16.0/library/ui/src/main/res/layout/exo_player_view.xml#L45
+        title.setGravity(Gravity.TOP);
 
         if (defaultHeight > 0) {
             this.view.setMinimumHeight(defaultHeight);
-            this.title.setMaxHeight(defaultHeight);
+            title.setMaxHeight(defaultHeight);
 
-            if (this.title.getTextSize() > defaultHeight) {
-                this.title.setTextSize(
+            if (title.getTextSize() > defaultHeight) {
+                title.setTextSize(
                     (defaultHeight > 10)
                       ? (float) (defaultHeight - 2)
                       : 0f
@@ -61,43 +47,42 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         }
 
         Context context = view.getContext();
-        DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-        RenderersFactory renderersFactory = new DefaultRenderersFactory(context);
-        this.exoPlayer = ExoPlayerFactory.newSimpleInstance(context, renderersFactory, trackSelector);
+        this.exoPlayer  = ExoPlayerUtils.initializeExoPlayer(context);
 
-        String userAgent = context.getResources().getString(R.string.user_agent);
-        this.dataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);
+        this.exoPlayer.setVolume(0f);  // mute all videos in list view
 
-        this.gestureDetector = new GestureDetector(this);
-
-        this.view.setOnTouchListener(this);
+        this.view.setControllerAutoShow(false);
         this.view.setUseController(false);
         this.view.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         this.view.setPlayer(this.exoPlayer);
 
-        this.exoPlayer.setVolume(0f);  // mute all videos in list view
+        this.view.setOnTouchListener(new GestureDetectorOnTouchListener(context) {
+            @Override
+            public void onClick() {
+                super.onClick();
+                doOnClick();
+            }
+
+            @Override
+            public void onDoubleClick() {
+                super.onDoubleClick();
+                doOnClick();
+            }
+
+            @Override
+            public void onLongClick() {
+                super.onLongClick();
+                doOnLongClick();
+            }
+        });
     }
 
     public void bind(VideoType data) {
         this.data = data;
-        this.title.setText(data.title);
+        this.view.setCustomErrorMessage(data.title);
 
         stop();
-
-        Uri uri = Uri.parse(data.URL_low_res);
-        MediaSource source;
-
-        if (Util.isRtspUri(uri)) {
-            source = new RtspMediaSource.Factory(RtspDefaultClient.factory()
-                .setFlags(Client.FLAG_ENABLE_RTCP_SUPPORT)
-                .setNatMethod(Client.RTSP_NAT_DUMMY))
-                .createMediaSource(uri);
-        } else {
-            source = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
-        }
-
-        exoPlayer.prepare(source);
-
+        ExoPlayerUtils.prepareExoPlayer(exoPlayer, data.URL_low_res);
         play();
     }
 
@@ -146,35 +131,4 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder implements
         }
         catch (Exception e){}
     }
-
-    // interface: View.OnTouchListener
-
-    public boolean onTouch(View v, MotionEvent e) {
-        return this.gestureDetector.onTouchEvent(e);
-    }
-
-    // interface: GestureDetector.OnGestureListener
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        doOnClick();
-        return true;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-        doOnLongClick();
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {return false;}
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {return false;}
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {return false;}
-
-    @Override
-    public void onShowPress(MotionEvent e) {}
 }

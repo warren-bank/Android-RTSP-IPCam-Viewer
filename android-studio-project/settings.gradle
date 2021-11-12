@@ -1,15 +1,4 @@
 include ':RTSP-IPCam-Viewer'
-
-include ':exoplayer-core'
-include ':exoplayer-ui'
-include ':exoplayer-rtp'
-include ':exoplayer-rtsp'
-include ':exoplayer-sdp'
 include ':MaterialFilePicker'
 
-project(':exoplayer-core'    ).projectDir = new File(rootDir, 'libs/exoplayer/core')
-project(':exoplayer-ui'      ).projectDir = new File(rootDir, 'libs/exoplayer/ui')
-project(':exoplayer-rtp'     ).projectDir = new File(rootDir, 'libs/exoplayer/rtp')
-project(':exoplayer-rtsp'    ).projectDir = new File(rootDir, 'libs/exoplayer/rtsp')
-project(':exoplayer-sdp'     ).projectDir = new File(rootDir, 'libs/exoplayer/sdp')
 project(':MaterialFilePicker').projectDir = new File(rootDir, 'libs/MaterialFilePicker')

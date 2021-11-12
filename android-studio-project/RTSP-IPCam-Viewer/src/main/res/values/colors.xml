@@ -14,4 +14,12 @@
 
     <color name="drawerListBackground">@color/windowBackground</color>
     <color name="drawerListTextColor">@color/windowTextColor</color>
+
+    <!--
+      https://github.com/google/ExoPlayer/blob/r2.16.0/library/ui/src/main/res/layout/exo_player_view.xml#L45
+        on PlayerView, override background color of error message overlay.
+        normally, this is a semi-transparent grey.
+        new value is fully transparent, because this TextView has been repurposed to display the title for the video.
+    -->
+    <color name="exo_error_message_background_color">#00000000</color>
 </resources>
