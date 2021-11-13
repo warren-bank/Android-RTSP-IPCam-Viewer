@@ -26,12 +26,18 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles = [
-                "proguard-rules.txt",
+                "proguard-rules.release.txt",
                 getDefaultProguardFile('proguard-android.txt')
             ]
         }
         debug {
-            jniDebuggable = true
+            jniDebuggable true
+            shrinkResources false
+            minifyEnabled true
+            proguardFiles = [
+                "proguard-rules.debug.txt",
+                getDefaultProguardFile('proguard-android.txt')
+            ]
         }
     }
 
