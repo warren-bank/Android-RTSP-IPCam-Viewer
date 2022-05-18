@@ -8,9 +8,9 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/grid_columns"
-        android:hint="@string/label_custom_grid_columns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number" />
+        android:inputType="number"
+        android:hint="@string/label_custom_grid_columns" />
 
 </com.google.android.material.textfield.TextInputLayout>

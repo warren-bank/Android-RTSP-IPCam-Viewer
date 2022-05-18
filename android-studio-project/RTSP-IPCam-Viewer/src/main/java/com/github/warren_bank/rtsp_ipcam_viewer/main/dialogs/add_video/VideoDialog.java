@@ -2,10 +2,11 @@ package com.github.warren_bank.rtsp_ipcam_viewer.main.dialogs.add_video;
 
 import com.github.warren_bank.rtsp_ipcam_viewer.R;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.data.VideoType;
+import com.github.warren_bank.rtsp_ipcam_viewer.common.dialogs.PersistentAlertDialogBuilder;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.helpers.Utils;
 
 import com.google.android.material.textfield.TextInputEditText;
-import androidx.appcompat.app.AlertDialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -66,14 +67,14 @@ public final class VideoDialog {
             is_enabled.setChecked(video.is_enabled);
         }
 
-        final AlertDialog alertDialog = new AlertDialog.Builder(context)
+        final AlertDialog alertDialog = new PersistentAlertDialogBuilder(context)
             .setTitle(
                 (video == null)
                     ? R.string.dialog_title_add_video
                     : R.string.dialog_title_edit_video
             )
             .setView(view)
-            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            .setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Utils.hideKeyboard(context, view);
@@ -82,7 +83,7 @@ public final class VideoDialog {
                     listener.onResult((VideoType) null);
                 }
             })
-            .setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.dialog_button_save, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // normalize user input

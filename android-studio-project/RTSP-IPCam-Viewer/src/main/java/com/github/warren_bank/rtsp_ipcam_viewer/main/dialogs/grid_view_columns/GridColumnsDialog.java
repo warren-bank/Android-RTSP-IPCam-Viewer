@@ -2,10 +2,11 @@ package com.github.warren_bank.rtsp_ipcam_viewer.main.dialogs.grid_view_columns;
 
 import com.github.warren_bank.rtsp_ipcam_viewer.R;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.data.SharedPrefs;
+import com.github.warren_bank.rtsp_ipcam_viewer.common.dialogs.PersistentAlertDialogBuilder;
 import com.github.warren_bank.rtsp_ipcam_viewer.common.helpers.Utils;
 
 import com.google.android.material.textfield.TextInputEditText;
-import androidx.appcompat.app.AlertDialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -31,27 +32,27 @@ public final class GridColumnsDialog {
             TextView.BufferType.EDITABLE
         );
 
-        final AlertDialog alertDialog = new AlertDialog.Builder(context)
+        final AlertDialog alertDialog = new PersistentAlertDialogBuilder(context)
             .setTitle(R.string.dialog_title_custom_grid)
             .setView(view)
-            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            .setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Utils.hideKeyboard(context, view);
                     dialogInterface.dismiss();
                 }
             })
-            .setPositiveButton("OPEN", new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.dialog_button_open, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Utils.hideKeyboard(context, view);
-                    dialogInterface.dismiss();
-
                     try {
                         int result = Integer.parseInt(
                             String.valueOf(columns.getText()),
                             10
                         );
+
+                        Utils.hideKeyboard(context, view);
+                        dialogInterface.dismiss();
 
                         SharedPrefs.setGridColumns(context, result);
 

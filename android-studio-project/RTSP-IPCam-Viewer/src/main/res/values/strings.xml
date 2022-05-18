@@ -27,6 +27,10 @@
     <!-- ============================================================= -->
     <string name="dialog_title_custom_grid">Custom Grid</string>
     <!-- ============================================================= -->
+    <string name="dialog_button_cancel">CANCEL</string>
+    <string name="dialog_button_open">OPEN</string>
+    <string name="dialog_button_save">SAVE</string>
+    <!-- ============================================================= -->
 
     <!-- == form fields ============================================== -->
     <string name="label_video_title">Title</string>
