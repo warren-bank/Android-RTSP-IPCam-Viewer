@@ -125,10 +125,24 @@ public final class ExoPlayerUtils {
   }
 
   public static void prepareExoPlayer(ExoPlayer player, String video_url) {
-    Uri uri = Uri.parse(video_url);
-    boolean isRtsp = uri.getScheme().toLowerCase().startsWith("rtsp");
-    MediaItem mediaItem = MediaItem.fromUri(uri);
+    boolean isRtsp      = false;
+    MediaItem mediaItem = null;
     MediaSource mediaSource;
+
+    try {
+      Uri uri       = Uri.parse(video_url);
+      String scheme = uri.getScheme();
+      if (scheme == null) throw new Exception("invalid URL");
+
+      scheme = scheme.toLowerCase();
+      isRtsp = scheme.startsWith("rtsp");
+
+      mediaItem = MediaItem.fromUri(uri);
+      if (mediaItem == null) throw new Exception("invalid media URI");
+    }
+    catch(Exception e) {
+      return;
+    }
 
     if (isRtsp) {
       mediaSource = new RtspMediaSource.Factory().createMediaSource(mediaItem);

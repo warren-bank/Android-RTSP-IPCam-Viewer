@@ -39,7 +39,10 @@ public final class VideoType {
             (that != null)
          && this.title.equals(that.title)
          && this.URL_low_res.equals(that.URL_low_res)
-         && this.URL_high_res.equals(that.URL_high_res)
+         && ((this.URL_high_res == null)
+                ? (that.URL_high_res == null)
+                : this.URL_high_res.equals(that.URL_high_res)
+            )
          && (this.is_enabled == that.is_enabled)
         );
     }

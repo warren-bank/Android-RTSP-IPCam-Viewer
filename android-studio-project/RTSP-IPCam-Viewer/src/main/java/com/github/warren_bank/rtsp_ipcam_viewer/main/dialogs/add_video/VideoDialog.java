@@ -85,17 +85,37 @@ public final class VideoDialog {
             .setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    // normalize user input
+                    String video_title        = normalize_string(String.valueOf(title.getText()));
+                    String video_URL_low_res  = normalize_string(String.valueOf(URL_low_res.getText()));
+                    String video_URL_high_res = normalize_string(String.valueOf(URL_high_res.getText()));
+                    boolean video_is_enabled  = is_enabled.isChecked();
+
+                    if ((video_URL_low_res == null) && (video_URL_high_res != null)) {
+                        video_URL_low_res  = video_URL_high_res;
+                        video_URL_high_res = null;
+                    }
+
+                    if ((video_URL_low_res != null) && (video_URL_high_res != null) && video_URL_low_res.equals(video_URL_high_res)) {
+                        video_URL_high_res = null;
+                    }
+
+                    // validate user input
+                    if ((video_title == null) || (video_URL_low_res == null)) return;
+
                     Utils.hideKeyboard(context, view);
                     dialogInterface.dismiss();
 
-                    VideoType result = new VideoType(
-                        String.valueOf(title.getText()),
-                        String.valueOf(URL_low_res.getText()),
-                        String.valueOf(URL_high_res.getText()),
-                        is_enabled.isChecked()
-                    );
+                    VideoType result = new VideoType(video_title, video_URL_low_res, video_URL_high_res, video_is_enabled);
 
                     listener.onResult(result);
+                }
+
+                private String normalize_string(String val) {
+                    if (val == null) return null;
+                    val = val.trim();
+                    if (val.isEmpty()) return null;
+                    return val;
                 }
             })
             .show();
