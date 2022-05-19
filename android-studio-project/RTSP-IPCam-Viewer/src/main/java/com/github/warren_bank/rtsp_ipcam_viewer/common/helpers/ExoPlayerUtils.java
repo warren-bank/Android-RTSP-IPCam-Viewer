@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MediaSourceFactory;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.rtsp.RtspMediaSource;
+import com.google.android.exoplayer2.ext.rtmp.RtmpDataSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -25,8 +26,9 @@ import com.google.android.exoplayer2.util.Clock;
 
 public final class ExoPlayerUtils {
 
-  private static String USER_AGENT;
+  private static RtmpDataSource.Factory rtmpDataSourceFactory;
   private static DefaultHttpDataSource.Factory httpDataSourceFactory;
+  private static String USER_AGENT;
 
   private static RenderersFactory renderersFactory;
   private static DefaultExtractorsFactory extractorsFactory;
@@ -34,6 +36,24 @@ public final class ExoPlayerUtils {
   private static DefaultTrackSelector trackSelector;
   private static DefaultLoadControl loadControl;
   private static BandwidthMeter bandwidthMeter;
+
+  private static synchronized RtmpDataSource.Factory getRtmpDataSourceFactory() {
+    if (rtmpDataSourceFactory == null) {
+      rtmpDataSourceFactory = new RtmpDataSource.Factory();
+    }
+    return rtmpDataSourceFactory;
+  }
+
+  private static synchronized DefaultHttpDataSource.Factory getHttpDataSourceFactory() {
+    if (httpDataSourceFactory == null) {
+      httpDataSourceFactory = new DefaultHttpDataSource.Factory();
+
+      if (USER_AGENT != null) {
+        httpDataSourceFactory.setUserAgent(USER_AGENT);
+      }
+    }
+    return httpDataSourceFactory;
+  }
 
   private static synchronized void setUserAgent(Context context) {
     setUserAgent(
@@ -47,17 +67,6 @@ public final class ExoPlayerUtils {
     if (httpDataSourceFactory != null) {
       httpDataSourceFactory.setUserAgent(USER_AGENT);
     }
-  }
-
-  private static synchronized DefaultHttpDataSource.Factory getHttpDataSourceFactory() {
-    if (httpDataSourceFactory == null) {
-      httpDataSourceFactory = new DefaultHttpDataSource.Factory();
-
-      if (USER_AGENT != null) {
-        httpDataSourceFactory.setUserAgent(USER_AGENT);
-      }
-    }
-    return httpDataSourceFactory;
   }
 
   private static RenderersFactory getRenderersFactory(Context context) {
@@ -126,6 +135,7 @@ public final class ExoPlayerUtils {
 
   public static void prepareExoPlayer(ExoPlayer player, String video_url) {
     boolean isRtsp      = false;
+    boolean isRtmp      = false;
     MediaItem mediaItem = null;
     MediaSource mediaSource;
 
@@ -136,6 +146,7 @@ public final class ExoPlayerUtils {
 
       scheme = scheme.toLowerCase();
       isRtsp = scheme.startsWith("rtsp");
+      isRtmp = scheme.startsWith("rtmp");
 
       mediaItem = MediaItem.fromUri(uri);
       if (mediaItem == null) throw new Exception("invalid media URI");
@@ -146,6 +157,9 @@ public final class ExoPlayerUtils {
 
     if (isRtsp) {
       mediaSource = new RtspMediaSource.Factory().createMediaSource(mediaItem);
+    }
+    else if (isRtmp) {
+      mediaSource = new ProgressiveMediaSource.Factory(getRtmpDataSourceFactory()).createMediaSource(mediaItem);
     }
     else {
       mediaSource = new ProgressiveMediaSource.Factory(getHttpDataSourceFactory()).createMediaSource(mediaItem);
