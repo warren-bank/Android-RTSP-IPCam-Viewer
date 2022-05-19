@@ -53,16 +53,33 @@ public final class RecyclerViewCallback extends ItemTouchHelper.SimpleCallback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
 
-        if (
-            (draggingFromPosition < videos.size()) &&
-            (draggingToPosition   < videos.size()) &&
-            (draggingFromPosition != C.INDEX_UNSET)
-        ) {
-            videos.add(draggingToPosition, videos.remove(draggingFromPosition));
-            adapter.notifyDataSetChanged();
-            RecyclerViewAdapter.saveVideos(adapter);
-        }
+        int fromPos = draggingFromPosition;
+        int toPos   = draggingToPosition;
+
         draggingFromPosition = C.INDEX_UNSET;
-        draggingToPosition = C.INDEX_UNSET;
+        draggingToPosition   = C.INDEX_UNSET;
+
+        if (
+            (fromPos != C.INDEX_UNSET) &&
+            (toPos   != C.INDEX_UNSET) &&
+            (fromPos < videos.size())  &&
+            (toPos   < videos.size())  &&
+            (fromPos != toPos)
+        ) {
+            videos.add(toPos, videos.remove(fromPos));
+            RecyclerViewAdapter.saveVideos(adapter);
+
+            if (!recyclerView.isComputingLayout() && (recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE)) {
+                adapter.notifyDataSetChanged();
+            }
+            else {
+                recyclerView.post(new Runnable(){
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }
     }
 }
