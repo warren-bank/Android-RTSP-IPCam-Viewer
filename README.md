@@ -1,6 +1,6 @@
 ### [RTSP IPCam Viewer](https://github.com/warren-bank/Android-RTSP-IPCam-Viewer)
 
-Android app to watch RTSP video streams; this format is typical of inexpensive IP security cams.
+Android app to watch RTSP and RTMP video streams; these formats are typical of inexpensive IP security cams.
 
 #### Background
 
@@ -61,12 +61,60 @@ Android app to watch RTSP video streams; this format is typical of inexpensive I
 * minimum supported version of Android:
   * Android 4.1 Jelly Bean (API 16)
 * when videos are displayed in list/grid views:
-  * audio is mute
-  * click to open video in full-screen view
-  * long click to toggle pause/play
+  * Android status bar is visible
+  * audio is disabled
+  * video playback controls are disabled
 * when a video is displayed in full-screen view:
-  * audio is not mute
-  * controls are visible
+  * Android status bar is hidden
+  * audio is enabled
+  * video playback controls are enabled
+
+#### Usage
+
+* activity: list of all video streams
+  - action bar
+    * icon: ![ic_add_video](https://github.com/google/material-design-icons/raw/4.0.0/android/content/add_circle_outline/materialicons/black/res/drawable-mdpi/baseline_add_circle_outline_black_18.png)
+      - click to add new video stream
+    * overflow menu: _Open List_
+      - display all _enabled_ video streams in a single-column vertical list
+    * overflow menu: _Open Grid (2 col)_
+      - display all _enabled_ video streams in a two-column grid
+    * overflow menu: _Open Grid (N col)_
+      - display a dialog to allow the user to specify the integer value of _N_
+      - display all _enabled_ video streams in a _N_-column grid
+    * overflow menu: _Read File_
+      - display a file chooser to allow the user to specify the path to a [JSON file](https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/master/.etc/sample_file_import_data/video_streams.json)
+      - parse the JSON to obtain an ordered list of new video streams
+      - append the new video streams to the list of all video streams
+    * overflow menu: _Exit_
+      - exit the application
+  - any video stream in the list
+    * swipe (left or right) to remove
+      - __permanently__ deletes record of the video stream
+    * drag (up or down) to change ordered position in list
+      - modified order is __persistent__
+    * click (single, short) on the checkbox to toggle: _enabled_
+    * click (single, short) on the name to edit
+* activity: list of all _enabled_ video streams
+  - any video stream in the list
+    * swipe (left or right) to remove
+      - __temporarily__ hides the video stream
+      - its record is not altered
+      - the video stream will be visible once again when the list is recreated
+    * drag (up or down) to change ordered position in list
+      - modified order is __temporary__
+      - the order of records is not altered
+      - the video stream will appear in its original ordered position once again when the list is recreated
+    * click (single, long) to toggle: _pause/play_
+    * click (single or double, short) to open in full-screen view
+* activity: grid of all _enabled_ video streams
+  - any video stream in the grid
+    * click (single, long) to toggle: _pause/play_
+    * click (single or double, short) to open in full-screen view
+* activity: full-screen view of a single video stream
+  - video surface
+    * click (single, short) to toggle: display of the video playback controls
+      - which are automatically hidden after a brief timeout
 
 #### Screenshots
 
