@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Dodaj film wideo</string>
     <string name="dialog_title_edit_video">Edytuj film wideo</string>
     <string name="dialog_title_custom_grid">Siatka niestandardowa</string>
+    <string name="dialog_button_cancel">ANULUJ</string>
+    <string name="dialog_button_open">OTWÓRZ</string>
+    <string name="dialog_button_save">ZAPISZ</string>
     <string name="label_video_title">Tytuł</string>
     <string name="label_video_url_low_res">Niska rozdzielczość URL</string>
     <string name="label_video_url_high_res">Wysoka rozdzielczość URL</string>

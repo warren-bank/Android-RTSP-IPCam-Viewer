@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">اضافة فيديو</string>
     <string name="dialog_title_edit_video">تحرير فيديو</string>
     <string name="dialog_title_custom_grid">خطوط التحديد المهيأة</string>
+    <string name="dialog_button_cancel">الغاء</string>
+    <string name="dialog_button_open">فتح</string>
+    <string name="dialog_button_save">حفظ</string>
     <string name="label_video_title">العنوان</string>
     <string name="label_video_url_low_res">درجة وضوح منخفضة URL</string>
     <string name="label_video_url_high_res">درجة وضوح عالية URL</string>

@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Dodaj video.</string>
     <string name="dialog_title_edit_video">Uređivanje videa</string>
     <string name="dialog_title_custom_grid">Jedna prilagođena mreža.</string>
+    <string name="dialog_button_cancel">OPOZIV</string>
+    <string name="dialog_button_open">OTVORI</string>
+    <string name="dialog_button_save">SPREMI.</string>
     <string name="label_video_title">Jedan naslov.</string>
     <string name="label_video_url_low_res">Jedna niska rezolucija. URL</string>
     <string name="label_video_url_high_res">Jedna velika rezolucija. URL</string>

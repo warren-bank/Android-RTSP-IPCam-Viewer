@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Ychwanegu Fideo</string>
     <string name="dialog_title_edit_video">Golygu Fideo</string>
     <string name="dialog_title_custom_grid">Grid Cyfaddas</string>
+    <string name="dialog_button_cancel">DIDDYMU</string>
+    <string name="dialog_button_open">AGOR</string>
+    <string name="dialog_button_save">CADW</string>
     <string name="label_video_title">Teitl</string>
     <string name="label_video_url_low_res">Cydraniad Isel URL</string>
     <string name="label_video_url_high_res">Cydraniad Uchel URL</string>

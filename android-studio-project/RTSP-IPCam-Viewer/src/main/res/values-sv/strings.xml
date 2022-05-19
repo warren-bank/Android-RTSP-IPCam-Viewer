@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Lägg till video</string>
     <string name="dialog_title_edit_video">Redigera video</string>
     <string name="dialog_title_custom_grid">Anpassat rutnät</string>
+    <string name="dialog_button_cancel">AVBRYT</string>
+    <string name="dialog_button_open">ÖPPEN</string>
+    <string name="dialog_button_save">SPARA</string>
     <string name="label_video_title">Rubrik</string>
     <string name="label_video_url_low_res">Låg upplösning URL</string>
     <string name="label_video_url_high_res">Hög upplösning URL</string>

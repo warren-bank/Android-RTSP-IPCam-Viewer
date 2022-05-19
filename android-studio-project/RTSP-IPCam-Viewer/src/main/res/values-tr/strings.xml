@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Video Ekle</string>
     <string name="dialog_title_edit_video">Videoyu Düzenle</string>
     <string name="dialog_title_custom_grid">Özel Izgara</string>
+    <string name="dialog_button_cancel">CANCEL</string>
+    <string name="dialog_button_open">AçıK</string>
+    <string name="dialog_button_save">SAKLA</string>
     <string name="label_video_title">Unvan</string>
     <string name="label_video_url_low_res">Düşük Çözünürlük URL</string>
     <string name="label_video_url_high_res">Yüksek Çözünürlük URL</string>

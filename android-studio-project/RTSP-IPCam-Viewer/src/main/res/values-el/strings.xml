@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Προσθήκη βίντεο</string>
     <string name="dialog_title_edit_video">Τροποποίηση βίντεο</string>
     <string name="dialog_title_custom_grid">Τελωνείο προσαρμοσμένος</string>
+    <string name="dialog_button_cancel">ΑΚΎΡΩΣΗ.</string>
+    <string name="dialog_button_open">\' ΑΝΟΙΞΈ</string>
+    <string name="dialog_button_save">ΑΠΟΘΉΚΕΥΣΗ:</string>
     <string name="label_video_title">\' Τίτλος</string>
     <string name="label_video_url_low_res">Χαμηλό ψήφισμα URL</string>
     <string name="label_video_url_high_res">Υψηλή ανάλυση: URL</string>

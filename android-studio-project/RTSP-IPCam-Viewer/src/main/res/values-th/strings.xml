@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">เพิ่มวิดีโอ</string>
     <string name="dialog_title_edit_video">แก้ไขวิดีโอ</string>
     <string name="dialog_title_custom_grid">กริดแบบกำหนดเอง</string>
+    <string name="dialog_button_cancel">ยกเลิก</string>
+    <string name="dialog_button_open">เปิด</string>
+    <string name="dialog_button_save">บันทึก</string>
     <string name="label_video_title">ชื่อเรื่อง</string>
     <string name="label_video_url_low_res">ความละเอียดต่ำ URL</string>
     <string name="label_video_url_high_res">ความละเอียดสูง URL</string>

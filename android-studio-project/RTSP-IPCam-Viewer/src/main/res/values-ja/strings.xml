@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">ビデオの追加</string>
     <string name="dialog_title_edit_video">ビデオの編集</string>
     <string name="dialog_title_custom_grid">カスタム・グリッド</string>
+    <string name="dialog_button_cancel">キャンセル</string>
+    <string name="dialog_button_open">オープン</string>
+    <string name="dialog_button_save">セーブ</string>
     <string name="label_video_title">書名</string>
     <string name="label_video_url_low_res">低解像度 URL</string>
     <string name="label_video_url_high_res">高解像度 URL</string>

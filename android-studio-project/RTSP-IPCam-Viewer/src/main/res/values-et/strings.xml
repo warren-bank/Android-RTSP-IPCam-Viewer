@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Lisa video</string>
     <string name="dialog_title_edit_video">Muuda video</string>
     <string name="dialog_title_custom_grid">Kohandatud alusvõrk</string>
+    <string name="dialog_button_cancel">LOOBU</string>
+    <string name="dialog_button_open">AVATUD</string>
+    <string name="dialog_button_save">SAVE</string>
     <string name="label_video_title">Pealkiri</string>
     <string name="label_video_url_low_res">Madal lahutus URL</string>
     <string name="label_video_url_high_res">Kõrge lahutus URL</string>

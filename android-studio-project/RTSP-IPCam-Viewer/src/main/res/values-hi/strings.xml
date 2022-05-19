@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">वीडियो जोड़ें</string>
     <string name="dialog_title_edit_video">वीडियो संपादित करें</string>
     <string name="dialog_title_custom_grid">मनपसंद ग्रिड</string>
+    <string name="dialog_button_cancel">रद्द करें</string>
+    <string name="dialog_button_open">खुला</string>
+    <string name="dialog_button_save">सहेजें</string>
     <string name="label_video_title">शीर्षक</string>
     <string name="label_video_url_low_res">कम संकल्प URL</string>
     <string name="label_video_url_high_res">उच्च संकल्प URL</string>

@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Tilføj video</string>
     <string name="dialog_title_edit_video">Redigér video</string>
     <string name="dialog_title_custom_grid">Tilpasset gitter</string>
+    <string name="dialog_button_cancel">ANNULLÉR</string>
+    <string name="dialog_button_open">ÅBN</string>
+    <string name="dialog_button_save">GEM</string>
     <string name="label_video_title">Titel</string>
     <string name="label_video_url_low_res">Lav opløsning URL</string>
     <string name="label_video_url_high_res">Høj opløsning URL</string>

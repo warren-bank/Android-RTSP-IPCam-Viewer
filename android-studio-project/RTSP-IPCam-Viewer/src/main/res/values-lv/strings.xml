@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Pievienot video</string>
     <string name="dialog_title_edit_video">Rediģēt video</string>
     <string name="dialog_title_custom_grid">Pielāgots režģis</string>
+    <string name="dialog_button_cancel">ATCELT</string>
+    <string name="dialog_button_open">OPEN</string>
+    <string name="dialog_button_save">SAVE</string>
     <string name="label_video_title">Nosaukums</string>
     <string name="label_video_url_low_res">Zema izšķirtspēja URL</string>
     <string name="label_video_url_high_res">Augsta izšķirtspēja URL</string>

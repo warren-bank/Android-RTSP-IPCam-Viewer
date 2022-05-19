@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">添加视频</string>
     <string name="dialog_title_edit_video">编辑视频</string>
     <string name="dialog_title_custom_grid">定制网格</string>
+    <string name="dialog_button_cancel">取消</string>
+    <string name="dialog_button_open">打开</string>
+    <string name="dialog_button_save">Save</string>
     <string name="label_video_title">标题</string>
     <string name="label_video_url_low_res">低分辨率 URL</string>
     <string name="label_video_url_high_res">高分辨率 URL</string>

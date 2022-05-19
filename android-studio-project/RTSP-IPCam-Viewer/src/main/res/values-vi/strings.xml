@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Thêm Video</string>
     <string name="dialog_title_edit_video">Chỉnh sửa video</string>
     <string name="dialog_title_custom_grid">Lưới tùy chỉnh</string>
+    <string name="dialog_button_cancel">HỦY</string>
+    <string name="dialog_button_open">MOPEN</string>
+    <string name="dialog_button_save">SAVE</string>
     <string name="label_video_title">Tiêu đề</string>
     <string name="label_video_url_low_res">Độ phân giải URL</string>
     <string name="label_video_url_high_res">Độ phân giải URL</string>

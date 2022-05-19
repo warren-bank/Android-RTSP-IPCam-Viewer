@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE resources [
-    <!ENTITY action_open_grid "గ్రిడ్ను తెరువుము">
+    <!ENTITY action_open_grid "గ్రిడ్ తెరవండి">
 ]>
 <resources>
-    <string name="app_name">RTSP IP-Cam వీక్షణిName</string>
+    <string name="app_name">RTSP IP-Cam వీక్షకుడు</string>
     <string name="action_add_video">వీడియో జతచేయి</string>
     <string name="action_open_list">ఓపెన్ జాబితా</string>
     <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">వీడియో జతచేయి</string>
     <string name="dialog_title_edit_video">వీడియో సరికూర్పు</string>
     <string name="dialog_title_custom_grid">నిర్దేశిత గ్రిడ్Comment</string>
+    <string name="dialog_button_cancel">రద్దు</string>
+    <string name="dialog_button_open">తెరువు</string>
+    <string name="dialog_button_save">సేవ్ చేయండి</string>
     <string name="label_video_title">శీర్షిక</string>
     <string name="label_video_url_low_res">తక్కువ పరిష్కారాలు URL</string>
     <string name="label_video_url_high_res">అధిక రిజల్యూషన్ URL</string>

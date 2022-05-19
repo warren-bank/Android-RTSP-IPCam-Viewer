@@ -3,7 +3,7 @@
     <!ENTITY action_open_grid "Отворена мрежа">
 ]>
 <resources>
-    <string name="app_name">RTSP IP-Cam Преглед:</string>
+    <string name="app_name">RTSP IP-Cam телезрител</string>
     <string name="action_add_video">Добавяне на видео</string>
     <string name="action_open_list">Отваряне на списък</string>
     <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
@@ -15,6 +15,9 @@
     <string name="dialog_title_add_video">Добавяне на видео</string>
     <string name="dialog_title_edit_video">Редактиране на видео</string>
     <string name="dialog_title_custom_grid">Потребителска мрежа:</string>
+    <string name="dialog_button_cancel">ОТМЯНА</string>
+    <string name="dialog_button_open">ОТВАРЯМ</string>
+    <string name="dialog_button_save">СПЕСТИ</string>
     <string name="label_video_title">Име:</string>
     <string name="label_video_url_low_res">Ниска резолюция. URL</string>
     <string name="label_video_url_high_res">Висока резолюция: URL</string>
