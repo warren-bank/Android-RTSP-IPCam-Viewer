@@ -2,6 +2,10 @@
 
 Android app to watch RTSP and RTMP video streams; these formats are typical of inexpensive IP security cams.
 
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+     alt="Get it on IzzyOnDroid"
+     height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.github.warren_bank.rtsp_ipcam_viewer)
+
 #### Background
 
 * [tinyCam PRO](https://play.google.com/store/apps/details?id=com.alexvas.dvr.pro) by [Tiny Solutions LLC](https://tinycammonitor.com/)
