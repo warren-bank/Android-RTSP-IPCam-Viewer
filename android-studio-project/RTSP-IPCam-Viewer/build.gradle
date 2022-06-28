@@ -21,6 +21,17 @@ android {
         archivesBaseName += "-$versionName"
     }
 
+    flavorDimensions "languageResources"
+
+    productFlavors {
+        withAllLanguageTranslations {
+            dimension "languageResources"
+        }
+        english {
+            dimension "languageResources"
+        }
+    }
+
     buildTypes {
         release {
             shrinkResources true
