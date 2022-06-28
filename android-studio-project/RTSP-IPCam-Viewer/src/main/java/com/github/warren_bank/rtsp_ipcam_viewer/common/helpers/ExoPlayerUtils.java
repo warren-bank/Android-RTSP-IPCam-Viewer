@@ -10,7 +10,7 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.analytics.AnalyticsCollector;
+import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -112,8 +112,8 @@ public final class ExoPlayerUtils {
   }
 
   // not a singleton; reuse causes fatal exception
-  private static AnalyticsCollector getAnalyticsCollector() {
-    return new AnalyticsCollector(Clock.DEFAULT);
+  private static DefaultAnalyticsCollector getAnalyticsCollector() {
+    return new DefaultAnalyticsCollector(Clock.DEFAULT);
   }
 
   public static ExoPlayer initializeExoPlayer(Context context) {
