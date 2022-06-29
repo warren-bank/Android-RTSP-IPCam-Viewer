@@ -16,6 +16,7 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public Context context;
     public ArrayList<VideoType> videos;
     private int minHeight;
+    private ArrayList<RecyclerViewHolder> holders;
 
     public RecyclerViewAdapter(Context context, ArrayList<VideoType> videos, int minHeight) {
         super();
@@ -23,6 +24,7 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         this.context   = context;
         this.videos    = videos;
         this.minHeight = minHeight;
+        this.holders   = new ArrayList<RecyclerViewHolder>();
 
         setHasStableIds(true);
     }
@@ -31,7 +33,9 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_recycler_view_holder, parent, false);
 
-        return new RecyclerViewHolder(view, minHeight);
+        RecyclerViewHolder holder = new RecyclerViewHolder(view, minHeight);
+        holders.add(holder);
+        return holder;
     }
 
     @Override
@@ -43,9 +47,20 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         holder.bind(video);
     }
 
-    @Override
-    public void onViewDetachedFromWindow(RecyclerViewHolder holder) {
-        holder.stop();
+    // deallocate all resources that consume memory
+    public void release() {
+        if (holders != null) {
+            for (RecyclerViewHolder holder : holders) {
+              holder.release();
+            }
+            holders.clear();
+
+            context = null;
+            videos  = null;
+            holders = null;
+
+            System.gc();
+        }
     }
 
     @Override

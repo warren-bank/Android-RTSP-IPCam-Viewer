@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
@@ -52,14 +53,23 @@ public class VideoActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        stop();
+        pause();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
 
+        view.setPlayer(null);
+        stop();
         release();
+
+        exoPlayer = null;
+        view      = null;
+
+        setContentView(new View(this));
+        System.gc();
+        finish();
     }
 
     private void play() {

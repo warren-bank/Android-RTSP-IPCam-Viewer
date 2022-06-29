@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -43,17 +44,35 @@ public final class GridActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        recyclerView.setAdapter(recyclerViewAdapter);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
-        recyclerView.setAdapter(null);
+        // deallocate all resources that consume memory
+        if (recyclerView != null) {
+            recyclerView.setAdapter(null);
+            recyclerViewAdapter.release();
+            recyclerViewAdapter = null;
+            recyclerView = null;
+            videos = null;
+            setContentView(new View(this));
+            System.gc();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (recyclerView == null) {
+            // give the garbage collector a little time to recover unused memory
+            new Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        // display a fresh instance of this Activity
+                        recreate();
+                    }
+            }, 1000);
+        }
     }
 
     public static void open(Context context, String jsonVideos, int columns) {

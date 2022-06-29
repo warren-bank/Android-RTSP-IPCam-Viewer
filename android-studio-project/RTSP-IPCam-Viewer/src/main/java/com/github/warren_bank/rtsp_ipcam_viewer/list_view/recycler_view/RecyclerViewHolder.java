@@ -86,32 +86,60 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder {
         play();
     }
 
-    public void play() {
-        try {
-            exoPlayer.setPlayWhenReady(true);
+    public void pause() {
+        if (exoPlayer != null) {
+            try {
+                exoPlayer.setPlayWhenReady(false);
+            }
+            catch (Exception e){}
         }
-        catch (Exception e){}
     }
 
-    public void pause() {
-        try {
-            exoPlayer.setPlayWhenReady(false);
+    public void play() {
+        if (exoPlayer != null) {
+            try {
+                exoPlayer.setPlayWhenReady(true);
+            }
+            catch (Exception e){}
         }
-        catch (Exception e){}
+    }
+
+    public void togglePausePlay() {
+        if (exoPlayer != null) {
+            try {
+                exoPlayer.setPlayWhenReady(
+                    !exoPlayer.getPlayWhenReady()
+                );
+            }
+            catch (Exception e){}
+        }
     }
 
     public void stop() {
-        try {
-            exoPlayer.stop(true);
+        if (exoPlayer != null) {
+            try {
+                exoPlayer.stop(true);
+            }
+            catch (Exception e){}
         }
-        catch (Exception e){}
     }
 
+    // deallocate all resources that consume memory
     public void release() {
-        try {
-            exoPlayer.release();
+        if (exoPlayer != null) {
+            try {
+                view.setPlayer(null);
+                exoPlayer.stop(true);
+                exoPlayer.release();
+
+                exoPlayer = null;
+                view      = null;
+                data      = null;
+
+                System.gc();
+            }
+            catch (Exception e){}
         }
-        catch (Exception e){}
     }
 
     // open selected video in fullscreen view
@@ -124,11 +152,6 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     // toggle play/pause of selected video
     private void doOnLongClick() {
-        try {
-            exoPlayer.setPlayWhenReady(
-                !exoPlayer.getPlayWhenReady()
-            );
-        }
-        catch (Exception e){}
+        togglePausePlay();
     }
 }
