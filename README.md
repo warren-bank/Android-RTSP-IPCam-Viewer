@@ -47,7 +47,7 @@ Android app to watch RTSP and RTMP video streams; these formats are typical of i
       * is enabled?
   * data import methods:
     * manual entry via dialog
-    * import via text file ([JSON format](https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/master/.etc/sample_file_import_data/video_streams.json))
+    * import via text file in [JSON format](./android-studio-project/RTSP-IPCam-Viewer/src/main/assets/video_streams.json)
 * display of enabled video streams:
   * list view of low-res video streams
   * grid view of low-res video streams
@@ -83,7 +83,7 @@ Android app to watch RTSP and RTMP video streams; these formats are typical of i
       - display a dialog to allow the user to specify the integer value of _N_
       - display all _enabled_ video streams in a _N_-column grid
     * overflow menu: _Read File_
-      - display a file chooser to allow the user to specify the path to a [JSON file](https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/master/.etc/sample_file_import_data/video_streams.json)
+      - display a file chooser to allow the user to specify the path to a [JSON file](./android-studio-project/RTSP-IPCam-Viewer/src/main/assets/video_streams.json)
       - parse the JSON to obtain an ordered list of new video streams
       - append the new video streams to the list of all video streams
     * overflow menu: _Exit_

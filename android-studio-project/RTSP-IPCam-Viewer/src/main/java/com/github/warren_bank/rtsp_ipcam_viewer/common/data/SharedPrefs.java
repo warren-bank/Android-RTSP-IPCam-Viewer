@@ -58,7 +58,7 @@ public final class SharedPrefs {
         String jsonVideos = getString(context, PREF_VIDEOS, null);
 
         if ((jsonVideos == null) && allow_mock_data) {
-            jsonVideos = MockData.getJsonVideos();
+            jsonVideos = MockData.getJsonVideos(context);
 
             setVideos(context, jsonVideos);
         }
