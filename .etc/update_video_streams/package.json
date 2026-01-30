@@ -1,0 +1,12 @@
+{
+  "name": "update_video_streams",
+  "private": true,
+  "scripts": {
+    "download": "ca-dot-rtmp ./ca-dot-rtmp.txt",
+    "process":  "node ./process.js ./ca-dot-rtmp.txt ../../android-studio-project/RTSP-IPCam-Viewer/src/main/assets/video_streams.json",
+    "start":    "npm run download && npm run process"
+  },
+  "devDependencies": {
+    "@warren-bank/ca-dot-rtmp": "^1.0.0"
+  }
+}

@@ -1,26 +1,722 @@
 [
-    {
-        "title": "Big Buck Bunny (RTSP, 240x160, VOD)",
-        "URL_low_res": "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4",
-        "URL_high_res": null,
-        "is_enabled": true
-    },
-    {
-        "title": "Big Buck Bunny (RTMP, 240x160, VOD)",
-        "URL_low_res": "rtmp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4",
-        "URL_high_res": null,
-        "is_enabled": true
-    },
-    {
-        "title": "Big Buck Bunny (RTSP, 512x290, Live)",
-        "URL_low_res": "rtsp://wowzaec2demo.streamlock.net/live/bigbuckbunny",
-        "URL_high_res": null,
-        "is_enabled": true
-    },
-    {
-        "title": "Big Buck Bunny (RTMP, 512x290, Live)",
-        "URL_low_res": "rtmp://wowzaec2demo.streamlock.net/live/bigbuckbunny",
-        "URL_high_res": null,
-        "is_enabled": true
-    }
+  {
+    "title": "CA DOT: W4 at Lone Tree Way",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W4_at_Lone_Tree_Way.stream",
+    "URL_high_res": null,
+    "is_enabled": true
+  },
+  {
+    "title": "CA DOT: S680 at N Main St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S680_at_N_Main_St.stream",
+    "URL_high_res": null,
+    "is_enabled": true
+  },
+  {
+    "title": "CA DOT: E80 JWO ASHBY Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E80_JWO_ASHBY_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": true
+  },
+  {
+    "title": "CA DOT: W580 at Tassajara Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W580_at_Tassajara_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": true
+  },
+  {
+    "title": "CA DOT: N280 at JCT 101",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N280_at_JCT_101.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 JSO E Hilldale Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_JSO_E_Hilldale_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S680 JSO JCT 80",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S680_JSO_JCT_80.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S880 at JCT 84",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S880_at_JCT_84.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 at 580",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_at_580.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S880 JNO JCT 238",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S880_JNO_JCT_238.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 at Ignacio Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_at_Ignacio_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E80 at JCT 101",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E80_at_JCT_101.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E80 at 6th St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E80_at_6th_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 at Candlestick Park",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_at_Candlestick_Park.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S880 at Paseo Grande OC",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S880_at_Paseo_Grande_OC.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 JNO Greenbrook",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_JNO_Greenbrook.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W80 at Fremont St Ofr",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W80_at_Fremont_St_Ofr.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W80 at SAS Tower",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W80_at_SAS_Tower.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W80 at Ashby",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W80_at_Ashby.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W80 at SFOBB Incline",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W80_at_SFOBB_Incline.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E80 at SAS Tower",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E80_at_SAS_Tower.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S680 JSO Pine Valley",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S680_JSO_Pine_Valley.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E4 at Port Chicago Hwy",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E4_at_Port_Chicago_Hwy.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W4 at Contra Loma Bl L St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W4_at_Contra_Loma_Bl_L_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W4 JWO Hillcrest Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W4_JWO_Hillcrest_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N17 at Saratoga Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N17_at_Saratoga_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N17 at Lark OFR",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N17_at_Lark_OFR.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E37 at Lakeville Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E37_at_Lakeville_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W37 EOF JCT 121",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W37_EOF_JCT_121.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W80 at Powell St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W80_at_Powell_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W80 at Gilman St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W80_at_Gilman_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E80 at Hwy 4 JCT",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E80_at_Hwy_4_JCT.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W80 at JCT 29",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W80_at_JCT_29.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E80 EOF American Canyon Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E80_EOF_American_Canyon_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W80 WOF Green Valley Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W80_WOF_Green_Valley_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S880 at The Alameda OFR",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S880_at_The_Alameda_OFR.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N84 at Univeristy Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N84_at_Univeristy_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E84 at Vallecitos Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E84_at_Vallecitos_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S85 at Stevens Creek",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S85_at_Stevens_Creek.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E92 JWO Foster City Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E92_JWO_Foster_City_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 SOF Hwy 25",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_SOF_Hwy_25.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at Airport Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_Airport_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 at Candlesticks OFR",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_at_Candlesticks_OFR.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 NOF Petaluma Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_NOF_Petaluma_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at JCT 116",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_JCT_116.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at College Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_College_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N123 at 40th St North View",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N123_at_40th_St_North_View.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N123 at 40th St East View",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N123_at_40th_St_East_View.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N123 at 40th St South View",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N123_at_40th_St_South_View.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W205 JEO JCT 580",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W205_JEO_JCT_580.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W237 JWO Lawrence Expwy",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W237_JWO_Lawrence_Expwy.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W237 at McCarthy",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W237_at_McCarthy.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S238 at E Lewelling OR",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S238_at_E_Lewelling_OR.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S238 NOF Ashland UC",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S238_NOF_Ashland_UC.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 JSO JCT 242",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_JSO_JCT_242.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E260 POSEY TUBE TUNNEL ENTRANCE",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E260_POSEY_TUBE_TUNNEL_ENTRANCE.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S280 at Saratoga Av OR",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S280_at_Saratoga_Av_OR.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N280 at Sickles Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N280_at_Sickles_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S280 on Monterey Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S280_on_Monterey_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N280 at Indiana St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N280_at_Indiana_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W580 JEO JCT 205",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W580_JEO_JCT_205.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W580 at First St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W580_at_First_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E580 EOF El Charro Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E580_EOF_El_Charro_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W580 at 35th Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W580_at_35th_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E580 at Grand Lakeshore",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E580_at_Grand_Lakeshore.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W580 at Cutting Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W580_at_Cutting_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E580 at Toll Plaza",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E580_at_Toll_Plaza.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W580 Upper Deck Truss Tower Pier 48",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W580_Upper_Deck_Truss_Tower_Pier_48.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W580 Upper Deck Pier 47",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W580_Upper_Deck_Pier_47.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S680 NOF Monument Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S680_NOF_Monument_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 Benicia Martinez Skyway",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_Benicia_Martinez_Skyway.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 Before N680 W780 Split",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_Before_N680_W780_Split.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N880 at 880 17 280",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N880_at_880_17_280.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at Whipple Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_Whipple_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 NOF 84 Woodside Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_NOF_84_Woodside_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at JCT 84",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_JCT_84.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 at Marsh Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_at_Marsh_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at University Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_University_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N84 EOF Chrysler Dr",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N84_EOF_Chrysler_Dr.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E12 EOF Napa County Line",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E12_EOF_Napa_County_Line.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N160 at Oakley Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N160_at_Oakley_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N17 at Camden Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N17_at_Camden_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 at Oak Park Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_at_Oak_Park_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N880 at Stevenson Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N880_at_Stevenson_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S242 at Clayton Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S242_at_Clayton_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S29 at JCT 12",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S29_at_JCT_12.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S680 at King Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S680_at_King_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W12 EOF Kirkland Ranch Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W12_EOF_Kirkland_Ranch_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W37 JEO JCT 121",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W37_JEO_JCT_121.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W4 JWO Railroad Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W4_JWO_Railroad_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W92 at El Camino Real",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W92_at_El_Camino_Real.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N1 at Capistrano Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N1_at_Capistrano_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 JSO San Bruno Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_JSO_San_Bruno_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E24 at JCT 680",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E24_at_JCT_680.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E92 JWO JCT 880",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E92_JWO_JCT_880.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E37 WOF Lakeville Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E37_WOF_Lakeville_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 JSO Marshview Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_JSO_Marshview_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N280 at 92 280 ITC",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N280_at_92_280_ITC.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 at Sewage Plant Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_at_Sewage_Plant_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W114 at Newbridge St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W114_at_Newbridge_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E80 at Manuel Campos Pkwy OR",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E80_at_Manuel_Campos_Pkwy_OR.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W37 EOF JCT 29",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W37_EOF_JCT_29.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: E37 at Atherton Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/E37_at_Atherton_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at S Van Ness Av",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_S_Van_Ness_Av.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 at Broadway",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_at_Broadway.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W24 JEO JCT 980",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W24_JEO_JCT_980.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at Alemany Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_Alemany_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W260 WEBSTER ST TUNNEL ENTRANCE",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W260_WEBSTER_ST_TUNNEL_ENTRANCE.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at Hospital Curve",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_Hospital_Curve.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at 280 Split",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_280_Split.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S101 at Octavia St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S101_at_Octavia_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S280 JSO Cesar Chavez",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S280_JSO_Cesar_Chavez.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N280 JSO Cesar Chavez",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N280_JSO_Cesar_Chavez.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N280 at Alemany Bl",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N280_at_Alemany_Bl.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 at 23rd St",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_at_23rd_St.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N101 at Faith St POC",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N101_at_Faith_St_POC.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: S680 Before Paloma Wy OFR",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/S680_Before_Paloma_Wy_OFR.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 at Koopman Rd UC",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_at_Koopman_Rd_UC.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: N680 at Sheridan Rd",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/N680_at_Sheridan_Rd.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  },
+  {
+    "title": "CA DOT: W24 at Telegraph",
+    "URL_low_res": "rtmp://wzmedia.dot.ca.gov:1935/D4/W24_at_Telegraph.stream",
+    "URL_high_res": null,
+    "is_enabled": false
+  }
 ]

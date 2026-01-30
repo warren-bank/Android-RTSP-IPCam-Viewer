@@ -1,6 +1,10 @@
 # Node.js dev-dependencies
 node_modules/
 
+# automation script
+.etc/update_video_streams/node_modules/
+.etc/update_video_streams/ca-dot-rtmp.txt
+
 # debug output from Android string translator
 android-studio-project/RTSP-IPCam-Viewer/src/withAllLanguageTranslations/res/debug.en.txt
 
