@@ -138,6 +138,7 @@ Android app to watch RTSP and RTMP video streams; these formats are typical of i
   * video player library that supports RTSP streams
 * [MaterialFilePicker](https://github.com/nbsp-team/MaterialFilePicker)
   * library to browse the file system and select a file
+    * used as a starting point, but [heavily modified](https://github.com/warren-bank/Android-libraries/tree/fork/nbsp-team/MaterialFilePicker/02_androidx)
 
 #### Legal
 

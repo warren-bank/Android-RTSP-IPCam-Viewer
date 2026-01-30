@@ -40,7 +40,11 @@ public final class FilePicker {
         open(activity, listener, /* showHiddenFiles= */ true, /* filterPattern= */ (Pattern) null, /* filterDirectories= */ false);
     }
 
-    public static void open(Activity activity, ResultListener listener, boolean showHiddenFiles, String filterPattern, boolean filterDirectories) {
+    public static void openJson(Activity activity, ResultListener listener) {
+        open(activity, listener, /* showHiddenFiles= */ true, /* filterPattern= */ ".*\\.(?:json|js|txt)$", /* filterDirectories= */ false);
+    }
+
+    private static void open(Activity activity, ResultListener listener, boolean showHiddenFiles, String filterPattern, boolean filterDirectories) {
         Pattern mFileFilter = ((filterPattern == null) || (filterPattern.isEmpty()))
           ? null
           : Pattern.compile(filterPattern)
@@ -52,7 +56,7 @@ public final class FilePicker {
         open(activity, listener, showHiddenFiles, mFileFilter, filterDirectories);
     }
 
-    public static void open(Activity activity, ResultListener listener, boolean showHiddenFiles, Pattern mFileFilter, boolean filterDirectories) {
+    private static void open(Activity activity, ResultListener listener, boolean showHiddenFiles, Pattern mFileFilter, boolean filterDirectories) {
         int requestCode = nonce++;
 
         listeners.add(requestCode, listener);

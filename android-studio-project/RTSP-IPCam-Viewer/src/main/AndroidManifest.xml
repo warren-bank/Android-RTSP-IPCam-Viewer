@@ -5,7 +5,6 @@
     package="com.github.warren_bank.rtsp_ipcam_viewer">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:label="@string/app_name"
@@ -56,14 +55,5 @@
             android:launchMode="standard"
             android:exported="false" />
 
-        <activity
-            android:name="com.nbsp.materialfilepicker.ui.FilePickerActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            tools:replace="android:theme"
-            android:launchMode="standard"
-            android:exported="false" />
-
     </application>
-
 </manifest>

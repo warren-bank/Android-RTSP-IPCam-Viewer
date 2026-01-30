@@ -4,10 +4,12 @@ import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -153,13 +155,20 @@ public class FilePickerActivity extends AppCompatActivity implements DirectoryFr
     private void checkPermissionsAndInitFragment() {
         if (Build.VERSION.SDK_INT < 23) {
             initFragment();
-        } else {
+        } else if (Build.VERSION.SDK_INT < 30) {
             String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
 
             if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{permission}, PERMISSIONS_REQUEST_CODE);
             } else {
                 initFragment();
+            }
+        } else {
+            if (Environment.isExternalStorageManager()) {
+                initFragment();
+            } else {
+                Intent permissionIntent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(permissionIntent, PERMISSIONS_REQUEST_CODE);
             }
         }
     }
@@ -169,6 +178,21 @@ public class FilePickerActivity extends AppCompatActivity implements DirectoryFr
         switch (requestCode) {
             case PERMISSIONS_REQUEST_CODE: {
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    initFragment();
+                } else {
+                    // permission denied: cancel
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_CODE: {
+                if (Environment.isExternalStorageManager()) {
                     initFragment();
                 } else {
                     // permission denied: cancel

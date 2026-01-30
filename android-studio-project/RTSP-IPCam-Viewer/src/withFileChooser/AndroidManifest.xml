@@ -1,7 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.nbsp.materialfilepicker">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- file access permissions: Android 1 to 10 -->
     <!-- note: Android 10 requires "requestLegacyExternalStorage" -->
@@ -14,8 +14,11 @@
         android:requestLegacyExternalStorage="true">
 
         <activity
-            android:name=".ui.FilePickerActivity"
-            android:theme="@style/MFP_BaseTheme"
+            android:name="com.nbsp.materialfilepicker.ui.FilePickerActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            tools:replace="android:theme"
+            android:launchMode="standard"
             android:exported="false" />
 
     </application>

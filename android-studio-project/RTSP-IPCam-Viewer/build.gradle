@@ -13,17 +13,11 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion    project.ext.minSdkVersion
+    applicationId    project.ext.applicationId
     targetSdkVersion project.ext.targetSdkVersion
-
-    applicationId project.ext.applicationId
-    versionName   project.ext.releaseVersion
-    versionCode   project.ext.releaseVersionCode
-
-    archivesBaseName += "-$versionName"
   }
 
-  flavorDimensions "languageResources"
+  flavorDimensions "languageResources", "fileImport"
 
   productFlavors {
     withAllLanguageTranslations {
@@ -31,6 +25,24 @@ android {
     }
     english {
       dimension "languageResources"
+    }
+    withFileChooser {
+      dimension "fileImport"
+
+      minSdkVersion    = project.ext.minSdkVersion
+      versionCode      = project.ext.minSdkVersion + project.ext.releaseVersionCode
+      versionName      = project.ext.releaseVersion + "-${project.ext.minSdkVersion}API"
+
+      // issue: https://issuetracker.google.com/issues/37077688
+      archivesBaseName = "${project.name}-${versionName}"
+    }
+    withSAF {
+      dimension "fileImport"
+
+      minSdkVersion    = project.ext.minSdkVersionSAF
+      versionCode      = project.ext.minSdkVersionSAF + project.ext.releaseVersionCode
+      versionName      = project.ext.releaseVersion + "-${project.ext.minSdkVersionSAF}API"
+      archivesBaseName = "${project.name}-${versionName}"
     }
   }
 
@@ -73,7 +85,7 @@ android {
 }
 
 dependencies {
-  implementation project(':MaterialFilePicker')                                                                        //          https://github.com/nbsp-team/MaterialFilePicker
+  withFileChooserImplementation project(':MaterialFilePicker')                                                         //          https://github.com/nbsp-team/MaterialFilePicker
 
   implementation 'com.google.code.gson:gson:'                      + project.ext.libVersionGson                        // (235 KB) https://mvnrepository.com/artifact/com.google.code.gson/gson
   implementation 'androidx.legacy:legacy-support-v4:'              + project.ext.libVersionAndroidxLegacy              // (  3 KB) https://mvnrepository.com/artifact/androidx.legacy/legacy-support-v4?repo=google

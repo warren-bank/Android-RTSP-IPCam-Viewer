@@ -112,14 +112,14 @@ public class MainActivity extends AppCompatActivity {
                 );
                 return true;
             case R.id.action_read_file:
-                FilePicker.open(
+                FilePicker.openJson(
                     /* activity= */ MainActivity.this,
                     /* listener= */ new FilePicker.ResultListener() {
                         @Override
                         public void onResult(String filepath) {
                             try {
                                 MainActivity self = MainActivity.this;
-                                String jsonVideos = FileUtils.getFileContents(filepath);
+                                String jsonVideos = FileUtils.getFileContents(self, filepath);
 
                                 // import
                                 ArrayList<VideoType> new_videos = VideoType.fromJson(jsonVideos);
@@ -132,10 +132,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             catch(Exception e) {}
                         }
-                    },
-                    /* showHiddenFiles=   */ true,
-                    /* filterPattern=     */ ".*\\.(?:json|js|txt)$",
-                    /* filterDirectories= */ false
+                    }
                 );
                 return true;
             case R.id.action_exit:
