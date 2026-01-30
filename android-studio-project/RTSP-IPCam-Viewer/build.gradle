@@ -2,78 +2,92 @@ apply from: '../constants.gradle'
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
+  namespace project.ext.applicationId
 
-    compileOptions {
-        sourceCompatibility project.ext.javaVersion
-        targetCompatibility project.ext.javaVersion
+  compileSdkVersion project.ext.compileSdkVersion
+  buildToolsVersion project.ext.buildToolsVersion
+
+  compileOptions {
+    sourceCompatibility project.ext.javaVersion
+    targetCompatibility project.ext.javaVersion
+  }
+
+  defaultConfig {
+    minSdkVersion    project.ext.minSdkVersion
+    targetSdkVersion project.ext.targetSdkVersion
+
+    applicationId project.ext.applicationId
+    versionName   project.ext.releaseVersion
+    versionCode   project.ext.releaseVersionCode
+
+    archivesBaseName += "-$versionName"
+  }
+
+  flavorDimensions "languageResources"
+
+  productFlavors {
+    withAllLanguageTranslations {
+      dimension "languageResources"
     }
-
-    defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-
-        applicationId "com.github.warren_bank.rtsp_ipcam_viewer"
-        versionName project.ext.releaseVersion
-        versionCode project.ext.releaseVersionCode
-
-        archivesBaseName += "-$versionName"
+    english {
+      dimension "languageResources"
     }
+  }
 
-    flavorDimensions "languageResources"
-
-    productFlavors {
-        withAllLanguageTranslations {
-            dimension "languageResources"
-        }
-        english {
-            dimension "languageResources"
-        }
+  buildTypes {
+    release {
+      debuggable      false
+      jniDebuggable   false
+      minifyEnabled   true
+      shrinkResources true
+      proguardFiles = [
+        "proguard-rules.release.txt",
+        getDefaultProguardFile('proguard-android.txt')
+      ]
     }
-
-    buildTypes {
-        release {
-            shrinkResources true
-            minifyEnabled true
-            proguardFiles = [
-                "proguard-rules.release.txt",
-                getDefaultProguardFile('proguard-android.txt')
-            ]
-        }
-        debug {
-            jniDebuggable true
-            shrinkResources false
-            minifyEnabled true
-            proguardFiles = [
-                "proguard-rules.debug.txt",
-                getDefaultProguardFile('proguard-android.txt')
-            ]
-        }
+    debug {
+      debuggable      true
+      jniDebuggable   true
+      minifyEnabled   true
+      shrinkResources false
+      proguardFiles = [
+        "proguard-rules.debug.txt",
+        getDefaultProguardFile('proguard-android.txt')
+      ]
     }
+  }
 
-    lintOptions {
-        disable 'MissingTranslation'
-        abortOnError true
-    }
+  buildFeatures {
+    buildConfig false
+  }
+
+  dependenciesInfo {
+    includeInApk    = false  // Disables dependency metadata when building APKs.
+    includeInBundle = false  // Disables dependency metadata when building Android App Bundles.
+  }
+
+  lintOptions {
+    disable 'MissingTranslation'
+    abortOnError true
+  }
 }
 
 dependencies {
-    implementation project(':MaterialFilePicker')                                                                        //          https://github.com/nbsp-team/MaterialFilePicker
+  implementation project(':MaterialFilePicker')                                                                        //          https://github.com/nbsp-team/MaterialFilePicker
 
-    implementation 'com.google.code.gson:gson:'                      + project.ext.libVersionGson                        // (235 KB) https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation 'androidx.legacy:legacy-support-v4:'              + project.ext.libVersionAndroidxLegacy              // (  3 KB) https://mvnrepository.com/artifact/androidx.legacy/legacy-support-v4?repo=google
+  implementation 'com.google.code.gson:gson:'                      + project.ext.libVersionGson                        // (235 KB) https://mvnrepository.com/artifact/com.google.code.gson/gson
+  implementation 'androidx.legacy:legacy-support-v4:'              + project.ext.libVersionAndroidxLegacy              // (  3 KB) https://mvnrepository.com/artifact/androidx.legacy/legacy-support-v4?repo=google
 
-    implementation 'androidx.appcompat:appcompat:'                   + project.ext.libVersionAndroidxAppCompat           // (1.0 MB) https://mvnrepository.com/artifact/androidx.appcompat/appcompat?repo=google
-    implementation 'androidx.constraintlayout:constraintlayout:'     + project.ext.libVersionAndroidxConstraintLayout    // ( 63 KB) https://mvnrepository.com/artifact/androidx.constraintlayout/constraintlayout?repo=google
-    implementation 'androidx.core:core:'                             + project.ext.libVersionAndroidxCore                // (618 KB) https://mvnrepository.com/artifact/androidx.core/core?repo=google
-    implementation 'androidx.recyclerview:recyclerview:'             + project.ext.libVersionAndroidxRecyclerView        // (344 KB) https://mvnrepository.com/artifact/androidx.recyclerview/recyclerview?repo=google
-    implementation 'com.google.android.material:material:'           + project.ext.libVersionAndroidxMaterial            // (566 KB) https://mvnrepository.com/artifact/com.google.android.material/material?repo=google
+  implementation 'androidx.appcompat:appcompat:'                   + project.ext.libVersionAndroidxAppCompat           // (1.0 MB) https://mvnrepository.com/artifact/androidx.appcompat/appcompat?repo=google
+  implementation 'androidx.constraintlayout:constraintlayout:'     + project.ext.libVersionAndroidxConstraintLayout    // ( 63 KB) https://mvnrepository.com/artifact/androidx.constraintlayout/constraintlayout?repo=google
+  implementation 'androidx.core:core:'                             + project.ext.libVersionAndroidxCore                // (618 KB) https://mvnrepository.com/artifact/androidx.core/core?repo=google
+  implementation 'androidx.recyclerview:recyclerview:'             + project.ext.libVersionAndroidxRecyclerView        // (344 KB) https://mvnrepository.com/artifact/androidx.recyclerview/recyclerview?repo=google
+  implementation 'com.google.android.material:material:'           + project.ext.libVersionAndroidxMaterial            // (566 KB) https://mvnrepository.com/artifact/com.google.android.material/material?repo=google
 
-    implementation 'com.google.android.exoplayer:exoplayer-core:'    + project.ext.libVersionExoPlayer                   // (1.3 MB) https://mvnrepository.com/artifact/com.google.android.exoplayer/exoplayer-core?repo=google
-    implementation 'com.google.android.exoplayer:exoplayer-ui:'      + project.ext.libVersionExoPlayer                   // (433 KB) https://mvnrepository.com/artifact/com.google.android.exoplayer/exoplayer-ui?repo=google
-    implementation 'com.google.android.exoplayer:exoplayer-rtsp:'    + project.ext.libVersionExoPlayer                   // (101 KB) https://mvnrepository.com/artifact/com.google.android.exoplayer/exoplayer-rtsp?repo=google
-    implementation 'com.google.android.exoplayer:extension-rtmp:'    + project.ext.libVersionExoPlayer                   // (  5 KB) https://mvnrepository.com/artifact/com.google.android.exoplayer/extension-rtmp?repo=google
+  implementation 'com.google.android.exoplayer:exoplayer-core:'    + project.ext.libVersionExoPlayer                   // (1.3 MB) https://mvnrepository.com/artifact/com.google.android.exoplayer/exoplayer-core?repo=google
+  implementation 'com.google.android.exoplayer:exoplayer-ui:'      + project.ext.libVersionExoPlayer                   // (433 KB) https://mvnrepository.com/artifact/com.google.android.exoplayer/exoplayer-ui?repo=google
+  implementation 'com.google.android.exoplayer:exoplayer-rtsp:'    + project.ext.libVersionExoPlayer                   // (101 KB) https://mvnrepository.com/artifact/com.google.android.exoplayer/exoplayer-rtsp?repo=google
+  implementation 'com.google.android.exoplayer:extension-rtmp:'    + project.ext.libVersionExoPlayer                   // (  5 KB) https://mvnrepository.com/artifact/com.google.android.exoplayer/extension-rtmp?repo=google
 }
 
 apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'

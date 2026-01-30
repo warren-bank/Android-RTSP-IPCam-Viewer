@@ -1,21 +1,24 @@
 buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'                         // https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
-        classpath 'com.google.android.gms:strict-version-matcher-plugin:1.1.0'   // https://mvnrepository.com/artifact/com.google.android.gms/strict-version-matcher-plugin
-    }
+  repositories {
+    google()
+    jcenter()
+  }
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:8.7.2'                        // https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
+                                                                            // https://developer.android.com/build/releases/gradle-plugin#updating-gradle
+                                                                            // https://developer.android.com/build/releases/gradle-plugin#api-level-support
+    classpath 'com.google.android.gms:strict-version-matcher-plugin:1.2.4'  // https://mvnrepository.com/artifact/com.google.android.gms/strict-version-matcher-plugin
+  }
 }
 
 allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+  repositories {
+    google()
+    jcenter()
+  }
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }

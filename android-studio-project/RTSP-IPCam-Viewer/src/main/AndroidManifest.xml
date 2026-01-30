@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.github.warren_bank.rtsp_ipcam_viewer">
 
@@ -21,7 +22,8 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:launchMode="standard">
+            android:launchMode="standard"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,26 +33,36 @@
         <activity
             android:name=".list_view.activities.ListActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:launchMode="standard"
+            android:exported="false" />
 
         <activity
             android:name=".grid_view.activities.GridActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:launchMode="standard"
+            android:exported="false" />
 
         <activity
             android:name=".fullscreen_view.activities.VideoActivity"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:launchMode="standard"
+            android:exported="false" />
 
         <activity
-            android:name=".common.activities.ExitActivity" />
+            android:name=".common.activities.ExitActivity"
+            android:launchMode="standard"
+            android:exported="false" />
 
         <activity
             android:name="com.nbsp.materialfilepicker.ui.FilePickerActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            tools:replace="android:theme" />
+            tools:replace="android:theme"
+            android:launchMode="standard"
+            android:exported="false" />
 
     </application>
 

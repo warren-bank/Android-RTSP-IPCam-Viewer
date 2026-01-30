@@ -2,33 +2,35 @@ apply from: '../../constants.gradle'
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
+  namespace 'com.nbsp.materialfilepicker'
 
-    compileOptions {
-        sourceCompatibility project.ext.javaVersion
-        targetCompatibility project.ext.javaVersion
-    }
+  compileSdkVersion project.ext.compileSdkVersion
+  buildToolsVersion project.ext.buildToolsVersion
 
-    defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-    }
+  compileOptions {
+    sourceCompatibility project.ext.javaVersion
+    targetCompatibility project.ext.javaVersion
+  }
 
-    lintOptions {
-        disable 'MissingTranslation'
-        abortOnError true
-    }
+  defaultConfig {
+    minSdkVersion    project.ext.minSdkVersion
+    targetSdkVersion project.ext.targetSdkVersion
+  }
+
+  lintOptions {
+    disable 'MissingTranslation'
+    abortOnError true
+  }
 }
 
 dependencies {
-    compileOnly         'androidx.annotation:annotation:'          + project.ext.libVersionAndroidxAnnotation      // ( 22 KB) https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
-    annotationProcessor 'androidx.annotation:annotation:'          + project.ext.libVersionAndroidxAnnotation
+  compileOnly         'androidx.annotation:annotation:'          + project.ext.libVersionAndroidxAnnotation      // ( 22 KB) https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
+  annotationProcessor 'androidx.annotation:annotation:'          + project.ext.libVersionAndroidxAnnotation
 
-    implementation      'androidx.appcompat:appcompat:'            + project.ext.libVersionAndroidxAppCompat       // (1.0 MB) https://mvnrepository.com/artifact/androidx.appcompat/appcompat?repo=google
-    implementation      'androidx.fragment:fragment:'              + project.ext.libVersionAndroidxFragment        // (152 KB) https://mvnrepository.com/artifact/androidx.fragment/fragment?repo=google
-    implementation      'androidx.recyclerview:recyclerview:'      + project.ext.libVersionAndroidxRecyclerView    // (344 KB) https://mvnrepository.com/artifact/androidx.recyclerview/recyclerview?repo=google
-    implementation      'com.google.android.material:material:'    + project.ext.libVersionAndroidxMaterial        // (566 KB) https://mvnrepository.com/artifact/com.google.android.material/material?repo=google
+  implementation      'androidx.appcompat:appcompat:'            + project.ext.libVersionAndroidxAppCompat       // (1.0 MB) https://mvnrepository.com/artifact/androidx.appcompat/appcompat?repo=google
+  implementation      'androidx.fragment:fragment:'              + project.ext.libVersionAndroidxFragment        // (152 KB) https://mvnrepository.com/artifact/androidx.fragment/fragment?repo=google
+  implementation      'androidx.recyclerview:recyclerview:'      + project.ext.libVersionAndroidxRecyclerView    // (344 KB) https://mvnrepository.com/artifact/androidx.recyclerview/recyclerview?repo=google
+  implementation      'com.google.android.material:material:'    + project.ext.libVersionAndroidxMaterial        // (566 KB) https://mvnrepository.com/artifact/com.google.android.material/material?repo=google
 }
 
 apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'
