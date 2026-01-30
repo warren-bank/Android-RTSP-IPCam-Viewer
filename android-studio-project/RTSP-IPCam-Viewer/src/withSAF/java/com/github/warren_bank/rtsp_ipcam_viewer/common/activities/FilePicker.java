@@ -45,7 +45,7 @@ public final class FilePicker {
     }
 
     public static void openJson(Activity activity, ResultListener listener) {
-        String[] mimeTypes = {"application/json", "text/javascript", "text/plain"};
+        String[] mimeTypes = {"application/json", "text/javascript", "text/plain", "application/octet-stream"};
 
         open(activity, listener, mimeTypes);
     }
