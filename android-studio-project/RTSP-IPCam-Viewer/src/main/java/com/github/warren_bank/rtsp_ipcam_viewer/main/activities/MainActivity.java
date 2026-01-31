@@ -74,24 +74,30 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.action_open_list:
-                ListActivity.open(MainActivity.this, null);
+                if ((videos.size() > 0) && VideoType.hasAnyEnabled(videos)) {
+                    ListActivity.open(MainActivity.this, null);
+                }
                 return true;
             case R.id.action_open_grid_2col:
-                GridActivity.open(MainActivity.this, null, 2);
+                if ((videos.size() > 0) && VideoType.hasAnyEnabled(videos)) {
+                    GridActivity.open(MainActivity.this, null, 2);
+                }
                 return true;
             case R.id.action_open_grid_Ncol:
-                GridColumnsDialog.show(
-                    MainActivity.this,
-                    recyclerView,
-                    new GridColumnsDialog.ResultListener() {
-                        @Override
-                        public void onResult(int columns) {
-                            if (columns > 1) {
-                                GridActivity.open(MainActivity.this, null, columns);
+                if ((videos.size() > 0) && VideoType.hasAnyEnabled(videos)) {
+                    GridColumnsDialog.show(
+                        MainActivity.this,
+                        recyclerView,
+                        new GridColumnsDialog.ResultListener() {
+                            @Override
+                            public void onResult(int columns) {
+                                if (columns > 1) {
+                                    GridActivity.open(MainActivity.this, null, columns);
+                                }
                             }
                         }
-                    }
-                );
+                    );
+                }
                 return true;
             case R.id.action_data_add_video:
                 VideoDialog.add(
@@ -135,27 +141,21 @@ public class MainActivity extends AppCompatActivity {
                 );
                 return true;
             case R.id.action_data_enable_all:
-                if (videos.size() > 0) {
-                    if (VideoType.enable_all(videos)) {
-                        recyclerViewAdapter.notifyDataSetChanged();
-                        RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
-                    }
+                if ((videos.size() > 0) && VideoType.enable_all(videos)) {
+                    recyclerViewAdapter.notifyDataSetChanged();
+                    RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
                 }
                 return true;
             case R.id.action_data_disable_all:
-                if (videos.size() > 0) {
-                    if (VideoType.disable_all(videos)) {
-                        recyclerViewAdapter.notifyDataSetChanged();
-                        RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
-                    }
+                if ((videos.size() > 0) && VideoType.disable_all(videos)) {
+                    recyclerViewAdapter.notifyDataSetChanged();
+                    RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
                 }
                 return true;
             case R.id.action_data_remove_disabled:
-                if (videos.size() > 0) {
-                    if (VideoType.remove_disabled(videos)) {
-                        recyclerViewAdapter.notifyDataSetChanged();
-                        RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
-                    }
+                if ((videos.size() > 0) && VideoType.remove_disabled(videos)) {
+                    recyclerViewAdapter.notifyDataSetChanged();
+                    RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
                 }
                 return true;
             case R.id.action_data_remove_all:
