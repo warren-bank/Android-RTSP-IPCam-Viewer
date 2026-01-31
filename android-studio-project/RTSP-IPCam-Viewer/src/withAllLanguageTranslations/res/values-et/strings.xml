@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam vaataja</string>
+  <string name="action_menu_open">Avatud</string>
+  <string name="action_menu_data">Andmed</string>
+  <string name="action_open_list">Loend</string>
+  <string name="action_open_grid_2col">Võrk (2 veeru)</string>
+  <string name="action_open_grid_Ncol">Võrk (N veeru)</string>
+  <string name="action_data_add_video">Lisa video</string>
+  <string name="action_data_read_file">Loe faili</string>
+  <string name="action_data_enable_all">Luba kõik</string>
+  <string name="action_data_disable_all">Keela kõik</string>
+  <string name="action_data_remove_disabled">Eemalda keelatud</string>
+  <string name="action_data_remove_all">Kõik eemaldada</string>
+  <string name="action_exit">Väljumine</string>
+  <string name="dialog_title_edit_video">Video redigeerimine</string>
+  <string name="dialog_title_custom_grid">Kohandatud võrk</string>
+  <string name="dialog_button_cancel">Tühista</string>
+  <string name="dialog_button_open">AVATUD</string>
+  <string name="dialog_button_save">SALVESTA</string>
+  <string name="label_video_title">Pealkiri</string>
+  <string name="label_video_url_low_res">Madal resolutsioon URL</string>
+  <string name="label_video_url_high_res">Kõrge resolutsioon URL</string>
+  <string name="label_video_is_enabled">On lubatud?</string>
+  <string name="label_custom_grid_columns">Veerud</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam 觀看者</string>
+  <string name="action_menu_open">開啟</string>
+  <string name="action_menu_data">資料</string>
+  <string name="action_open_list">清單</string>
+  <string name="action_open_grid_2col">網格 (2 專欄)</string>
+  <string name="action_open_grid_Ncol">網格 (N 專欄)</string>
+  <string name="action_data_add_video">新增影片</string>
+  <string name="action_data_read_file">讀取檔案</string>
+  <string name="action_data_enable_all">啟用全部</string>
+  <string name="action_data_disable_all">停用所有</string>
+  <string name="action_data_remove_disabled">移除已停用</string>
+  <string name="action_data_remove_all">移除所有</string>
+  <string name="action_exit">退出</string>
+  <string name="dialog_title_edit_video">編輯影片</string>
+  <string name="dialog_title_custom_grid">自訂網格</string>
+  <string name="dialog_button_cancel">取消</string>
+  <string name="dialog_button_open">開放</string>
+  <string name="dialog_button_save">儲存</string>
+  <string name="label_video_title">標題</string>
+  <string name="label_video_url_low_res">低解析度 URL</string>
+  <string name="label_video_url_high_res">高解析度 URL</string>
+  <string name="label_video_is_enabled">已啟用?</string>
+  <string name="label_custom_grid_columns">專欄</string>
+</resources>

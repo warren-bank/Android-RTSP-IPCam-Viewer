@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Người xem</string>
+  <string name="action_menu_open">Mở</string>
+  <string name="action_menu_data">Dữ liệu</string>
+  <string name="action_open_list">Danh sách</string>
+  <string name="action_open_grid_2col">Lưới (2 cột)</string>
+  <string name="action_open_grid_Ncol">Lưới (N cột)</string>
+  <string name="action_data_add_video">Thêm video</string>
+  <string name="action_data_read_file">Đọc tệp</string>
+  <string name="action_data_enable_all">Bật tất cả</string>
+  <string name="action_data_disable_all">Tắt tất cả</string>
+  <string name="action_data_remove_disabled">Xóa các mục bị vô hiệu hóa</string>
+  <string name="action_data_remove_all">Xóa tất cả</string>
+  <string name="action_exit">Thoát</string>
+  <string name="dialog_title_edit_video">Chỉnh sửa video</string>
+  <string name="dialog_title_custom_grid">Lưới tùy chỉnh</string>
+  <string name="dialog_button_cancel">HỦY</string>
+  <string name="dialog_button_open">MỞ</string>
+  <string name="dialog_button_save">LƯU</string>
+  <string name="label_video_title">Tiêu đề</string>
+  <string name="label_video_url_low_res">Độ phân giải thấp URL</string>
+  <string name="label_video_url_high_res">Độ phân giải cao URL</string>
+  <string name="label_video_is_enabled">Đã bật?</string>
+  <string name="label_custom_grid_columns">Cột</string>
+</resources>

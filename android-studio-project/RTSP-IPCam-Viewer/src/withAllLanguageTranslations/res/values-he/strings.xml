@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam צופה</string>
+  <string name="action_menu_open">פתוח</string>
+  <string name="action_menu_data">נתונים</string>
+  <string name="action_open_list">רשימה</string>
+  <string name="action_open_grid_2col">רשת (2 עמודה)</string>
+  <string name="action_open_grid_Ncol">רשת (N עמודה)</string>
+  <string name="action_data_add_video">הוסף וידאו</string>
+  <string name="action_data_read_file">קרא קובץ</string>
+  <string name="action_data_enable_all">הפעל הכל</string>
+  <string name="action_data_disable_all">השבת הכל</string>
+  <string name="action_data_remove_disabled">הסר נכה</string>
+  <string name="action_data_remove_all">הסר הכל</string>
+  <string name="action_exit">יציאה</string>
+  <string name="dialog_title_edit_video">ערוך וידאו</string>
+  <string name="dialog_title_custom_grid">רשת מותאמת אישית</string>
+  <string name="dialog_button_cancel">ביטול</string>
+  <string name="dialog_button_open">פתוח</string>
+  <string name="dialog_button_save">שמור</string>
+  <string name="label_video_title">כותרת</string>
+  <string name="label_video_url_low_res">רזולוציה נמוכה URL</string>
+  <string name="label_video_url_high_res">רזולוציה גבוהה URL</string>
+  <string name="label_video_is_enabled">מופעל?</string>
+  <string name="label_custom_grid_columns">עמודות</string>
+</resources>

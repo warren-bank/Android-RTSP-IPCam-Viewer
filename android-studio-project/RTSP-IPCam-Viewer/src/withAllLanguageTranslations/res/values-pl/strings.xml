@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Widz</string>
+  <string name="action_menu_open">Otwórz</string>
+  <string name="action_menu_data">Dane</string>
+  <string name="action_open_list">Lista</string>
+  <string name="action_open_grid_2col">Siatka (2 kolumna)</string>
+  <string name="action_open_grid_Ncol">Siatka (N kolumna)</string>
+  <string name="action_data_add_video">Dodaj wideo</string>
+  <string name="action_data_read_file">Odczytaj plik</string>
+  <string name="action_data_enable_all">Włącz wszystko</string>
+  <string name="action_data_disable_all">Wyłącz wszystko</string>
+  <string name="action_data_remove_disabled">Usuń wyłączone</string>
+  <string name="action_data_remove_all">Usuń wszystko</string>
+  <string name="action_exit">Wyjście</string>
+  <string name="dialog_title_edit_video">Edytuj wideo</string>
+  <string name="dialog_title_custom_grid">Siatka niestandardowa</string>
+  <string name="dialog_button_cancel">ANULUJ</string>
+  <string name="dialog_button_open">OTWÓRZ</string>
+  <string name="dialog_button_save">ZAPISZ</string>
+  <string name="label_video_title">Tytuł</string>
+  <string name="label_video_url_low_res">Niska rozdzielczość URL</string>
+  <string name="label_video_url_high_res">Wysoka rozdzielczość URL</string>
+  <string name="label_video_is_enabled">Jest włączone?</string>
+  <string name="label_custom_grid_columns">Kolumny</string>
+</resources>

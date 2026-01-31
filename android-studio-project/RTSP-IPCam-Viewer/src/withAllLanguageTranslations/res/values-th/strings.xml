@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam ผู้ชม</string>
+  <string name="action_menu_open">เปิด</string>
+  <string name="action_menu_data">ข้อมูล</string>
+  <string name="action_open_list">รายการ</string>
+  <string name="action_open_grid_2col">กริด (2 คอลัมน์)</string>
+  <string name="action_open_grid_Ncol">กริด (N คอลัมน์)</string>
+  <string name="action_data_add_video">เพิ่มวิดีโอ</string>
+  <string name="action_data_read_file">อ่านไฟล์</string>
+  <string name="action_data_enable_all">เปิดใช้งานทั้งหมด</string>
+  <string name="action_data_disable_all">ปิดการใช้งานทั้งหมด</string>
+  <string name="action_data_remove_disabled">ลบออก (ปิดการใช้งาน)</string>
+  <string name="action_data_remove_all">ลบทั้งหมด</string>
+  <string name="action_exit">ทางออก</string>
+  <string name="dialog_title_edit_video">แก้ไขวิดีโอ</string>
+  <string name="dialog_title_custom_grid">ตารางแบบกำหนดเอง</string>
+  <string name="dialog_button_cancel">ยกเลิก</string>
+  <string name="dialog_button_open">เปิด</string>
+  <string name="dialog_button_save">บันทึก</string>
+  <string name="label_video_title">ชื่อเรื่อง</string>
+  <string name="label_video_url_low_res">ความละเอียดต่ำ URL</string>
+  <string name="label_video_url_high_res">ความละเอียดสูง URL</string>
+  <string name="label_video_is_enabled">เปิดใช้งานแล้ว?</string>
+  <string name="label_custom_grid_columns">คอลัมน์</string>
+</resources>

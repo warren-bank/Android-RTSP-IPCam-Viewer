@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Vizualizator</string>
+  <string name="action_menu_open">Deschis</string>
+  <string name="action_menu_data">Date</string>
+  <string name="action_open_list">Listă</string>
+  <string name="action_open_grid_2col">Rețea (2 coloană)</string>
+  <string name="action_open_grid_Ncol">Rețea (N coloană)</string>
+  <string name="action_data_add_video">Adăugați videoclip</string>
+  <string name="action_data_read_file">Citiți fișierul</string>
+  <string name="action_data_enable_all">Activați toate</string>
+  <string name="action_data_disable_all">Dezactivează toate</string>
+  <string name="action_data_remove_disabled">Eliminare dezactivat</string>
+  <string name="action_data_remove_all">Elimină tot</string>
+  <string name="action_exit">Ieșire</string>
+  <string name="dialog_title_edit_video">Editați videoclipul</string>
+  <string name="dialog_title_custom_grid">Grila personalizată</string>
+  <string name="dialog_button_cancel">ANULARE</string>
+  <string name="dialog_button_open">DESCHIS</string>
+  <string name="dialog_button_save">SALVEAZĂ</string>
+  <string name="label_video_title">Titlu</string>
+  <string name="label_video_url_low_res">Rezoluție scăzută URL</string>
+  <string name="label_video_url_high_res">Rezoluție înaltă URL</string>
+  <string name="label_video_is_enabled">Este activat?</string>
+  <string name="label_custom_grid_columns">Coloane</string>
+</resources>

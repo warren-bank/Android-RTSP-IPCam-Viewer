@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam 시청자</string>
+  <string name="action_menu_open">열기</string>
+  <string name="action_menu_data">데이터</string>
+  <string name="action_open_list">목록</string>
+  <string name="action_open_grid_2col">그리드 (2 컬럼)</string>
+  <string name="action_open_grid_Ncol">그리드 (N 컬럼)</string>
+  <string name="action_data_add_video">동영상 추가</string>
+  <string name="action_data_read_file">파일 읽기</string>
+  <string name="action_data_enable_all">모두 활성화</string>
+  <string name="action_data_disable_all">모두 비활성화</string>
+  <string name="action_data_remove_disabled">비활성화된 항목 제거</string>
+  <string name="action_data_remove_all">모두 제거</string>
+  <string name="action_exit">종료</string>
+  <string name="dialog_title_edit_video">동영상 편집</string>
+  <string name="dialog_title_custom_grid">사용자 정의 그리드</string>
+  <string name="dialog_button_cancel">취소</string>
+  <string name="dialog_button_open">열림</string>
+  <string name="dialog_button_save">저장</string>
+  <string name="label_video_title">제목</string>
+  <string name="label_video_url_low_res">낮은 해상도 URL</string>
+  <string name="label_video_url_high_res">고해상도 URL</string>
+  <string name="label_video_is_enabled">활성화됨?</string>
+  <string name="label_custom_grid_columns">칼럼</string>
+</resources>

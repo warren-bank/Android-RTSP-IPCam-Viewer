@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Katselija</string>
+  <string name="action_menu_open">Avoin</string>
+  <string name="action_menu_data">Tiedot</string>
+  <string name="action_open_list">Luettelo</string>
+  <string name="action_open_grid_2col">Ruudukko (2 sarake)</string>
+  <string name="action_open_grid_Ncol">Ruudukko (N sarake)</string>
+  <string name="action_data_add_video">Lisää video</string>
+  <string name="action_data_read_file">Lue tiedosto</string>
+  <string name="action_data_enable_all">Ota kaikki käyttöön</string>
+  <string name="action_data_disable_all">Poista kaikki käytöstä</string>
+  <string name="action_data_remove_disabled">Poista käytöstä</string>
+  <string name="action_data_remove_all">Poista kaikki</string>
+  <string name="action_exit">Poistu</string>
+  <string name="dialog_title_edit_video">Muokkaa videota</string>
+  <string name="dialog_title_custom_grid">Mukautettu ruudukko</string>
+  <string name="dialog_button_cancel">PERUUTA</string>
+  <string name="dialog_button_open">AVOIN</string>
+  <string name="dialog_button_save">TALLENNA</string>
+  <string name="label_video_title">Otsikko</string>
+  <string name="label_video_url_low_res">Matala resoluutio URL</string>
+  <string name="label_video_url_high_res">Korkea resoluutio URL</string>
+  <string name="label_video_is_enabled">On käytössä?</string>
+  <string name="label_custom_grid_columns">Sarakkeet</string>
+</resources>

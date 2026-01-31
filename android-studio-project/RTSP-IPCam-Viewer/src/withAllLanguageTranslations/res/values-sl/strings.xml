@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Gledalec</string>
+  <string name="action_menu_open">Odpri</string>
+  <string name="action_menu_data">Podatki</string>
+  <string name="action_open_list">Seznam</string>
+  <string name="action_open_grid_2col">Mreža (2 stolpec)</string>
+  <string name="action_open_grid_Ncol">Mreža (N stolpec)</string>
+  <string name="action_data_add_video">Dodaj video</string>
+  <string name="action_data_read_file">Preberi datoteko</string>
+  <string name="action_data_enable_all">Omogoči vse</string>
+  <string name="action_data_disable_all">Onemogoči vse</string>
+  <string name="action_data_remove_disabled">Odstrani onemogočeno</string>
+  <string name="action_data_remove_all">Odstrani vse</string>
+  <string name="action_exit">Izhod</string>
+  <string name="dialog_title_edit_video">Uredi video</string>
+  <string name="dialog_title_custom_grid">Prilagojena mreža</string>
+  <string name="dialog_button_cancel">PREKLICI</string>
+  <string name="dialog_button_open">ODPRTO</string>
+  <string name="dialog_button_save">SHRANI</string>
+  <string name="label_video_title">Naslov</string>
+  <string name="label_video_url_low_res">Nizka ločljivost URL</string>
+  <string name="label_video_url_high_res">Visoka ločljivost URL</string>
+  <string name="label_video_is_enabled">Je omogočeno?</string>
+  <string name="label_custom_grid_columns">Stolpci</string>
+</resources>

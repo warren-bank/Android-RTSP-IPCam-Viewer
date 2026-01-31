@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Görüntüleyici</string>
+  <string name="action_menu_open">Açık</string>
+  <string name="action_menu_data">Veri</string>
+  <string name="action_open_list">Liste</string>
+  <string name="action_open_grid_2col">Izgara (2 sütun)</string>
+  <string name="action_open_grid_Ncol">Izgara (N sütun)</string>
+  <string name="action_data_add_video">Video Ekle</string>
+  <string name="action_data_read_file">Dosyayı Oku</string>
+  <string name="action_data_enable_all">Tümünü Etkinleştir</string>
+  <string name="action_data_disable_all">Tümünü Devre Dışı Bırak</string>
+  <string name="action_data_remove_disabled">Devre Dışı Bırak</string>
+  <string name="action_data_remove_all">Tümünü Sil</string>
+  <string name="action_exit">Çıkış</string>
+  <string name="dialog_title_edit_video">Videoyu Düzenle</string>
+  <string name="dialog_title_custom_grid">Özel Izgara</string>
+  <string name="dialog_button_cancel">İPTAL ET</string>
+  <string name="dialog_button_open">AÇIK</string>
+  <string name="dialog_button_save">KAYDET</string>
+  <string name="label_video_title">Başlık</string>
+  <string name="label_video_url_low_res">Düşük Çözünürlük URL</string>
+  <string name="label_video_url_high_res">Yüksek Çözünürlük URL</string>
+  <string name="label_video_is_enabled">Etkinleştirildi?</string>
+  <string name="label_custom_grid_columns">Sütunlar</string>
+</resources>

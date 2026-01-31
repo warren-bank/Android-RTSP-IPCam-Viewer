@@ -6,7 +6,7 @@
     "@warren-bank/translate-android-strings": "^3.0.1"
   },
   "scripts": {
-    "translate":       "translate-android-strings -s \"deepl\" -i \"en\" -f \"android-studio-project/RTSP-IPCam-Viewer/src/main/res/values/strings.xml\" -d \"android-studio-project/RTSP-IPCam-Viewer/src/withAllLanguageTranslations/res\" -m --na --nc --nw -b \"(?:RTSP IP-Cam|URL)\" -b \"\\([2N] col\\)\""
+    "translate":       "translate-android-strings -s \"deepl\" -i \"en\" -f \"android-studio-project/RTSP-IPCam-Viewer/src/main/res/values/strings.xml\" -d \"android-studio-project/RTSP-IPCam-Viewer/src/withAllLanguageTranslations/res\" -m --na --nc --nw -b \"(?:RTSP IP-Cam|URL)\" -b \"(?:\\([2N]\\s+|\\))\"",
     "translate:debug": "npm run translate -- -o \"en\" --debug"
   }
 }

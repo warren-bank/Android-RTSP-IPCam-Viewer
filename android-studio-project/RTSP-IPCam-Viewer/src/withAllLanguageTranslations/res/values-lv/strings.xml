@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Skatītājs</string>
+  <string name="action_menu_open">Atvērt</string>
+  <string name="action_menu_data">Dati</string>
+  <string name="action_open_list">Saraksts</string>
+  <string name="action_open_grid_2col">Tīkls (2 kolonna)</string>
+  <string name="action_open_grid_Ncol">Tīkls (N kolonna)</string>
+  <string name="action_data_add_video">Pievienot video</string>
+  <string name="action_data_read_file">Lasīt failu</string>
+  <string name="action_data_enable_all">Iespējot visus</string>
+  <string name="action_data_disable_all">Atvienot visus</string>
+  <string name="action_data_remove_disabled">Noņemt atspējoto</string>
+  <string name="action_data_remove_all">Noņemt visus</string>
+  <string name="action_exit">Izeja</string>
+  <string name="dialog_title_edit_video">Rediģēt video</string>
+  <string name="dialog_title_custom_grid">Pielāgots režģis</string>
+  <string name="dialog_button_cancel">ATCELT</string>
+  <string name="dialog_button_open">ATVĒRTS</string>
+  <string name="dialog_button_save">SAVE</string>
+  <string name="label_video_title">Nosaukums</string>
+  <string name="label_video_url_low_res">Zema izšķirtspēja URL</string>
+  <string name="label_video_url_high_res">Augsta izšķirtspēja URL</string>
+  <string name="label_video_is_enabled">Ir iespējots?</string>
+  <string name="label_custom_grid_columns">Kolonnas</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam 視聴者</string>
+  <string name="action_menu_open">開く</string>
+  <string name="action_menu_data">データ</string>
+  <string name="action_open_list">リスト</string>
+  <string name="action_open_grid_2col">グリッド (2 コラム)</string>
+  <string name="action_open_grid_Ncol">グリッド (N コラム)</string>
+  <string name="action_data_add_video">動画を追加</string>
+  <string name="action_data_read_file">ファイルを読み込む</string>
+  <string name="action_data_enable_all">すべて有効にする</string>
+  <string name="action_data_disable_all">すべて無効にする</string>
+  <string name="action_data_remove_disabled">無効化を解除</string>
+  <string name="action_data_remove_all">すべて削除</string>
+  <string name="action_exit">出口</string>
+  <string name="dialog_title_edit_video">動画編集</string>
+  <string name="dialog_title_custom_grid">カスタムグリッド</string>
+  <string name="dialog_button_cancel">キャンセル</string>
+  <string name="dialog_button_open">OPEN</string>
+  <string name="dialog_button_save">保存</string>
+  <string name="label_video_title">タイトル</string>
+  <string name="label_video_url_low_res">低解像度 URL</string>
+  <string name="label_video_url_high_res">高解像度 URL</string>
+  <string name="label_video_is_enabled">有効です?</string>
+  <string name="label_custom_grid_columns">コラム</string>
+</resources>

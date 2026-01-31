@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Зрител</string>
+  <string name="action_menu_open">Отворен</string>
+  <string name="action_menu_data">Данни</string>
+  <string name="action_open_list">Списък</string>
+  <string name="action_open_grid_2col">Мрежа (2 колона)</string>
+  <string name="action_open_grid_Ncol">Мрежа (N колона)</string>
+  <string name="action_data_add_video">Добави видео</string>
+  <string name="action_data_read_file">Прочети файл</string>
+  <string name="action_data_enable_all">Активирай всички</string>
+  <string name="action_data_disable_all">Деактивирай всички</string>
+  <string name="action_data_remove_disabled">Премахване на деактивирани</string>
+  <string name="action_data_remove_all">Премахване на всички</string>
+  <string name="action_exit">Изход</string>
+  <string name="dialog_title_edit_video">Редактиране на видео</string>
+  <string name="dialog_title_custom_grid">Персонализирана мрежа</string>
+  <string name="dialog_button_cancel">ОТМЕНИ</string>
+  <string name="dialog_button_open">ОТВОРЕН</string>
+  <string name="dialog_button_save">ЗАПАЗИ</string>
+  <string name="label_video_title">Заглавие</string>
+  <string name="label_video_url_low_res">Ниска резолюция URL</string>
+  <string name="label_video_url_high_res">Висока разделителна способност URL</string>
+  <string name="label_video_is_enabled">Е активирано?</string>
+  <string name="label_custom_grid_columns">Колони</string>
+</resources>

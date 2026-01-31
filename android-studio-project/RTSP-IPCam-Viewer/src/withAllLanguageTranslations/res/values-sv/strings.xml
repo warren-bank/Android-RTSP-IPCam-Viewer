@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Visare</string>
+  <string name="action_menu_open">Öppen</string>
+  <string name="action_menu_data">Data</string>
+  <string name="action_open_list">Lista</string>
+  <string name="action_open_grid_2col">Nät (2 kolumn)</string>
+  <string name="action_open_grid_Ncol">Nät (N kolumn)</string>
+  <string name="action_data_add_video">Lägg till video</string>
+  <string name="action_data_read_file">Läs fil</string>
+  <string name="action_data_enable_all">Aktivera alla</string>
+  <string name="action_data_disable_all">Inaktivera alla</string>
+  <string name="action_data_remove_disabled">Ta bort inaktiverade</string>
+  <string name="action_data_remove_all">Ta bort alla</string>
+  <string name="action_exit">Avsluta</string>
+  <string name="dialog_title_edit_video">Redigera video</string>
+  <string name="dialog_title_custom_grid">Anpassat rutnät</string>
+  <string name="dialog_button_cancel">AVBRYT</string>
+  <string name="dialog_button_open">ÖPPEN</string>
+  <string name="dialog_button_save">SPARA</string>
+  <string name="label_video_title">Titel</string>
+  <string name="label_video_url_low_res">Låg upplösning URL</string>
+  <string name="label_video_url_high_res">Hög upplösning URL</string>
+  <string name="label_video_is_enabled">Är aktiverad?</string>
+  <string name="label_custom_grid_columns">Kolumner</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Seer</string>
+  <string name="action_menu_open">Åpen</string>
+  <string name="action_menu_data">Data</string>
+  <string name="action_open_list">Liste</string>
+  <string name="action_open_grid_2col">Rutenett (2 kolonne)</string>
+  <string name="action_open_grid_Ncol">Rutenett (N kolonne)</string>
+  <string name="action_data_add_video">Legg til video</string>
+  <string name="action_data_read_file">Les fil</string>
+  <string name="action_data_enable_all">Aktiver alle</string>
+  <string name="action_data_disable_all">Deaktiver alt</string>
+  <string name="action_data_remove_disabled">Fjern deaktiverte</string>
+  <string name="action_data_remove_all">Fjern alt</string>
+  <string name="action_exit">Avslutt</string>
+  <string name="dialog_title_edit_video">Rediger video</string>
+  <string name="dialog_title_custom_grid">Tilpasset rutenett</string>
+  <string name="dialog_button_cancel">AVBESTILL</string>
+  <string name="dialog_button_open">ÅPEN</string>
+  <string name="dialog_button_save">LAGRE</string>
+  <string name="label_video_title">Tittel</string>
+  <string name="label_video_url_low_res">Lav oppløsning URL</string>
+  <string name="label_video_url_high_res">Høy oppløsning URL</string>
+  <string name="label_video_is_enabled">Er aktivert?</string>
+  <string name="label_custom_grid_columns">Kolonner</string>
+</resources>

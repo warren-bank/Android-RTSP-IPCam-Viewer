@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam المشاهد</string>
+  <string name="action_menu_open">فتح</string>
+  <string name="action_menu_data">البيانات</string>
+  <string name="action_open_list">قائمة</string>
+  <string name="action_open_grid_2col">الشبكة (2 عمود)</string>
+  <string name="action_open_grid_Ncol">الشبكة (N عمود)</string>
+  <string name="action_data_add_video">إضافة فيديو</string>
+  <string name="action_data_read_file">قراءة الملف</string>
+  <string name="action_data_enable_all">تمكين الكل</string>
+  <string name="action_data_disable_all">تعطيل الكل</string>
+  <string name="action_data_remove_disabled">إزالة المعطل</string>
+  <string name="action_data_remove_all">إزالة الكل</string>
+  <string name="action_exit">خروج</string>
+  <string name="dialog_title_edit_video">تحرير الفيديو</string>
+  <string name="dialog_title_custom_grid">شبكة مخصصة</string>
+  <string name="dialog_button_cancel">إلغاء</string>
+  <string name="dialog_button_open">مفتوح</string>
+  <string name="dialog_button_save">حفظ</string>
+  <string name="label_video_title">العنوان</string>
+  <string name="label_video_url_low_res">دقة منخفضة URL</string>
+  <string name="label_video_url_high_res">دقة عالية URL</string>
+  <string name="label_video_is_enabled">ممكّن?</string>
+  <string name="label_custom_grid_columns">أعمدة</string>
+</resources>

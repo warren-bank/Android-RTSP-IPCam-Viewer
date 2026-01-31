@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Просмотрщик</string>
+  <string name="action_menu_open">Открыть</string>
+  <string name="action_menu_data">Данные</string>
+  <string name="action_open_list">Список</string>
+  <string name="action_open_grid_2col">Сетка (2 колонка)</string>
+  <string name="action_open_grid_Ncol">Сетка (N колонка)</string>
+  <string name="action_data_add_video">Добавить видео</string>
+  <string name="action_data_read_file">Прочитать файл</string>
+  <string name="action_data_enable_all">Включить все</string>
+  <string name="action_data_disable_all">Отключить все</string>
+  <string name="action_data_remove_disabled">Удалить отключенные</string>
+  <string name="action_data_remove_all">Удалить все</string>
+  <string name="action_exit">Выход</string>
+  <string name="dialog_title_edit_video">Редактировать видео</string>
+  <string name="dialog_title_custom_grid">Пользовательская сетка</string>
+  <string name="dialog_button_cancel">ОТМЕНА</string>
+  <string name="dialog_button_open">ОТКРЫТЬ</string>
+  <string name="dialog_button_save">СОХРАНИТЬ</string>
+  <string name="label_video_title">Название</string>
+  <string name="label_video_url_low_res">Низкое разрешение URL</string>
+  <string name="label_video_url_high_res">Высокое разрешение URL</string>
+  <string name="label_video_is_enabled">Включено?</string>
+  <string name="label_custom_grid_columns">Колонки</string>
+</resources>

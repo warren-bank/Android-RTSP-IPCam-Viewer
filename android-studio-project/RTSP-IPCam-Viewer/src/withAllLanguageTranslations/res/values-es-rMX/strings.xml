@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Espectador</string>
+  <string name="action_menu_open">Abrir</string>
+  <string name="action_menu_data">Datos</string>
+  <string name="action_open_list">Lista</string>
+  <string name="action_open_grid_2col">Cuadrícula (2 columna)</string>
+  <string name="action_open_grid_Ncol">Cuadrícula (N columna)</string>
+  <string name="action_data_add_video">Añadir video</string>
+  <string name="action_data_read_file">Leer archivo</string>
+  <string name="action_data_enable_all">Habilitar todo</string>
+  <string name="action_data_disable_all">Desactivar todo</string>
+  <string name="action_data_remove_disabled">Eliminar deshabilitado</string>
+  <string name="action_data_remove_all">Eliminar todo</string>
+  <string name="action_exit">Salida</string>
+  <string name="dialog_title_edit_video">Editar video</string>
+  <string name="dialog_title_custom_grid">Cuadrícula personalizada</string>
+  <string name="dialog_button_cancel">CANCELAR</string>
+  <string name="dialog_button_open">ABIERTO</string>
+  <string name="dialog_button_save">GUARDAR</string>
+  <string name="label_video_title">Título</string>
+  <string name="label_video_url_low_res">Baja resolución URL</string>
+  <string name="label_video_url_high_res">Alta resolución URL</string>
+  <string name="label_video_is_enabled">Está habilitado?</string>
+  <string name="label_custom_grid_columns">Columnas</string>
+</resources>

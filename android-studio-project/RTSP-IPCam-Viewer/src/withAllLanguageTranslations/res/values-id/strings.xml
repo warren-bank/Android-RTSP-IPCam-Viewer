@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Penonton</string>
+  <string name="action_menu_open">Buka</string>
+  <string name="action_menu_data">Data</string>
+  <string name="action_open_list">Daftar</string>
+  <string name="action_open_grid_2col">Jaringan (2 kolom)</string>
+  <string name="action_open_grid_Ncol">Jaringan (N kolom)</string>
+  <string name="action_data_add_video">Tambahkan Video</string>
+  <string name="action_data_read_file">Buka Berkas</string>
+  <string name="action_data_enable_all">Aktifkan Semua</string>
+  <string name="action_data_disable_all">Nonaktifkan Semua</string>
+  <string name="action_data_remove_disabled">Hapus yang Dinonaktifkan</string>
+  <string name="action_data_remove_all">Hapus Semua</string>
+  <string name="action_exit">Keluar</string>
+  <string name="dialog_title_edit_video">Edit Video</string>
+  <string name="dialog_title_custom_grid">Grid Kustom</string>
+  <string name="dialog_button_cancel">CANCEL</string>
+  <string name="dialog_button_open">BUKA</string>
+  <string name="dialog_button_save">SIMPAN</string>
+  <string name="label_video_title">Judul</string>
+  <string name="label_video_url_low_res">Resolusi Rendah URL</string>
+  <string name="label_video_url_high_res">Resolusi Tinggi URL</string>
+  <string name="label_video_is_enabled">Apakah diaktifkan\??</string>
+  <string name="label_custom_grid_columns">Kolom</string>
+</resources>

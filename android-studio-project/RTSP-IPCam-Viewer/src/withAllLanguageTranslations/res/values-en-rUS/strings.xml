@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">RTSP IP-Cam Viewer</string>
+  <string name="action_menu_open">Open</string>
+  <string name="action_menu_data">Data</string>
+  <string name="action_open_list">List</string>
+  <string name="action_open_grid_2col">Grid (2 column)</string>
+  <string name="action_open_grid_Ncol">Grid (N column)</string>
+  <string name="action_data_add_video">Add Video</string>
+  <string name="action_data_read_file">Read File</string>
+  <string name="action_data_enable_all">Enable All</string>
+  <string name="action_data_disable_all">Disable All</string>
+  <string name="action_data_remove_disabled">Remove Disabled</string>
+  <string name="action_data_remove_all">Remove All</string>
+  <string name="action_exit">Exit</string>
+  <string name="dialog_title_edit_video">Edit Video</string>
+  <string name="dialog_title_custom_grid">Custom Grid</string>
+  <string name="dialog_button_cancel">CANCEL</string>
+  <string name="dialog_button_open">OPEN</string>
+  <string name="dialog_button_save">SAVE</string>
+  <string name="label_video_title">Title</string>
+  <string name="label_video_url_low_res">Low Resolution URL</string>
+  <string name="label_video_url_high_res">High Resolution URL</string>
+  <string name="label_video_is_enabled">Is Enabled?</string>
+  <string name="label_custom_grid_columns">Columns</string>
+</resources>
