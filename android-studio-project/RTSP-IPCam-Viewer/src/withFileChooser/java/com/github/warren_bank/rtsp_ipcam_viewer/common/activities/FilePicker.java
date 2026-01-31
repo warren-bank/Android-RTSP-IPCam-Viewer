@@ -2,6 +2,7 @@ package com.github.warren_bank.rtsp_ipcam_viewer.common.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Environment;
 
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
@@ -65,7 +66,9 @@ public final class FilePicker {
             .withActivity(activity)
             .withRequestCode(requestCode)
             .withRootPath("/")
-            .withPath("/storage")
+            .withPath(
+                Environment.getExternalStorageDirectory().getAbsolutePath()
+            )
             .withHiddenFiles(showHiddenFiles)
             .withFilter(mFileFilter)
             .withFilterDirectories(filterDirectories)
