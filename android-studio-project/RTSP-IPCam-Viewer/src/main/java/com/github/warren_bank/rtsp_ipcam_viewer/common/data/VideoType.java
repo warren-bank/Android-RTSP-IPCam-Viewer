@@ -98,4 +98,41 @@ public final class VideoType {
         }
         return filtered;
     }
+
+    public static boolean enable_all(ArrayList<VideoType> items) {
+        return update_all_is_enabled(items, true);
+    }
+
+    public static boolean disable_all(ArrayList<VideoType> items) {
+        return update_all_is_enabled(items, false);
+    }
+
+    private static boolean update_all_is_enabled(ArrayList<VideoType> items, boolean new_value) {
+        if (items == null) return false;
+
+        boolean modified = false;
+        for (int i=0; i < items.size(); i++) {
+            VideoType nextItem = items.get(i);
+            if (nextItem.is_enabled != new_value) {
+                nextItem.is_enabled = new_value;
+                modified = true;
+            }
+        }
+        return modified;
+    }
+
+    public static boolean remove_disabled(ArrayList<VideoType> items) {
+        if (items == null) return false;
+
+        boolean modified = false;
+        // process in reverse order
+        for (int i = (items.size() - 1); i >= 0; i--) {
+            VideoType nextItem = items.get(i);
+            if (!nextItem.is_enabled) {
+                items.remove(i);
+                modified = true;
+            }
+        }
+        return modified;
+    }
 }

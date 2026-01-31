@@ -127,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
                                 int itemCount     = new_videos.size();
                                 self.videos.addAll(new_videos);
                                 self.recyclerViewAdapter.notifyItemRangeInserted(positionStart, itemCount);
-                                jsonVideos = VideoType.toJson(self.videos);
-                                SharedPrefs.setVideos(self, jsonVideos);
+                                RecyclerViewAdapter.saveVideos(self.recyclerViewAdapter);
                             }
                             catch(Exception e) {}
                         }
@@ -136,12 +135,35 @@ public class MainActivity extends AppCompatActivity {
                 );
                 return true;
             case R.id.action_data_enable_all:
+                if (videos.size() > 0) {
+                    if (VideoType.enable_all(videos)) {
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
+                    }
+                }
                 return true;
             case R.id.action_data_disable_all:
+                if (videos.size() > 0) {
+                    if (VideoType.disable_all(videos)) {
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
+                    }
+                }
                 return true;
             case R.id.action_data_remove_disabled:
+                if (videos.size() > 0) {
+                    if (VideoType.remove_disabled(videos)) {
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
+                    }
+                }
                 return true;
             case R.id.action_data_remove_all:
+                if (videos.size() > 0) {
+                    videos.clear();
+                    recyclerViewAdapter.notifyDataSetChanged();
+                    RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
+                }
                 return true;
             case R.id.action_exit:
                 ExitActivity.open(MainActivity.this);
