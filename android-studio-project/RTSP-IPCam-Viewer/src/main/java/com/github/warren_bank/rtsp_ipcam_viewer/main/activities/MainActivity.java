@@ -73,24 +73,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch(menuItem.getItemId()) {
-            case R.id.action_add_video:
-                VideoDialog.add(
-                    MainActivity.this,
-                    recyclerView,
-                    new VideoDialog.ResultListener() {
-                        @Override
-                        public void onResult(VideoType new_video) {
-                            if (new_video != null) {
-                                if (videos.add(new_video)) {
-                                    int position = videos.size() - 1;
-                                    recyclerViewAdapter.notifyItemInserted(position);
-                                    RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
-                                }
-                            }
-                        }
-                    }
-                );
-                return true;
             case R.id.action_open_list:
                 ListActivity.open(MainActivity.this, null);
                 return true;
@@ -111,7 +93,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 );
                 return true;
-            case R.id.action_read_file:
+            case R.id.action_data_add_video:
+                VideoDialog.add(
+                    MainActivity.this,
+                    recyclerView,
+                    new VideoDialog.ResultListener() {
+                        @Override
+                        public void onResult(VideoType new_video) {
+                            if (new_video != null) {
+                                if (videos.add(new_video)) {
+                                    int position = videos.size() - 1;
+                                    recyclerViewAdapter.notifyItemInserted(position);
+                                    RecyclerViewAdapter.saveVideos(recyclerViewAdapter);
+                                }
+                            }
+                        }
+                    }
+                );
+                return true;
+            case R.id.action_data_read_file:
                 FilePicker.openJson(
                     /* activity= */ MainActivity.this,
                     /* listener= */ new FilePicker.ResultListener() {
@@ -134,6 +134,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 );
+                return true;
+            case R.id.action_data_enable_all:
+                return true;
+            case R.id.action_data_disable_all:
+                return true;
+            case R.id.action_data_remove_disabled:
+                return true;
+            case R.id.action_data_remove_all:
                 return true;
             case R.id.action_exit:
                 ExitActivity.open(MainActivity.this);

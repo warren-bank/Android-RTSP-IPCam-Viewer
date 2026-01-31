@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY action_open_grid "Open Grid">
-]>
-
 <resources>
     <string name="app_name">RTSP IP-Cam Viewer</string>
 
-    <!-- == actionbar ================================================ -->
-    <string name="action_add_video">Add Video</string>
-    <string name="action_open_list">Open List</string>
-    <!-- ============================================================= -->
-    <string name="action_open_grid_2col">&action_open_grid; (2 col)</string>
-    <string name="action_open_grid_Ncol">&action_open_grid; (N col)</string>
-    <!-- ============================================================= -->
-    <string name="action_read_file">Read File</string>
-    <string name="action_read_file_import">Import Videos</string>
-    <string name="action_read_file_open_list">@string/action_open_list</string>
-    <string name="action_read_file_open_grid">&action_open_grid;</string>
-    <!-- ============================================================= -->
+    <!-- == actionbar submenus ======================================= -->
+    <string name="action_menu_open">Open</string>
+    <string name="action_menu_data">Data</string>
+    <!-- == actionbar submenu items: Open ============================ -->
+    <string name="action_open_list">List</string>
+    <string name="action_open_grid_2col">Grid (2 column)</string>
+    <string name="action_open_grid_Ncol">Grid (N column)</string>
+    <!-- == actionbar submenu items: Data ============================ -->
+    <string name="action_data_add_video">Add Video</string>
+    <string name="action_data_read_file">Read File</string>
+    <string name="action_data_enable_all">Enable All</string>
+    <string name="action_data_disable_all">Disable All</string>
+    <string name="action_data_remove_disabled">Remove Disabled</string>
+    <string name="action_data_remove_all">Remove All</string>
+    <!-- == actionbar menu items ===================================== -->
     <string name="action_exit">Exit</string>
     <!-- ============================================================= -->
 
     <!-- == dialogs ================================================== -->
-    <string name="dialog_title_add_video">Add Video</string>
+    <string name="dialog_title_add_video">@string/action_data_add_video</string>
     <string name="dialog_title_edit_video">Edit Video</string>
     <!-- ============================================================= -->
     <string name="dialog_title_custom_grid">Custom Grid</string>
@@ -42,6 +41,6 @@
     <!-- ============================================================= -->
 
     <!-- == misc ===================================================== -->
-    <string translatable="false" name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36</string>
+    <string translatable="false" name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36</string>
     <!-- ============================================================= -->
 </resources>

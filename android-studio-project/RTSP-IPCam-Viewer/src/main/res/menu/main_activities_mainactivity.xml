@@ -2,38 +2,74 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:orderInCategory="1"
-        android:id="@+id/action_add_video"
-        android:title="@string/action_add_video"
-        android:icon="@drawable/ic_add_video"
-        app:showAsAction="always" />
+        android:title="@string/action_menu_open"
+        app:showAsAction="never">
+        <menu>
+
+            <item
+                android:orderInCategory="1"
+                android:id="@+id/action_open_list"
+                android:title="@string/action_open_list"
+                app:showAsAction="never" />
+            <item
+                android:orderInCategory="2"
+                android:id="@+id/action_open_grid_2col"
+                android:title="@string/action_open_grid_2col"
+                app:showAsAction="never" />
+            <item
+                android:orderInCategory="3"
+                android:id="@+id/action_open_grid_Ncol"
+                android:title="@string/action_open_grid_Ncol"
+                app:showAsAction="never" />
+
+        </menu>
+    </item>
+
     <item
         android:orderInCategory="2"
-        android:id="@+id/action_open_list"
-        android:title="@string/action_open_list"
-        android:icon="@drawable/ic_open_list"
-        app:showAsAction="ifRoom" />
+        android:title="@string/action_menu_data"
+        app:showAsAction="never">
+        <menu>
+
+            <item
+                android:orderInCategory="1"
+                android:id="@+id/action_data_add_video"
+                android:title="@string/action_data_add_video"
+                app:showAsAction="never" />
+            <item
+                android:orderInCategory="2"
+                android:id="@+id/action_data_read_file"
+                android:title="@string/action_data_read_file"
+                app:showAsAction="never" />
+            <item
+                android:orderInCategory="3"
+                android:id="@+id/action_data_enable_all"
+                android:title="@string/action_data_enable_all"
+                app:showAsAction="never" />
+            <item
+                android:orderInCategory="4"
+                android:id="@+id/action_data_disable_all"
+                android:title="@string/action_data_disable_all"
+                app:showAsAction="never" />
+            <item
+                android:orderInCategory="5"
+                android:id="@+id/action_data_remove_disabled"
+                android:title="@string/action_data_remove_disabled"
+                app:showAsAction="never" />
+            <item
+                android:orderInCategory="6"
+                android:id="@+id/action_data_remove_all"
+                android:title="@string/action_data_remove_all"
+                app:showAsAction="never" />
+
+        </menu>
+    </item>
+
     <item
         android:orderInCategory="3"
-        android:id="@+id/action_open_grid_2col"
-        android:title="@string/action_open_grid_2col"
-        android:icon="@drawable/ic_open_grid"
-        app:showAsAction="ifRoom" />
-    <item
-        android:orderInCategory="4"
-        android:id="@+id/action_open_grid_Ncol"
-        android:title="@string/action_open_grid_Ncol"
-        android:icon="@drawable/ic_open_grid"
-        app:showAsAction="never" />
-    <item
-        android:orderInCategory="5"
-        android:id="@+id/action_read_file"
-        android:title="@string/action_read_file"
-        android:icon="@drawable/ic_read_file"
-        app:showAsAction="never" />
-    <item
-        android:orderInCategory="6"
         android:id="@+id/action_exit"
         android:title="@string/action_exit"
         app:showAsAction="never" />
