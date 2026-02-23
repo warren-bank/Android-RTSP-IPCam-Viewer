@@ -39,6 +39,7 @@ public final class ExoPlayerUtils {
   private static DefaultTrackSelector trackSelector;
   private static DefaultLoadControl loadControl;
   private static BandwidthMeter bandwidthMeter;
+  private static int playerId = 0;
   private static Looper playbackLooper;
 
   private static synchronized RtmpDataSource.Factory getRtmpDataSourceFactory() {
@@ -120,6 +121,10 @@ public final class ExoPlayerUtils {
     return new DefaultAnalyticsCollector(Clock.DEFAULT);
   }
 
+  private static String getDistinctPlayerName() {
+    return String.valueOf(++playerId);
+  }
+
   private static Looper getPlaybackLooper() {
     if (playbackLooper == null) {
       HandlerThread internalPlaybackThread = new HandlerThread("ExoPlayer:Playback", Process.THREAD_PRIORITY_AUDIO);
@@ -128,8 +133,6 @@ public final class ExoPlayerUtils {
     }
     return playbackLooper;
   }
-
-  private static int playerId = 0;
 
   public static ExoPlayer initializeExoPlayer(Context context) {
     context = context.getApplicationContext();
@@ -156,7 +159,7 @@ public final class ExoPlayerUtils {
     // https://github.com/androidx/media/blob/1.4.0/libraries/exoplayer/src/main/java/androidx/media3/exoplayer/ExoPlayerImpl.java#L362
     //   internalPlayer = new ExoPlayerImplInternal(..., playerId, ...)
     builder.setName(
-      String.valueOf(++playerId)
+      getDistinctPlayerName()
     );
 
     // https://github.com/androidx/media/blob/1.4.0/libraries/exoplayer/src/main/java/androidx/media3/exoplayer/ExoPlayer.java#L1275
