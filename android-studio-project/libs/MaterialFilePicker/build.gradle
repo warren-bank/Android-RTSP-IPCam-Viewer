@@ -23,6 +23,12 @@ android {
   }
 }
 
+// https://docs.gradle.org/current/userguide/resolution_rules.html#sec:forcing-dep-versions
+// https://stackoverflow.com/a/78585819
+configurations.configureEach {
+  resolutionStrategy.force 'androidx.annotation:annotation:'     + project.ext.libVersionAndroidxAnnotation
+}
+
 dependencies {
   compileOnly         'androidx.annotation:annotation:'          + project.ext.libVersionAndroidxAnnotation      // ( 22 KB) https://mvnrepository.com/artifact/androidx.annotation/annotation?repo=google
   annotationProcessor 'androidx.annotation:annotation:'          + project.ext.libVersionAndroidxAnnotation
