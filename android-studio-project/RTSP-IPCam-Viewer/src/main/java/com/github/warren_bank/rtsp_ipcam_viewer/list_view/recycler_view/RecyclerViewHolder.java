@@ -11,9 +11,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.PlayerView;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.AspectRatioFrameLayout;
+import androidx.media3.ui.PlayerView;
 
 public final class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
@@ -118,7 +118,7 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder {
     public void stop() {
         if (exoPlayer != null) {
             try {
-                exoPlayer.stop(true);
+                exoPlayer.stop();
             }
             catch (Exception e){}
         }
@@ -129,7 +129,7 @@ public final class RecyclerViewHolder extends RecyclerView.ViewHolder {
         if (exoPlayer != null) {
             try {
                 view.setPlayer(null);
-                exoPlayer.stop(true);
+                exoPlayer.stop();
                 exoPlayer.release();
 
                 exoPlayer = null;

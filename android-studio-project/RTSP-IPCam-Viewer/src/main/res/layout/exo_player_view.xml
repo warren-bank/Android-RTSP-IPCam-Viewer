@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2020 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<!--
+Notes and Historical Context:
+=============================
+
+https://github.com/google/ExoPlayer/blob/r2.6.1/library/ui/src/main/java/com/google/android/exoplayer2/ui/SimpleExoPlayerView.java#L125
+https://github.com/google/ExoPlayer/blob/r2.6.1/library/ui/src/main/java/com/google/android/exoplayer2/ui/SimpleExoPlayerView.java#L144
+https://github.com/google/ExoPlayer/blob/r2.6.1/library/ui/src/main/java/com/google/android/exoplayer2/ui/SimpleExoPlayerView.java#L260
+https://github.com/google/ExoPlayer/blob/r2.6.1/library/ui/src/main/res/layout/exo_simple_player_view.xml
+
+https://github.com/google/ExoPlayer/commit/c577d9d35191b11b46ec215be4812b96accd06a0
+https://github.com/google/ExoPlayer/blob/c577d9d35191b11b46ec215be4812b96accd06a0/library/ui/src/main/java/com/google/android/exoplayer2/ui/SimpleExoPlayerView.java
+https://github.com/google/ExoPlayer/blob/c577d9d35191b11b46ec215be4812b96accd06a0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L128
+https://github.com/google/ExoPlayer/blob/c577d9d35191b11b46ec215be4812b96accd06a0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L143
+https://github.com/google/ExoPlayer/blob/c577d9d35191b11b46ec215be4812b96accd06a0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L259
+https://github.com/google/ExoPlayer/blob/c577d9d35191b11b46ec215be4812b96accd06a0/library/ui/src/main/res/layout/exo_player_view.xml
+https://github.com/google/ExoPlayer/blob/c577d9d35191b11b46ec215be4812b96accd06a0/library/ui/src/main/res/layout/exo_simple_player_view.xml
+  Jan 23, 2018
+  note: makes SimpleExoPlayerView an alias for PlayerView, which still delegates its layout to 'exo_simple_player_view'
+
+https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/commit/1b0698104ba34d9b72e1386982c63338b90853af
+https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/1b0698104ba34d9b72e1386982c63338b90853af/exoplayer/ui/src/main/java/com/google/android/exoplayer2/ui/SimpleExoPlayerView.java
+https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/1b0698104ba34d9b72e1386982c63338b90853af/exoplayer/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java
+https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/1b0698104ba34d9b72e1386982c63338b90853af/exoplayer/ui/src/main/res/layout/exo_player_view.xml
+https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/1b0698104ba34d9b72e1386982c63338b90853af/exoplayer/ui/src/main/res/layout/exo_simple_player_view.xml
+https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/1b0698104ba34d9b72e1386982c63338b90853af/RTSP-IPCam-Viewer/src/main/res/layout/exo_simple_player_view.xml
+https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/blob/1b0698104ba34d9b72e1386982c63338b90853af/RTSP-IPCam-Viewer/src/main/res/layout/exo_shutter.xml
+  May 30, 2019
+  note: adds a modified copy of the 'exo_simple_player_view' layout
+  diff: replaces
+          <View android:id="@id/exo_shutter" ... />
+        with
+           <include layout="@layout/exo_shutter" />
+
+https://github.com/google/ExoPlayer/commit/e7687764a178629d5349c566228a09f8eda237cb
+  Feb 19, 2019
+  note: updates the 'exo_simple_player_view' layout
+  diff: adds:
+          <FrameLayout android:id="@id/exo_ad_overlay" ... />
+  status: this update isn't reflected in the app because a fork of the library is included
+
+https://github.com/google/ExoPlayer/commit/4580b52454c8403dbb047c560c8aff65e6498efb
+  May 1, 2020
+  note: removes the 'exo_simple_player_view' layout
+
+https://github.com/google/ExoPlayer/blob/r2.11.4/library/ui/src/main/res/layout/exo_player_view.xml
+https://github.com/google/ExoPlayer/blob/r2.11.5/library/ui/src/main/res/layout/exo_player_view.xml
+https://github.com/google/ExoPlayer/blob/r2.11.6/library/ui/src/main/res/layout/exo_player_view.xml
+https://github.com/google/ExoPlayer/blob/r2.11.7/library/ui/src/main/res/layout/exo_player_view.xml
+https://github.com/google/ExoPlayer/blob/r2.11.8/library/ui/src/main/res/layout/exo_player_view.xml
+  note: OK
+
+https://github.com/google/ExoPlayer/releases/tag/r2.12.0
+https://github.com/google/ExoPlayer/blob/r2.12.0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L167
+https://github.com/google/ExoPlayer/blob/r2.12.0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L193
+https://github.com/google/ExoPlayer/blob/r2.12.0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L260
+https://github.com/google/ExoPlayer/blob/r2.12.0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L367
+https://github.com/google/ExoPlayer/blob/r2.12.0/library/ui/src/main/res/layout/exo_player_view.xml
+  note: removes the 'exo_simple_player_view' layout
+
+https://github.com/google/ExoPlayer/blob/r2.18.0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L156
+https://github.com/google/ExoPlayer/blob/r2.18.0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L182
+https://github.com/google/ExoPlayer/blob/r2.18.0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L249
+https://github.com/google/ExoPlayer/blob/r2.18.0/library/ui/src/main/java/com/google/android/exoplayer2/ui/PlayerView.java#L355
+https://github.com/google/ExoPlayer/blob/r2.18.0/library/ui/src/main/res/layout/exo_player_view.xml
+  note: no change
+
+https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/releases/tag/v02.04.00
+  Jun 28, 2022
+  note: the app updated ExoPlayer from internal fork to r2.18.0
+  status: at this point, the customizations in the 'exo_simple_player_view' layout were inadvertently removed
+
+https://github.com/androidx/media/blob/1.2.0/libraries/ui/src/main/java/androidx/media3/ui/PlayerView.java#L338
+https://github.com/androidx/media/blob/1.2.0/libraries/ui/src/main/res/layout/exo_player_view.xml
+  note: no change (other than package name migrations "com.google.android.exoplayer2." => "androidx.media3.")
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <androidx.media3.ui.AspectRatioFrameLayout android:id="@id/exo_content_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <!-- Video surface will be inserted as the first child of the content frame. -->
+
+    <include layout="@layout/exo_shutter" />
+
+    <ImageView android:id="@id/exo_artwork"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scaleType="fitXY"/>
+
+    <androidx.media3.ui.SubtitleView android:id="@id/exo_subtitles"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
+    <ProgressBar android:id="@id/exo_buffering"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"
+      android:layout_gravity="center"/>
+
+    <TextView android:id="@id/exo_error_message"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/exo_error_message_height"
+      android:layout_gravity="center"
+      android:layout_marginBottom="@dimen/exo_error_message_margin_bottom"
+      android:gravity="center"
+      android:textColor="@color/exo_white"
+      android:textSize="@dimen/exo_error_message_text_size"
+      android:background="@drawable/exo_rounded_rectangle"
+      android:paddingLeft="@dimen/exo_error_message_text_padding_horizontal"
+      android:paddingRight="@dimen/exo_error_message_text_padding_horizontal"
+      android:paddingTop="@dimen/exo_error_message_text_padding_vertical"
+      android:paddingBottom="@dimen/exo_error_message_text_padding_vertical"/>
+
+  </androidx.media3.ui.AspectRatioFrameLayout>
+
+  <FrameLayout android:id="@id/exo_ad_overlay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+  <FrameLayout android:id="@id/exo_overlay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+  <View android:id="@id/exo_controller_placeholder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+</merge>

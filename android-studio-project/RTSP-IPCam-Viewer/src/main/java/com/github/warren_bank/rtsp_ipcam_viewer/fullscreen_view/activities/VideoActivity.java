@@ -9,9 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.PlayerView;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.AspectRatioFrameLayout;
+import androidx.media3.ui.PlayerView;
 
 public class VideoActivity extends AppCompatActivity {
     private static final String EXTRA_URL = "URL";
@@ -88,7 +88,7 @@ public class VideoActivity extends AppCompatActivity {
 
     private void stop() {
         try {
-            exoPlayer.stop(true);
+            exoPlayer.stop();
         }
         catch (Exception e){}
     }
