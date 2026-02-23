@@ -138,6 +138,9 @@ Android app to watch RTSP and RTMP video streams; these formats are typical of i
 * [v03.01.00](https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/releases/tag/v03.01.00)
   - is the final release that supports API 19 (Android 4.4, KitKat)
     * includes AndroidX Media3 [1.4.1](https://github.com/androidx/media/blob/1.4.1/constants.gradle#L17)
+* [v04.00.00](https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/releases/tag/v04.00.00)
+  - is the most recent release that supports API 21 (Android 5.0, Lollipop)
+    * includes AndroidX Media3 [1.5.0](https://github.com/androidx/media/blob/1.5.0/constants.gradle#L17)
 
 #### Credits
 
