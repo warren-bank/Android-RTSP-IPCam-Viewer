@@ -9,11 +9,11 @@ project.ext {
   buildToolsVersion  = '35.0.0'
 
   libVersionAndroidxLegacy           = '1.0.0'
-  libVersionAndroidxMedia3           = '1.5.0'
+  libVersionAndroidxMedia3           = '1.8.0'
   libVersionGson                     = '2.9.0'
 
   // keep versions of AndroidX libraries in sync with those used by AndroidX Media3:
-  //   https://github.com/androidx/media/blob/1.5.0/constants.gradle#L42
+  //   https://github.com/androidx/media/blob/1.8.0/constants.gradle#L42
 
   libVersionAndroidxAnnotation       = '1.6.0'
   libVersionAndroidxAppCompat        = '1.6.1'
