@@ -36,7 +36,6 @@ public final class ExoPlayerUtils {
   private static RenderersFactory renderersFactory;
   private static DefaultExtractorsFactory extractorsFactory;
   private static MediaSourceFactory mediaSourceFactory;
-  private static DefaultTrackSelector trackSelector;
   private static DefaultLoadControl loadControl;
   private static BandwidthMeter bandwidthMeter;
   private static int playerId = 0;
@@ -95,11 +94,9 @@ public final class ExoPlayerUtils {
     return mediaSourceFactory;
   }
 
+  // not a singleton; reuse causes fatal exception
   private static DefaultTrackSelector getTrackSelector(Context context) {
-    if (trackSelector == null) {
-      trackSelector = new DefaultTrackSelector(context);
-    }
-    return trackSelector;
+    return new DefaultTrackSelector(context);
   }
 
   private static DefaultLoadControl getLoadControl() {
