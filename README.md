@@ -58,8 +58,6 @@ Android app to watch RTSP and RTMP video streams; these formats are typical of i
 
 #### Notes
 
-* minimum supported version of Android:
-  * Android 4.1 Jelly Bean (API 16)
 * when videos are displayed in list/grid views:
   * Android status bar is visible
   * audio is disabled
@@ -131,6 +129,12 @@ Android app to watch RTSP and RTMP video streams; these formats are typical of i
 ![GridActivity](./.etc/screenshots/07-grid-3col.png)
 ![GridActivity](./.etc/screenshots/08-grid-4col.png)
 ![VideoActivity](./.etc/screenshots/09-fullscreen.png)
+
+#### Final release for `minSdkVersion`:
+
+* [v02.06.00](https://github.com/warren-bank/Android-RTSP-IPCam-Viewer/releases/tag/v02.06.00)
+  - is the final release that supports API 16 (Android 4.1, Jelly Bean)
+    * includes AndroidX Media3 [1.2.0](https://github.com/androidx/media/blob/1.2.0/constants.gradle#L17)
 
 #### Credits
 

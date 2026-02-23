@@ -13,8 +13,14 @@ android {
   }
 
   defaultConfig {
-    applicationId    project.ext.applicationId
+    minSdkVersion    project.ext.minSdkVersion
     targetSdkVersion project.ext.targetSdkVersion
+
+    applicationId project.ext.applicationId
+    versionName   project.ext.releaseVersion
+    versionCode   project.ext.releaseVersionCode
+
+    archivesBaseName += "-$versionName"
   }
 
   flavorDimensions "languageResources", "fileImport"
@@ -28,21 +34,9 @@ android {
     }
     withFileChooser {
       dimension "fileImport"
-
-      minSdkVersion    = project.ext.minSdkVersion
-      versionCode      = project.ext.minSdkVersion + project.ext.releaseVersionCode
-      versionName      = project.ext.releaseVersion + "-${project.ext.minSdkVersion}API"
-
-      // issue: https://issuetracker.google.com/issues/37077688
-      archivesBaseName = "${project.name}-${versionName}"
     }
     withSAF {
       dimension "fileImport"
-
-      minSdkVersion    = project.ext.minSdkVersionSAF
-      versionCode      = project.ext.minSdkVersionSAF + project.ext.releaseVersionCode
-      versionName      = project.ext.releaseVersion + "-${project.ext.minSdkVersionSAF}API"
-      archivesBaseName = "${project.name}-${versionName}"
     }
   }
 
