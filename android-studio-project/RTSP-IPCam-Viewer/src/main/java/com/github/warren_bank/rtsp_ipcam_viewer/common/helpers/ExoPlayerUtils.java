@@ -116,13 +116,15 @@ public final class ExoPlayerUtils {
     return new DefaultAnalyticsCollector(Clock.DEFAULT);
   }
 
+  private static int playerId = 0;
+
   public static ExoPlayer initializeExoPlayer(Context context) {
     context = context.getApplicationContext();
 
     if (USER_AGENT == null)
       setUserAgent(context);
 
-    return new ExoPlayer.Builder(
+    ExoPlayer.Builder builder = new ExoPlayer.Builder(
       context,
       getRenderersFactory(context),
       getMediaSourceFactory(context),
@@ -130,7 +132,21 @@ public final class ExoPlayerUtils {
       getLoadControl(),
       getBandwidthMeter(context),
       getAnalyticsCollector()
-    ).build();
+    );
+
+    // https://github.com/androidx/media/releases/tag/1.4.0
+    //   changelog: Add PlayerId to most methods of LoadControl to enable LoadControl implementations to support multiple players.
+    // https://github.com/androidx/media/blob/1.4.0/libraries/exoplayer/src/main/java/androidx/media3/exoplayer/ExoPlayer.java#L1293
+    //   builder.setName(String playerName)
+    // https://github.com/androidx/media/blob/1.4.0/libraries/exoplayer/src/main/java/androidx/media3/exoplayer/ExoPlayerImpl.java#L354
+    //   PlayerId playerId = new PlayerId(builder.playerName)
+    // https://github.com/androidx/media/blob/1.4.0/libraries/exoplayer/src/main/java/androidx/media3/exoplayer/ExoPlayerImpl.java#L362
+    //   internalPlayer = new ExoPlayerImplInternal(..., playerId, ...)
+    builder.setName(
+      String.valueOf(++playerId)
+    );
+
+    return builder.build();
   }
 
   public static void prepareExoPlayer(ExoPlayer player, String video_url) {
