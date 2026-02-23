@@ -1,19 +1,19 @@
 project.ext {
   applicationId      = 'com.github.warren_bank.rtsp_ipcam_viewer'
-  releaseVersionCode = Integer.parseInt("004010021", 10)  //Integer.MAX_VALUE == 2147483647
-  releaseVersion     = '004.01.00-21API'
+  releaseVersionCode = Integer.parseInt("004010023", 10)  //Integer.MAX_VALUE == 2147483647
+  releaseVersion     = '004.01.00-23API'
   javaVersion        = JavaVersion.VERSION_1_8
-  minSdkVersion      = 21
+  minSdkVersion      = 23
   targetSdkVersion   = 35
   compileSdkVersion  = 35
   buildToolsVersion  = '35.0.0'
 
   libVersionAndroidxLegacy           = '1.0.0'
-  libVersionAndroidxMedia3           = '1.8.0'
+  libVersionAndroidxMedia3           = '1.9.0'
   libVersionGson                     = '2.9.0'
 
   // keep versions of AndroidX libraries in sync with those used by AndroidX Media3:
-  //   https://github.com/androidx/media/blob/1.8.0/constants.gradle#L42
+  //   https://github.com/androidx/media/blob/1.9.0/constants.gradle#L42
 
   libVersionAndroidxAnnotation       = '1.6.0'
   libVersionAndroidxAppCompat        = '1.6.1'
