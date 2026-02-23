@@ -1,7 +1,7 @@
 project.ext {
   applicationId      = 'com.github.warren_bank.rtsp_ipcam_viewer'
-  releaseVersionCode = Integer.parseInt("004010023", 10)  //Integer.MAX_VALUE == 2147483647
-  releaseVersion     = '004.01.00-23API'
+  releaseVersionCode = Integer.parseInt("005000023", 10)  //Integer.MAX_VALUE == 2147483647
+  releaseVersion     = '005.00.00-23API'
   javaVersion        = JavaVersion.VERSION_1_8
   minSdkVersion      = 23
   targetSdkVersion   = 35
