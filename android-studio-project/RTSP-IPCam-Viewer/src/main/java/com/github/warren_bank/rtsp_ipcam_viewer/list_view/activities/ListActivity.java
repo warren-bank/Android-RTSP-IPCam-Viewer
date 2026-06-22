@@ -75,7 +75,7 @@ public final class ListActivity extends AppCompatActivity {
     public static void open(Context context, String jsonVideos) {
         Intent intent = new Intent(context, ListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if ((jsonVideos != null) && (!jsonVideos.isEmpty()))
             intent.putExtra(EXTRA_JSON_VIDEOS, jsonVideos);
         context.startActivity(intent);

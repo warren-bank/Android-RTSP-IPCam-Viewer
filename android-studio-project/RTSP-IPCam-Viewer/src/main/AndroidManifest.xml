@@ -45,10 +45,12 @@
 
         <activity
             android:name=".fullscreen_view.activities.VideoActivity"
-            android:theme="@style/AppTheme.NoActionBar.Fullscreen"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:launchMode="standard"
-            android:exported="false" />
+            android:launchMode="singleTask"
+            android:taskAffinity=".fullscreen_view"
+            android:exported="false"
+            android:supportsPictureInPicture="true" />
 
         <activity
             android:name=".common.activities.ExitActivity"
